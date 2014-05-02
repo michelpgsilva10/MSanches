@@ -3,9 +3,8 @@ class Login extends MY_Controller {
 
 	function __construct() {
 		parent::__construct();
-		$this -> load -> helper('security');
 		$this -> load -> library('form_validation');
-		$this -> load -> model('usuario_model');
+		$this->load->library('session');
 	}
 
 	public function index() {
@@ -20,8 +19,11 @@ class Login extends MY_Controller {
 			$senha = do_hash($senha, 'md5');
 			$aux = $this -> usuario_model -> login($email, $senha);
 			if ($aux != FALSE) {
-				$result = array('nome' => $aux -> NOME_USUARIO, 'id' => $aux -> ID_USUARIO, 'nivel' => $aux -> NIVEL_USUARIO);
-				$this -> session -> set_userdata('load', TRUE);
+				$datestring = "%m%d";
+				$time = time();
+				$load= mdate($datestring, $time).do_hash("MSanches", 'md5');
+				$result = array('nome' => $aux ->NOME_USER, 'id' => $aux ->ID_USER, 'nivel' => $aux ->NIVEL_USER);
+				$this -> session -> set_userdata('load', $load);
 				$this -> session -> set_userdata($result);
 				redirect('home');
 			} else {

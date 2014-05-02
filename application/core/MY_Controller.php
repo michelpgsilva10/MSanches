@@ -9,9 +9,11 @@ class MY_Controller extends CI_Controller {
 	}
 
 	public function my_load_view($page, $data) {
-		if ($this -> session -> userdata('load')) {
+		$datestring = "%m%d";
+		$time = time();
+		$load = mdate($datestring, $time).do_hash("MSanches", 'md5');
+		if ($this -> session -> userdata('load')==$load) {
 			$this -> load -> view('head');
-			$this -> load -> view('menu');
 			$this -> load -> view($page, $data);
 			$this -> load -> view('footer');
 		} else {

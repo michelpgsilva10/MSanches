@@ -1,3 +1,4 @@
+
 <div class="row" style="margin-top: 20%">
 	<?php
 	if (isset($mensagem)) {?>
@@ -5,6 +6,12 @@
 			 <?php	echo $mensagem; ?>
 			</div>
 	<?php } ?>
+	<div class="col-md-6 col-md-offset-3">
+	<h1> MSanches</h1>
+	<br />
+	<br />
+	</div>
+	
 	<div class="col-md-6 col-md-offset-3">
 		<form method="post" class="form-horizontal" role="form" action="<?php echo site_url("Login")?>">
 			<div class="form-group">
@@ -19,8 +26,9 @@
 					<input type="password" class="form-control" id="password" name="password" placeholder="Senha" maxlength="100" required>
 				</div>
 			</div>
+			<br />
 			<div class="form-group">
-				<div class="col-sm-offset-2 col-sm-10">
+				<div class="col-sm-offset-2 col-sm-8">
 					<button type="submit" class="btn btn-success">
 						Fazer Login
 					</button>
