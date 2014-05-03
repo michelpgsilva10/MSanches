@@ -6,7 +6,7 @@
 	<script src="<?php echo $this->config->item('base_url') ?>css/js/bootstrap.js"></script>
 	<script src="<?php echo $this->config->item('base_url') ?>css/js/collapse.js"></script>
 	<script src="<?php echo $this->config->item('base_url') ?>css/js/transition.js"></script>
-	<script src="<?php echo $this->config->item('base_url') ?>css/js/tab.js"></script>
+	<script src="<?php echo $this->config->item('base_url') ?>css/js/dropdown.js"></script>
 	<head>
 		<title>MSanches</title>
 

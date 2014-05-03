@@ -19,12 +19,10 @@ class Welcome extends MY_Controller {
 	 */
 	public function index()
 	{
-		if ($this -> session -> userdata('load')) {
-			$this -> my_load_view('home', NULL);
-		} else {
+		
 			redirect('login');
-
-		}	}
+	}
+		
 }
 
 /* End of file welcome.php */

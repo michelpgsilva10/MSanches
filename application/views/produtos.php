@@ -1,6 +1,22 @@
-<script language="JavaScript">$('.collapse').collapse()</script>
-
-<h1 style="text-align: center;  padding: 30px 0;"><a href="<?php echo site_url("home")?>"><span class="glyphicon glyphicon-home"></span> <font color="#000000"> MSanches </font></a></h1>
+<script language="JavaScript">
+	$('.collapse').collapse();
+	$('.dropdown-toggle').dropdown();
+</script>
+<div class=" dropdown right">
+	<a data-toggle="dropdown"  type="button" class="btn dropdown-toggle" role="button" id="dropADM"> <font color="#000000" style="font-size: 20px;"> 
+		<?php echo $this -> session -> userdata('nome')?>
+		<span class="caret"></span> </font> </a>
+	<ul class="dropdown-menu" role="menu" aria-labelledby="dropADM">
+		<li role="presentation">
+			<a role="menuitem" tabindex="-1" href="#">Administração</a>
+		</li>
+		<li role="presentation" class="divider"></li>
+		<li role="presentation">
+			<a role="menuitem" tabindex="-1" href="#">Sair</a>
+		</li>
+	</ul>
+</div>
+<h1 style="text-align: center;  padding: 25px 0; margin-left: 110px"><a href="<?php echo site_url("home")?>"><span class="glyphicon glyphicon-home"></span> <font color="#000000"> MSanches </font></a></h1>
 <div class="panel panel-default">
 	<div class="panel-body">
 		<div class="row">
