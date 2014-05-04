@@ -17,5 +17,40 @@ class Produtos extends MY_Controller {
 
 		}
 	}
+	
+	public function busca()
+	{
+		$datestring = "%m%d";
+		$time = time();
+		$load = mdate($datestring, $time).do_hash("MSanches", 'md5');
+		if ($this -> session -> userdata('load')==$load) {
+			if($this -> input -> post('codigo', TRUE)){
+				
+			}else{
+				$this -> my_load_view('buscaProduto', NULL);
+			}
+		} else {
+			redirect('login');
+
+		}
+	}
+	
+	public function novo()
+	{
+		$datestring = "%m%d";
+		$time = time();
+		$load = mdate($datestring, $time).do_hash("MSanches", 'md5');
+		if ($this -> session -> userdata('load')==$load) {
+			if($this -> input -> post('valor', TRUE)){
+				
+			}else{
+				$this -> my_load_view('novoProduto', NULL);
+			}
+		} else {
+			redirect('login');
+
+		}
+	}
+	
 
 }

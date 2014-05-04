@@ -53,17 +53,17 @@
 					</li>
 
 					<li>
-						<a href="#">Buscar Produto</a>
+						<a href="<?php echo site_url("produtos/busca")?>">Buscar Produto</a>
 						
 					</li>
 					<li >
-						<a href="#">Novo Produto</a>
-					</li>
-					<li >
-						<a href="#">Excluir Produto</a>
+						<a href="<?php echo site_url("produtos/novo")?>">Novo Produto</a>
 					</li>
 					<li>
 						<a href="#">Estoque</a>
+					</li>
+					<li >
+						<a href="<?php echo site_url("home")?>">Voltar</a>
 					</li>
 				</ul>
 

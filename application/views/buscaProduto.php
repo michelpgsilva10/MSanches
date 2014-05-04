@@ -28,42 +28,38 @@
 		<div class="row">
 			<div class="col-md-9 col-md-push-3">
 				<div class="container-fluid">
-					<?php for($i=0;$i<9;$i++){ ?>
-					<div class="col-sm-6 col-md-4">
-						<div class="thumbnail">
-							<img data-src="holder.js/300x200" alt="...">
-							<div class="caption">
-								<h3>Thumbnail label</h3>
-								<p>
-									...
-								</p>
-								<p>
-									<a href="#" class="btn btn-primary" role="button">Button</a><a href="#" class="btn btn-default" role="button">Button</a>
-								</p>
-							</div>
+					<div class="row">
+						<div class="col-md-6 col-md-offset-3" >
+							<form >
+								<div class="col-xs-5" style="margin-top: 50px" align="center">
+									<input type="text" class="form-control" name="codigo" id="codigo" placeholder="Exemplo: BR00000000">
+									<span class="help-block">Digite o Código do Produto</span>
+									<br />
+									<button type="submit" class="btn btn-primary">Buscar</button>
+								</div>
+							</form>
 						</div>
 					</div>
-				<?php  }?>
 				</div>
 			</div>
 			<div class="col-md-3 col-md-pull-9">
 				<ul class="nav nav-pills nav-stacked">
 					<li>
-						<a href="#">Produtos</a>
+						<a href="<?php echo site_url("produtos")?>"> Produtos </a>
 					</li>
 
 					<li class="active">
 						<a href="#">Buscar Produto</a>
-						
+
 					</li>
 					<li >
-						<a href="#">Novo Produto</a>
-					</li>
-					<li >
-						<a href="#">Excluir Produto</a>
+						<a href="<?php echo site_url("produtos/novo")?>">Novo Produto</a>
 					</li>
 					<li>
 						<a href="#">Estoque</a>
+					</li>
+					<li >
+						<a href="<?php echo site_url("home")?>">Voltar</a>
 					</li>
 				</ul>
 

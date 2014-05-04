@@ -4,7 +4,6 @@
 	<link href="<?php echo $this->config->item('base_url') ?>css/css/bootstrap.css" rel="stylesheet">
 	<script src="<?php echo $this->config->item('base_url') ?>css/js/jquery-2.1.0.js"></script>
 	<script src="<?php echo $this->config->item('base_url') ?>css/js/bootstrap.js"></script>
-	<script src="<?php echo $this->config->item('base_url') ?>css/js/collapse.js"></script>
 	<script src="<?php echo $this->config->item('base_url') ?>css/js/transition.js"></script>
 	<script src="<?php echo $this->config->item('base_url') ?>css/js/dropdown.js"></script>
 	<head>
