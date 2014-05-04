@@ -42,7 +42,9 @@ class Produtos extends MY_Controller {
 		$load = mdate($datestring, $time).do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load')==$load) {
 			if($this -> input -> post('valor', TRUE)){
-				
+				 
+				 print_r($_POST);
+				 
 			}else{
 				$this -> my_load_view('novoProduto', NULL);
 			}

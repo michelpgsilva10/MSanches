@@ -1,4 +1,4 @@
-<script language="JavaScript">$('.dropdown-toggle').dropdown();</script>
+
 <div class="right">
 	<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 		Action <span class="caret"></span>
@@ -25,9 +25,11 @@
 		<div class="row">
 			<div class="col-md-9 col-md-push-3">
 				<div class="container-fluid">
-					<form class="form-horizontal" role="form">
-						<div class="row" style="margin-top: 40px">
+					<form class="form-horizontal" role="form"  method="post" enctype="multipart/form-data" action="<?php echo site_url("produtos/novo")?>">
+						<div class="row" style="margin-top: 40px;">
 							<div class="col-xs-12 col-md-8">
+								<br />
+								<br />
 								<div class="form-group">
 									<label for="inputEmail3" class="col-sm-2 control-label">Valor</label>
 									<div class="col-sm-7">
@@ -54,14 +56,29 @@
 										<input type="email" class="form-control" id="valor" name="valor" style="text-align: center">
 									</div>
 								</div>
-								<div class="form-group" align="center">
-									<button type="submit" class="btn btn-primary ">Criar</button>
-								</div>
+
 							</div>
 							<div class="col-xs-6 col-md-4">
-								.col-xs-6 .col-md-4
+								<div class="thumbnail">
+									<div id="img">
+										<img src="<?php echo $this->config->item('base_url') ?>css/img/img_sistema/cinza.jpg" data-src="holder.js/100%x180" class="img-responsive" alt="Responsive image">
+									</div>
+									<div class="caption" align="center">
+										<button type="file" class="btn btn-primary btn-xs" name="fotoProduto">
+											Selecionar
+										</button>
+									</div>
+								</div>
 							</div>
 						</div>
+						<div class="row">
+							<div class="form-group" align="center">
+								<button type="submit" class="btn btn-primary ">
+									Criar
+								</button>
+							</div>
+						</div>
+					</form>
 				</div>
 			</div>
 			<div class="col-md-3 col-md-pull-9">
