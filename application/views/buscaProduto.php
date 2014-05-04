@@ -48,11 +48,11 @@
 			</div>
 			<div class="col-md-3 col-md-pull-9">
 				<ul class="nav nav-pills nav-stacked">
-					<li class="active">
+					<li>
 						<a href="#">Produtos</a>
 					</li>
 
-					<li>
+					<li class="active">
 						<a href="#">Buscar Produto</a>
 						
 					</li>
