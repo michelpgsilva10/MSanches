@@ -29,7 +29,23 @@
 			<div class="col-md-9 col-md-push-3">
 				<div class="panel panel-default">
 					<br />
-					<div class="container-fluid">
+					<div class="container-fluid" align="center">
+						<div class="row" align="center">
+							<div class=".col-xs-3 .col-md-4" align="center">
+								<div class="col-sm-4" align="center" style="margin-left: 34%;">
+									<select class="form-control" name="tipo" id="tipo" style="text-align: center" align="center">
+										<option value="">Todos</option>
+										<option value="Br">Brinco</option>
+										<option value="Cl">Colar</option>
+										<option value="Pl">Pulceira</option>
+										<option value="Bl">Bracelete</option>
+										<option value="Tr">Tornozeleira</option>
+										<option value="Cj">Conjunto</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<br />
 						<?php for($i=0;$i<9;$i++){
 						?>
 						<div class="col-sm-6 col-md-4">
@@ -47,6 +63,17 @@
 							</div>
 						</div>
 						<?php  } ?>
+						<br />
+						<div>
+							<ul class="pager">
+								<li>
+									<a href="#">Anterior</a>
+								</li>
+								<li>
+									<a href="#">Proximo</a>
+								</li>
+							</ul>
+						</div>
 						<br />
 					</div>
 				</div>
