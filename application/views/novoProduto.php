@@ -25,9 +25,10 @@
 		<div class="row">
 			<div class="col-md-9 col-md-push-3">
 				<div class="container-fluid">
+				<div  class="panel panel-default">
 					<form class="form-horizontal" role="form"  method="post" enctype="multipart/form-data" action="<?php echo site_url("produtos/novo")?>">
-						<div class="row" style="margin-top: 40px;">
-							<div class="col-xs-12 col-md-8">
+						<div class="row" style="margin-top: 40px; margin-left: 10%;">
+							<div class="col-xs-6 col-md-7">
 								<br />
 								<br />
 								<div class="form-group">
@@ -73,13 +74,14 @@
 						</div>
 						<div class="row">
 							<div class="form-group" align="center">
-								<button type="submit" class="btn btn-primary ">
+								<button type="submit" class="btn btn-primary " style="width: 100px;">
 									Criar
 								</button>
 							</div>
 						</div>
 					</form>
 				</div>
+			</div>
 			</div>
 			<div class="col-md-3 col-md-pull-9">
 				<ul class="nav nav-pills nav-stacked">

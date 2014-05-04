@@ -27,19 +27,25 @@
 	<div class="panel-body">
 		<div class="row">
 			<div class="col-md-9 col-md-push-3">
-				<div class="container-fluid">
-					<div class="row">
-						<div class="col-md-6 col-md-offset-3" >
-							<form >
-								<div class="col-xs-5" style="margin-top: 50px" align="center">
-									<input type="text" class="form-control" name="codigo" id="codigo" placeholder="Exemplo: BR00000000">
-									<span class="help-block">Digite o Código do Produto</span>
-									<br />
-									<button type="submit" class="btn btn-primary">Buscar</button>
-								</div>
-							</form>
+				<div  class="panel panel-default">
+					<div class="container-fluid" align="center">
+						<div class="row">
+							<div class="col-md-6 col-md-offset-3" align="center" >
+								<form >
+									<div class="col-xs-5" style="margin-top: 50px; margin-left: 35%" align="center">
+										<input type="text" class="form-control" name="codigo" id="codigo" placeholder="Exemplo: BR00000000">
+										<span class="help-block">Digite o Código do Produto</span>
+										<br />
+										<button type="submit" class="btn btn-primary">
+											Buscar
+										</button>
+										
+									</div>
+								</form>
+							</div>
 						</div>
 					</div>
+					<br />
 				</div>
 			</div>
 			<div class="col-md-3 col-md-pull-9">

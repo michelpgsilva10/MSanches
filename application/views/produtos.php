@@ -27,23 +27,28 @@
 	<div class="panel-body">
 		<div class="row">
 			<div class="col-md-9 col-md-push-3">
-				<div class="container-fluid">
-					<?php for($i=0;$i<9;$i++){ ?>
-					<div class="col-sm-6 col-md-4">
-						<div class="thumbnail">
-							<img data-src="holder.js/300x200" alt="...">
-							<div class="caption">
-								<h3>Thumbnail label</h3>
-								<p>
-									...
-								</p>
-								<p>
-									<a href="#" class="btn btn-primary" role="button">Button</a><a href="#" class="btn btn-default" role="button">Button</a>
-								</p>
+				<div class="panel panel-default">
+					<br />
+					<div class="container-fluid">
+						<?php for($i=0;$i<9;$i++){
+						?>
+						<div class="col-sm-6 col-md-4">
+							<div class="thumbnail">
+								<img data-src="holder.js/300x200" alt="...">
+								<div class="caption">
+									<h3>Thumbnail label</h3>
+									<p>
+										...
+									</p>
+									<p>
+										<a href="#" class="btn btn-primary" role="button">Button</a><a href="#" class="btn btn-default" role="button">Button</a>
+									</p>
+								</div>
 							</div>
 						</div>
+						<?php  } ?>
+						<br />
 					</div>
-				<?php  }?>
 				</div>
 			</div>
 			<div class="col-md-3 col-md-pull-9">
@@ -54,7 +59,7 @@
 
 					<li>
 						<a href="<?php echo site_url("produtos/busca")?>">Buscar Produto</a>
-						
+
 					</li>
 					<li >
 						<a href="<?php echo site_url("produtos/novo")?>">Novo Produto</a>
