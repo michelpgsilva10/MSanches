@@ -1,5 +1,5 @@
 
-<div class="row" style="margin-top: 20%">
+<div class="row">
 	<?php
 	if (isset($mensagem)) {?>
 			<div class="alert alert-danger alert-dismissable">
@@ -7,11 +7,7 @@
 			</div>
 	<?php } ?>
 	<div class="col-md-6 col-md-offset-3">
-	<h1> MSanches</h1>
-	<br />
-	<br />
-	</div>
-	
+	</div>	
 	<div class="col-md-6 col-md-offset-3">
 		<form method="post" class="form-horizontal" role="form" action="<?php echo site_url("Login")?>">
 			<div class="form-group">

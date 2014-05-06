@@ -33,8 +33,8 @@ a.button:hover {
 }
 
 </style>
-<h1 style="text-align: center;  padding: 30px 0;"><a href="<?php echo site_url("home")?>"><font color="#000000"> MSanches </font></a></h1>
-<div style=" text-align: center">
+
+<div class="row" style=" text-align: center">
 <a href="<?php echo site_url("produtos")?>" class="button blue">Produtos</a><br/>
 <a href="#" class="button green">Vendas</a><br/>
 <a href="#" class="button red">Clientes</a><br/>
