@@ -1,24 +1,3 @@
-<div class="right">
-	<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-		Action <span class="caret"></span>
-	</button>
-	<ul class="dropdown-menu" role="menu">
-		<li>
-			<a href="#">Action</a>
-		</li>
-		<li>
-			<a href="#">Another action</a>
-		</li>
-		<li>
-			<a href="#">Something else here</a>
-		</li>
-		<li class="divider"></li>
-		<li>
-			<a href="#">Separated link</a>
-		</li>
-	</ul>
-</div>
-<h1 style="text-align: center;  padding: 25px 0; margin-left: 110px"><a href="<?php echo site_url("home")?>"><span class="glyphicon glyphicon-home"></span> <font color="#000000"> MSanches </font></a></h1>
 <div class="panel panel-default">
 	<div class="panel-body">
 		<div class="row">
