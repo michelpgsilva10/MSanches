@@ -1,5 +1,5 @@
 <?php
-class Produtos extends MY_Controller {
+class Cliente extends MY_Controller {
 	
 	function __construct() {
 		parent::__construct();
@@ -7,7 +7,14 @@ class Produtos extends MY_Controller {
 	}
 
 	public function index() {
-		$this -> my_load_view('novoCliente', NULL);
+		$datestring = "%m%d";
+		$time = time();
+		$load = mdate($datestring, $time).do_hash("MSanches", 'md5');
+		if ($this -> session -> userdata('load')==$load) {
+			$this -> my_load_view('novoCliente', NULL);
+		} else {
+			redirect('login');
+		}
 	}
 }
 ?>
