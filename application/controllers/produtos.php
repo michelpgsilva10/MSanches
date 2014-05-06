@@ -50,9 +50,9 @@ class Produtos extends MY_Controller {
 			}
 		} else {
 			redirect('login');
-
 		}
 	}
 	
 
 }
+?>
