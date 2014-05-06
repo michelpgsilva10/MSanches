@@ -18,7 +18,7 @@
 								<div class="form-group">
 									<label for="inputEmail3" class="col-sm-2 control-label">Tipo</label>
 									<div class="col-sm-7">
-										<select class="form-control" name="tipo" id="tipo" style="text-align: center">
+										<select class="form-control" name="tipo" id="tipo">
 											<option value=""></option>
 											<option value="Br">Brinco</option>
 											<option value="Cl">Colar</option>

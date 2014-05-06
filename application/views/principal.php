@@ -37,6 +37,6 @@ a.button:hover {
 <div class="row" style=" text-align: center">
 <a href="<?php echo site_url("produtos")?>" class="button blue">Produtos</a><br/>
 <a href="#" class="button green">Vendas</a><br/>
-<a href="#" class="button red">Clientes</a><br/>
+<a href="<?php echo site_url("cliente")?>" class="button red">Clientes</a><br/>
 
 </div>
