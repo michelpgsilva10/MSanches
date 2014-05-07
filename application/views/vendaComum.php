@@ -1,7 +1,16 @@
 <script language="JavaScript">
-$('#myModal').modal({
-  keyboard: false
-})
+function getfocus()
+{
+document.getElementById('codigoP').focus()
+}
+function Enter(evento)
+{
+tecla = evento.keyCode;
+if(tecla == 13)//event.which para FF
+{
+ alert('Você apertou o ENTER');
+}
+}
 </script>
 <div class="panel panel-default">
 	<div class="panel-body">
@@ -14,14 +23,20 @@ $('#myModal').modal({
 							<div class="form-group">
 								<label for="inputEmail3" class="col-sm-5 control-label">Nome do Cliente</label>
 								<div class="col-sm-7">
-									<input type="email" class="form-control" id="nomeCliente" placeholder="Nome">
+									<input type="email" class="form-control" id="nomeCliente" name="nomeCliente" placeholder="Nome">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inputEmail3" class="col-sm-5 control-label">Código do Produto</label>
+								<div class="col-sm-7">
+									<input type="email" class="form-control" id="codigoP" name="codigoP" placeholder="Nome" onkeypress="Enter(event)">
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-12 col-md-8">
-							<table class="table table-bordered table-hover" style="margin-left: 15%">
+						<div class="col-md-9 ">
+							<table class="table table-bordered table-hover" style="margin-left: 18%">
 								<thead>
 									<th>Código do Poroduto</th>
 									<th>Quantidade</th>
@@ -35,11 +50,6 @@ $('#myModal').modal({
 									<td > Total </td>
 								</tfoot>
 							</table>
-						</div>
-						<div class="col-xs-6 col-md-4" align="center">
-							<button class="btn btn-primary" data-target="#myModal" data-toggle="modal">
-								Adicionar Produto
-							</button>
 						</div>
 					</div>
 					<div class="row">
@@ -55,23 +65,6 @@ $('#myModal').modal({
 						</div>
 					</div>
 				</form>
-			</div>
-		</div>
-		<div class="modal fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-sm">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button class="close" aria-hidden="true" data-dismiss="modal" type="button">
-							×
-						</button>
-						<h4 id="mySmallModalLabel" class="modal-title"> Novo Item </h4>
-					</div>
-				</div>
-				<div class="modal-body">
-					<input type="text" class="form-control" name="codigo" id="codigo" placeholder="Exemplo: BR00000000">
-					<span class="help-block">Digite o Código do Produto</span>
-					<br />
-				</div>
 			</div>
 		</div>
 	</div>
