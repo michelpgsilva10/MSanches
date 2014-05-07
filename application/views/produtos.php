@@ -1,5 +1,4 @@
 <script language="JavaScript">
-	$('.collapse').collapse();
 	$('.dropdown-toggle').dropdown(); 
 </script>
 <div class="panel panel-default">
