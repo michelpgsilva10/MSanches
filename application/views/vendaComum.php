@@ -1,4 +1,8 @@
-<script language="JavaScript">$('.dropdown-toggle').dropdown();</script>
+<script language="JavaScript">
+$('#myModal').modal({
+  keyboard: false
+})
+</script>
 <div class="panel panel-default">
 	<div class="panel-body">
 		<div class="panel panel-default">
@@ -33,7 +37,7 @@
 							</table>
 						</div>
 						<div class="col-xs-6 col-md-4" align="center">
-							<button type="button" class="btn btn-primary" onclick="">
+							<button class="btn btn-primary" data-target="#myModal" data-toggle="modal">
 								Adicionar Produto
 							</button>
 						</div>
@@ -53,5 +57,23 @@
 				</form>
 			</div>
 		</div>
+		<div class="modal fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button class="close" aria-hidden="true" data-dismiss="modal" type="button">
+							×
+						</button>
+						<h4 id="mySmallModalLabel" class="modal-title"> Novo Item </h4>
+					</div>
+				</div>
+				<div class="modal-body">
+					<input type="text" class="form-control" name="codigo" id="codigo" placeholder="Exemplo: BR00000000">
+					<span class="help-block">Digite o Código do Produto</span>
+					<br />
+				</div>
+			</div>
+		</div>
 	</div>
+</div>
 </div>
