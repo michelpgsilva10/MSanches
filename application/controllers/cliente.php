@@ -16,5 +16,21 @@ class Cliente extends MY_Controller {
 			redirect('login');
 		}
 	}
+	
+	public function adicionar() {
+		$nome_cliente = $this->input->post('nome_cliente');
+		$cpf_cliente = $this->input->post('cpf_cliente');
+		$ref_comercial_cliente = $this->input->post('ref_comercial_cliente');
+		
+		$data = array('nome_cliente' => $nome_cliente,
+					  'cpf_cliente' => $cpf_cliente,
+					  'ref_comercial' => $ref_comercial_cliente,
+					  'endereco_fk' => 1);
+		
+		$this->db->insert('cliente', $data);
+		redirect('cliente');
+			
+		}
+		
 }
 ?>
