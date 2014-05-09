@@ -70,6 +70,9 @@
 						<a href="<?php echo site_url("produtos/novo")?>">Novo Produto</a>
 					</li>
 					<li>
+						<a href="<?php echo site_url("produtos/etiquetas")?>">Etiquetas</a>
+					</li>
+					<li>
 						<a href="#">Estoque</a>
 					</li>
 					<li >
