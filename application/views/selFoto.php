@@ -1,7 +1,3 @@
-<script language="JavaScript">
-	$('.collapse').collapse();
-	$('.dropdown-toggle').dropdown(); 
-</script>
 <div class="panel panel-default">
 	<div class="panel-body">
 		<div class="row">
@@ -10,16 +6,21 @@
 					<div class="container-fluid" align="center">
 						<div class="row">
 							<div class="col-md-6 col-md-offset-3" align="center" >
-								<form >
-									<div class="col-xs-5" style="margin-top: 50px; margin-left: 35%" align="center">
-										<input type="text" class="form-control" name="codigo" id="codigo" placeholder="Exemplo: BR00000000">
-										<span class="help-block">Digite o Código do Produto</span>
-										<br />
-										<button type="submit" class="btn btn-primary">
-											Buscar
-										</button>
-										
-									</div>
+								<?php if (isset($mensagem))
+{
+								?>
+								<div class="alert alert-danger alert-dismissable">
+									<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+									<?php	echo $mensagem; ?>
+								</div>
+								<?php } ?>
+								<form method="post"  role="form"  enctype="multipart/form-data"  action="<?php echo site_url("produtos/uloadF")?>" >
+									<br />
+									<input type="file"  name="fileF" id="FileF">
+									<br />
+									<button type="submit" class="btn btn-primary">
+										Enviar
+									</button>
 								</form>
 							</div>
 						</div>
@@ -33,11 +34,11 @@
 						<a href="<?php echo site_url("produtos")?>"> Produtos </a>
 					</li>
 
-					<li class="active">
-						<a href="#">Buscar Produto</a>
+					<li>
+						<a href="<?php echo site_url("produtos/busca")?>">Buscar Produto</a>
 
 					</li>
-					<li >
+					<li class="active">
 						<a href="<?php echo site_url("produtos/novo")?>">Novo Produto</a>
 					</li>
 					<li>

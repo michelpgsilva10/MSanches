@@ -15,6 +15,7 @@
 			
 		}
 		document.getElementById("total").value= ""+total;
+		document.getElementById("total").value= ""+total;
 	}
 	
 	function getfocus() {
@@ -47,9 +48,10 @@
 	var cod = document.getElementById("codigoP").value;
 	var itemT = "<tr id=\"item" + cont + "\">" +
 					 "<td> <input type=\"text\" class=\"form-control\" placeholder=\"Codigo\" value=\"" +cod + "\" disabled> </td>" +
-					 "<td> <input id=\"QItem" + cont + "\" type=\"text\" value=\"1\" class=\"form-control\" placeholder=\"Quantidade\" onkeypress=\"atualizaQ("+"event,'"+cont+"')\"></td>"+
+					 "<td> <input id=\"QItem" + cont + "\" type=\"text\"  value=\"1\" class=\"form-control\" placeholder=\"Quantidade\" onkeypress=\"atualizaQ("+"event,'"+cont+"')\"></td>"+
 					 "<td> <input id=\"vItem" + cont + "\" type=\"text\" class=\"form-control\" placeholder=\"Valor\" value="+ "10"+" disabled ></td>" +
-					 "<td> <input type=\"checkbox\" id=\"inlineCheckbox1\" onclick=\"Deletar('"+cont+"')\"></td>" +
+					 "<td> <input id=\"vItemT" + cont + "\" type=\"text\" class=\"form-control\" placeholder=\"Valor\" value="+ "10"+" disabled ></td>" +
+					 "<td> <input type=\"checkbox\" id=\"inlineCheckbox1\" align=\"center\"  onclick=\"Deletar('"+cont+"')\"></td>" +
 				"</tr>";
 	$("#tabelaV").append(itemT);
 	atualizaT();
@@ -99,10 +101,10 @@
 							<table class="table table-bordered table-hover"  style="margin-left: 18%">
 								<thead>
 									<tr>
-										<th>Código do Poroduto</th>
-										<th>Quantidade</th>
-										<th>Valor</th>
-										<th> Deletar </th>
+										<th style="text-align: center" >Código do Poroduto</th>
+										<th style="text-align: center">Quantidade</th>
+										<th style="text-align: center" colspan="2">Unidade  |  Total </th>
+										<th style="text-align: center"> Deletar </th>
 									</tr>
 								</thead>
 								<tbody id="tabelaV">
@@ -110,7 +112,7 @@
 								</tbody>
 								<tfoot>
 									<td > <strong> Total  </strong></td>
-									<td colspan=3><input type="text" class="form-control" id="total" name="total" value="0" style="text-align: center" disabled></td>
+									<td colspan = 4><input type="text" align="center" class="form-control" id="total" name="total" value="0" style="text-align: center" disabled></td>
 								</tfoot>
 							</table>
 						</div>
