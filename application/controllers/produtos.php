@@ -57,12 +57,13 @@ class Produtos extends MY_Controller {
 		}
 	}
 	
-	public function etiquetas() {
+	public function perEtiqueta($code) {
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
-			$this -> my_load_view('etiqueta', NULL);
+			$data = array('code'=>$code);
+			$this -> my_load_view('etiqueta', $data);
 		} else {
 			redirect('login');
 		}
@@ -138,7 +139,7 @@ class Produtos extends MY_Controller {
 					echo "code= ".$code;
 					rename("D:\Dropbox\Dropbox\Projetos Trabalho\MSanches\css\img\img_produto\defu.jpg", "D:/Dropbox/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto/" . $nome);
 					$this -> usuario_model -> setProduto($tipo,$valor,$quantidade,$nome,$code);
-					redirect('produtos/perEtiqueta');
+					redirect('produtos/perEtiqueta/'.$code);
 				}
 			} else {
 

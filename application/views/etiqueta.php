@@ -1,29 +1,18 @@
 <script language="JavaScript">
-	var cont = 0;
-	function getfocus() {
-		document.getElementById("codigoP").value = '';
-		document.getElementById('codigoP').focus();
-	}
-	function Enter(evento) {
-
-		if (evento.keyCode == 13)//event.which para FF
-		{
-			cont++;
-
-			var cod = document.getElementById("codigoP").value;
-			var itemT = "<tr id=\"item" + cont + "\">" +
-						 	"<td> <input type=\"text\" name=\"codp"+cont+"\" class=\"form-control\" placeholder=\"Codigo\" value=\"" +cod + "\" disabled> </td>" +
-						 	"<td> <input id=\"QItem" + cont + "\" type=\"text\"  value=\"1\" class=\"form-control\" placeholder=\"Quantidade\"></td>"+
-							"<td> <input type=\"checkbox\" id=\"inlineCheckbox1\" align=\"center\"  onclick=\"Deletar('"+cont+"')\"></td>" +
-						"</tr>";
-			$("#tabelaE").append(itemT);
-			getfocus();
+	var cont=1;
+	function Sim(){
+		if(cont==1){
+		$( "#pergunta" ).fadeOut(10);
+		$( "#seSim" ).fadeIn( "slow" );
+		cont=0;
+		}else{
+			$( "#seSim" ).fadeOut( "slow" );
+			$( "#pergunta" ).fadeIn( "slow" );
+			cont=1;
 		}
 	}
-	function Deletar(id) {
-		cont--;
-		$('#item'+id).remove();
-		
+	function nao(){
+		location.href="<?php echo site_url("produtos")?>";
 	}
 </script>
 <div class="panel panel-default">
@@ -33,41 +22,39 @@
 				<div  class="panel panel-default">
 					<div class="container-fluid" align="center">
 						<div class="row">
-							<div class="col-md-6 col-md-offset-3" align="center" >
-								<form  class="form-horizontal" method="post" role="form">
-									<div class="row" style="margin-top: 10%">
+							<div class="col-md-6 col-md-offset-3" align="center"  >
+								<div id="pergunta" >
+									<div class="col-xs-8" style="margin-top: 50px; margin-left: 25%" align="center">
+										<label> Deseja imprimir as etiquetas?</label>
+										<br />
+										<br />
+										<button type="submit" class="btn btn-primary" onclick="Sim();">
+											Sim
+										</button>
+										<button type="submit" class="btn btn-primary" onclick="nao()">
+											Não
+										</button>
+									</div>
+								</div>
+								<form >
+									<div id="seSim" style="margin-top: 50px; margin-left: 15%; display: none;" align="center">
 										<div class="form-group">
-											<label for="inputEmail3" class="col-sm-5 control-label">Posição inicial</label>
+											<label for="inputEmail3" class="col-sm-3 control-label">Posição inicial</label>
 											<div class="col-sm-7">
-												<input type="text" class="form-control" id="inicioE" name="inicioE" placeholder="de 1 até 140">
+												<input type="text" maxlength="3" required class="form-control" id="inicioE" name="inicioE" placeholder="de 1 até 140">
 											</div>
 										</div>
 										<div class="form-group">
-											<label for="inputEmail3" class="col-sm-5 control-label">Código do Produto</label>
-											<div class="col-sm-7">
-												<input type="text" class="form-control" id="codigoP" placeholder="Código" onkeypress="Enter(event)">
+											<div class="col-sm-7" style="margin-top: 2%">
+												<input type="text" maxlength="3" value="<?php echo $code ?>" class="form-control" id="code" name="code" disabled>
 											</div>
 										</div>
-									</div>
-									<div class="row">
-										<table class="table table-bordered table-hover">
-											<thead>
-												<tr>
-													<th style="text-align: center" >Código do Poroduto</th>
-													<th style="text-align: center">Quantidade</th>
-													<th style="text-align: center"> Deletar </th>
-												</tr>
-											</thead>
-											<tbody id="tabelaE">
-											</tbody>
-										</table>
-									</div>
-									<div>
-										<div class="form-group">
-											<button type="submit" class="btn btn-primary">
-												Gerar Etiquetas
-											</button>
-										</div>
+										<button type="button" style="margin-top: 5%" class="btn btn-primary" onclick="Sim();">
+											Voltar
+										</button>
+										<button type="submit" style="margin-top: 5%" class="btn btn-primary">
+											Criar
+										</button>
 									</div>
 								</form>
 							</div>
@@ -82,8 +69,9 @@
 						<a href="<?php echo site_url("produtos")?>"> Produtos </a>
 					</li>
 
-					<li >
+					<li>
 						<a href="<?php echo site_url("produtos/busca")?>">Buscar Produto</a>
+
 					</li>
 					<li >
 						<a href="<?php echo site_url("produtos/novo")?>">Novo Produto</a>
