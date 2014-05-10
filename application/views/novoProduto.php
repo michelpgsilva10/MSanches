@@ -39,6 +39,7 @@ function SomenteNumero(e){
 											<select class="form-control" name="tipo" id="tipo" required >
 												<option value=""></option>
 												<option value="Br">Brinco</option>
+												<option value="An">Anel</option>
 												<option value="Cl">Colar</option>
 												<option value="Pl">Pulceira</option>
 												<option value="Bl">Bracelete</option>

@@ -1,12 +1,13 @@
 <script language="JavaScript">
-	var cont = 0;
+		var cont = 0;
+	
 	function getfocus() {
 		document.getElementById("codigoP").value = '';
 		document.getElementById('codigoP').focus();
 	}
 	function Enter(evento) {
 
-		if (evento.keyCode == 13)//event.which para FF
+	if ((evento.keyCode == 13)&&(document.getElementById("codigoP").value!=""))//event.which para FF
 		{
 			cont++;
 
@@ -14,12 +15,14 @@
 			var itemT = "<tr id=\"item" + cont + "\">" +
 						 	"<td> <input type=\"text\" name=\"codp"+cont+"\" class=\"form-control\" placeholder=\"Codigo\" value=\"" +cod + "\" disabled> </td>" +
 						 	"<td> <input id=\"QItem" + cont + "\" type=\"text\"  value=\"1\" class=\"form-control\" placeholder=\"Quantidade\"></td>"+
-							"<td> <input type=\"checkbox\" id=\"inlineCheckbox1\" align=\"center\"  onclick=\"Deletar('"+cont+"')\"></td>" +
+							"<td> <input type=\"checkbox\" id=\"inlineCheckbox1\" align=\"center\"  onclick=\"Deletar('"+cont+"')\"> </td>" +
 						"</tr>";
 			$("#tabelaE").append(itemT);
 			getfocus();
+
 		}
 	}
+
 	function Deletar(id) {
 		cont--;
 		$('#item'+id).remove();
@@ -39,7 +42,7 @@
 										<div class="form-group">
 											<label for="inputEmail3" class="col-sm-5 control-label">Posição inicial</label>
 											<div class="col-sm-7">
-												<input type="text" class="form-control" id="inicioE" name="inicioE" placeholder="de 1 até 140">
+												<input type="text" maxlength="3" class="form-control" id="inicioE" name="inicioE" placeholder="de 1 até 140">
 											</div>
 										</div>
 										<div class="form-group">
@@ -59,10 +62,15 @@
 												</tr>
 											</thead>
 											<tbody id="tabelaE">
+												 <tr id="item0">
+						 								<td> <input type="text" name="cod" class="form-control" placeholder="Codigo"  disabled> </td>
+						 								<td> <input id="QItem"  type="text"  value="1" class="form-control" placeholder="Quantidade"></td>
+														<td> <input type="checkbox" id="inlineCheckbox1" align="center"  > </td>
+										        </tr>		
 											</tbody>
 										</table>
 									</div>
-									<div>
+									<div class="row">
 										<div class="form-group">
 											<button type="submit" class="btn btn-primary">
 												Gerar Etiquetas

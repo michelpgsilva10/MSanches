@@ -50,5 +50,113 @@ Class Usuario_model  extends CI_Model {
 		$this->db->insert('produto', $data); 
 	}
 	
+	function getProdutos($inicio){
+		$this -> db -> select('*');
+		$this -> db -> from('produto');
+		$this -> db -> where('estoque_produto !=', '0');
+		$this->db->limit($inicio,6);
+		$query = $this -> db -> get();
+		if ($query -> num_rows() > 0) {
+			return $query ->result_array();
+		} else {
+			return FALSE;
+		}
+	}
+	function getProduto($id){
+		$this -> db -> select('tipo_produto,valor_produto,estoque_produto,foto_produto,cod_barra_produto');
+		$this -> db -> from('produto');
+		$this -> db -> where('id_produto',$id);
+		$query = $this -> db -> get();
+		if ($query -> num_rows() > 0) {
+			return $query ->row();
+		} else {
+			return FALSE;
+		}
+	}	
+	function getBrinco($inicio){
+		$this -> db -> select('*');
+		$this -> db -> from('produto');
+		$this -> db -> where('tipo_produto', 'Br');
+		$this->db->limit($inicio,6);
+		$query = $this -> db -> get();
+		if ($query -> num_rows() > 0) {
+			return $query ->result_array();
+		} else {
+			return FALSE;
+		}
+	}
+	function getAnel($inicio){
+		$this -> db -> select('*');
+		$this -> db -> from('produto');
+		$this -> db -> where('tipo_produto', 'An');
+		$this->db->limit($inicio,6);
+		$query = $this -> db -> get();
+		if ($query -> num_rows() > 0) {
+			return $query ->result_array();
+		} else {
+			return FALSE;
+		}
+	}
+	function getColar($inicio){
+		$this -> db -> select('*');
+		$this -> db -> from('produto');
+		$this -> db -> where('tipo_produto', 'Cl');
+		$this->db->limit($inicio,6);
+		$query = $this -> db -> get();
+		if ($query -> num_rows() > 0) {
+			return $query ->result_array();
+		} else {
+			return FALSE;
+		}
+	}
+	function getPulceira($inicio){
+		$this -> db -> select('*');
+		$this -> db -> from('produto');
+		$this -> db -> where('tipo_produto', 'Pl');
+		$this->db->limit($inicio,6);
+		$query = $this -> db -> get();
+		if ($query -> num_rows() > 0) {
+			return $query ->result_array();
+		} else {
+			return FALSE;
+		}
+	}
+	function getBracelete($inicio){
+		$this -> db -> select('*');
+		$this -> db -> from('produto');
+		$this -> db -> where('tipo_produto', 'Bl');
+		$this->db->limit($inicio,6);
+		$query = $this -> db -> get();
+		if ($query -> num_rows() > 0) {
+			return $query ->result_array();
+		} else {
+			return FALSE;
+		}
+	}
+	function getConjunto($inicio){
+		$this -> db -> select('*');
+		$this -> db -> from('produto');
+		$this -> db -> where('tipo_produto', 'Cj');
+		$this->db->limit($inicio,6);
+		$query = $this -> db -> get();
+		if ($query -> num_rows() > 0) {
+			return $query ->result_array();
+		} else {
+			return FALSE;
+		}
+	}
+	function getTornozeleira($inicio){
+		$this -> db -> select('*');
+		$this -> db -> from('produto');
+		$this -> db -> where('tipo_produto', 'Tr');
+		$this->db->limit($inicio,6);
+		$query = $this -> db -> get();
+		if ($query -> num_rows() > 0) {
+			return $query ->result_array();
+		} else {
+			return FALSE;
+		}
+	}
+	
 }
 ?>

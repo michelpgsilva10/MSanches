@@ -41,7 +41,7 @@
 	
 	function Enter(evento) {
 
-	if (evento.keyCode == 13)//event.which para FF
+	if ((evento.keyCode == 13)&&(document.getElementById("codigoP").value!=""))//event.which para FF
 	{
 	cont++;
 

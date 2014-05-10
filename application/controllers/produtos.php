@@ -11,7 +11,10 @@ class Produtos extends MY_Controller {
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
-			$this -> my_load_view('produtos', NULL);
+			$todos = $this -> usuario_model -> getProdutos("0");
+			print_r($todos);
+			#$data = array('todos' => $todos);
+			#$this -> my_load_view('produtos', $data);
 		} else {
 			redirect('login');
 
