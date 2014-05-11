@@ -1,92 +1,93 @@
 <div class="panel panel-default">
+	<?php
+		echo validation_errors();
+	?>
 	<div class="panel-body">
 		<div class="row">
 			<div class="col-md-9 col-md-push-3">
 				<div class="container-fluid">
-					<div  class="panel panel-default">
-						<form class="form-horizontal" role="form"  method="post" enctype="multipart/form-data" action="<?php echo site_url("cliente/adicionar")?>">
-							<div class="row" style="margin-top: 20px; margin-left: 10%;">
-								<div style="width: 80%">
-									<div class="form-group" style="border-bottom: 1px solid #CCCCCC; font-family: Arial, Helvetica, sans-serif; font-size: 22px; color: #428BCA">
-										Cliente
+					<div  class="panel panel-default" align="center">
+						<form class="form-horizontal form-padding" role="form"  method="post" enctype="multipart/form-data" action="<?php echo site_url("cliente/adicionar")?>">
+							<div class="form-separator" align="left">
+								<span>Cliente</span>
+							</div>
+							<div class="form-line">
+								<div class="form-label-position" align="right">
+									<div class="form-spacing-label">
+										<label class="control-label">Nome</label>
 									</div>
-									<div class="form-group">
-										<label for="inputEmail3" class="col-sm-3 control-label">Nome</label>
-										<div class="col-sm-8">
-											<input type="text" class="form-control" id="nome_cliente" name="nome_cliente">
-										</div>
+									<div class="form-spacing-label">
+										<label class="control-label">CPF</label>
 									</div>
-									<div class="form-group">
-										<label for="inputEmail3" class="col-sm-3 control-label">CPF</label>
-										<div class="col-sm-8">
-											<input type="text" class="form-control" id="cpf_cliente" name="cpf_cliente">
-										</div>
+									<div class="form-spacing-label">
+										<label class="control-label">Ref. Comercial</label>
 									</div>
-									<div class="form-group">
-										<label for="inputEmail3" class="col-sm-3 control-label">Referência Comercial</label>
-										<div class="col-sm-8">
-											<input type="text" class="form-control" id="ref_comercial_cliente" name="ref_comercial_cliente">
-										</div>
+									<div class="form-spacing-label">
+										<label class="control-label">Telefone</label>
 									</div>
-									<div class="form-group">
-										<label for="inputEmail3" class="col-sm-3 control-label">Telefone</label>
-										<div class="col-sm-8">
-											<input type="text" class="form-control" id="ref_comercial_cliente" name="ref_comercial_cliente">
-										</div>
+								</div>
+								<div class="form-input-position">
+									<div class="form-spacing-input">
+										<input type="text" class="form-control" name="nome_cliente" style="width: 475px;"/>
 									</div>
-									<div class="form-group" style="border-bottom: 1px solid #CCCCCC; font-family: Arial, Helvetica, sans-serif; font-size: 22px; color: #428BCA">
-										Endereço
+									<div class="form-spacing-input">
+										<input type="text" class="form-control" name="cpf_cliente" style="width: 200px;"/>
 									</div>
-									<div class="form-group" style="display: table; margin-left: 15%">
-										<div class="form-group" style="float: left">
-											<label for="inputEmail3" class="col-sm-3 control-label">Rua</label>
-											<div class="col-sm-8">
-												<input type="text" class="form-control" id="rua_endereco" name="rua_endereco">
-											</div>
-										</div>
-										<div class="form-group" style="float: left">
-											<label for="inputEmail3" class="col-sm-3 control-label">Número</label>
-											<div class="col-sm-3">
-												<input type="text" class="form-control" id="rua_endereco" name="rua_endereco">
-											</div>
-										</div>
+									<div class="form-spacing-input">
+										<input type="text" class="form-control" name="ref_comercial_cliente" style="width: 475px;"/>
 									</div>
-
-									<div class="form-group">
-										<label for="inputEmail3" class="col-sm-3 control-label">Bairro</label>
-										<div class="col-sm-8">
-											<input type="text" class="form-control" id="rua_endereco" name="rua_endereco">
-										</div>
-									</div>
-
-									<div class="form-group">
-										<label for="inputEmail3" class="col-sm-3 control-label">Cidade</label>
-										<div class="col-sm-8">
-											<input type="text" class="form-control" id="rua_endereco" name="rua_endereco">
-										</div>
-									</div>
-
-									<div class="form-group">
-										<label for="inputEmail3" class="col-sm-3 control-label">U.F.</label>
-										<div class="col-sm-8">
-											<input type="text" class="form-control" id="rua_endereco" name="rua_endereco">
-										</div>
-									</div>
-
-									<div class="form-group">
-										<label for="inputEmail3" class="col-sm-3 control-label">Complemento</label>
-										<div class="col-sm-8">
-											<input type="text" class="form-control" id="rua_endereco" name="rua_endereco">
-										</div>
-									</div>
-
-									<div style="width: 100%; margin-left: 20px; padding-bottom: 20px" align="center">
-										<button type="submit" class="btn btn-primary " style="width: 100px;">
-											Criar
-										</button>
+									<div class="form-spacing-input">
+										<input type="text" class="form-control" name="tel_cliente" style="width: 200px;"/>
 									</div>
 								</div>
 							</div>
+							
+							<div class="form-separator" align="left">
+								<span>Endereço</span>
+							</div>
+							
+							<div class="form-line">
+								<div class="form-label-position" align="right">
+									<div class="form-spacing-label">
+										<label class="control-label">Rua</label>
+									</div>
+									<div class="form-spacing-label">
+										<label class="control-label">Número</label>
+									</div>
+									<div class="form-spacing-label">
+										<label class="control-label">Bairro</label>
+									</div>
+									<div class="form-spacing-label">
+										<label class="control-label">Cidade</label>
+									</div>
+									<div class="form-spacing-label">
+										<label class="control-label">Estado</label>
+									</div>
+								</div>
+								<div class="form-input-position">
+									<div class="form-spacing-input">
+										<input type="text" class="form-control" name="rua_cliente" style="width: 475px;"/>
+									</div>
+									<div class="form-spacing-input">
+										<input type="text" class="form-control" name="num_endereco_cliente" style="width: 75px;"/>
+									</div>
+									<div class="form-spacing-input">
+										<input type="text" class="form-control" name="bairro_cliente" style="width: 300px;"/>
+									</div>
+									<div class="form-spacing-input">
+										<input type="text" class="form-control" name="cidade_cliente" style="width: 200px;"/>
+									</div>
+									<div class="form-spacing-input">
+										<input type="text" class="form-control" name="uf_cliente" style="width: 100px;"/>
+									</div>
+								</div>
+								
+							</div>
+							
+							<div>
+								<input type="submit" name="cadastrar_cliente" value="Cadastrar"  class="btn btn-primary" />
+							</div>
+
 						</form>
 					</div>
 				</div>
