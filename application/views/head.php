@@ -7,11 +7,12 @@
 <script src="<?php echo $this->config->item('base_url') ?>css/js/bootstrap.js"></script>
 <script src="<?php echo $this->config->item('base_url') ?>css/js/transition.js"></script>
 <script src="<?php echo $this->config->item('base_url') ?>css/js/modal.js"></script>
+<script src="<?php echo $this->config->item('base_url') ?>css/msanches.js"></script>
 <head>
 <title>MSanches</title>
 
 </head>
-<body>
+<body onload="hideAlertSuccess()">
 <div class="container">
 <div>
 <img src="<?php echo $this->config->item('base_url') ?>css/img/img_sistema/MSanches-logo.png" class="img-responsive" alt="Responsive image">
