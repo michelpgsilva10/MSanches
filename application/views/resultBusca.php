@@ -22,7 +22,7 @@ function SomenteNumero(e){
 									<?php	echo $mensagem; ?>
 								</div>
 								<?php } ?>
-						<form class="form-horizontal" role="form"  method="post" <?php if(isset($foto)){ ?> action="<?php echo site_url("produtos/novo2")?>" <?php }else{ ?>action="<?php echo site_url("produtos/novo")?>"<?php } ?>>
+						<form class="form-horizontal" role="form"  method="post">
 							<div class="row" style="margin-top: 40px; margin-left: 3%">
 								<div class="col-xs-6">
 									<br />
@@ -30,28 +30,28 @@ function SomenteNumero(e){
 									<div class="form-group">
 										<label for="inputEmail3" class="col-sm-3 control-label">Valor</label>
 										<div class="col-sm-7">
-											<input type="text" class="form-control" id="valor" name="valor" style="text-align: center" required maxlength="4" onkeypress="return SomenteNumero(event);">
+											<input type="text" class="form-control" id="valor" name="valor" value="<?php echo $produto->valor_produto; ?>" style="text-align: center" required maxlength="4" onkeypress="return SomenteNumero(event);" disabled>
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="inputEmail3" class="col-sm-3 control-label">Tipo</label>
 										<div class="col-sm-7">
-											<select class="form-control" name="tipo" id="tipo" required >
+											<select class="form-control" name="tipo" id="tipo" required  disabled>
 												<option value=""></option>
-												<option value="Br">Brinco</option>
-												<option value="An">Anel</option>
-												<option value="Cl">Colar</option>
-												<option value="Pl">Pulceira</option>
-												<option value="Bl">Bracelete</option>
-												<option value="Tr">Tornozeleira</option>
-												<option value="Cj">Conjunto</option>
+												<option value="Br" <?php if(strcmp ( $produto->tipo_produto,"Br")==0){echo "selected"; } ?>>Brinco</option>
+												<option value="An" <?php if(strcmp ( $produto->tipo_produto,"An")==0){echo "selected"; } ?>>Anel</option>
+												<option value="Cl" <?php if(strcmp ( $produto->tipo_produto,"Cl")==0){echo "selected"; } ?>>Colar</option>
+												<option value="Pl" <?php if(strcmp ( $produto->tipo_produto,"Pl")==0){echo "selected"; } ?>>Pulceira</option>
+												<option value="Bl" <?php if(strcmp ( $produto->tipo_produto,"Bl")==0){echo "selected"; } ?>>Bracelete</option>
+												<option value="Tr" <?php if(strcmp ( $produto->tipo_produto,"Tr")==0){echo "selected"; } ?>>Tornozeleira</option>
+												<option value="Cj" <?php if(strcmp ( $produto->tipo_produto,"Cj")==0){echo "selected"; } ?>>Conjunto</option>
 											</select>
 										</div> 
 									</div>
 									<div class="form-group">
 										<label for="inputEmail3" class="col-sm-3 control-label">Quantidade</label>
 										<div class="col-sm-3">
-											<input type="text" class="form-control" id="quant" name="quant" style="text-align: center" onkeypress="return SomenteNumero(event);" required>
+											<input type="text" class="form-control" id="quant" name="quant" value="<?php echo $produto->estoque_produto; ?>" style="text-align: center" onkeypress="return SomenteNumero(event);" required disabled>
 										</div>
 									</div>
 
@@ -59,25 +59,23 @@ function SomenteNumero(e){
 								<div class="col-xs-5">
 									<div class="thumbnail">
 										<div id="img">
-											<img src="<?php echo $this->config->item('base_url') ?>css/img/<?php if(isset($foto)){ echo "img_produto/defu.jpg\""; ?>
-												<?php }else { ?>img_sistema/cinza.jpg" <?php } ?>data-src="holder.js/100%x180" class="img-responsive" alt="Responsive image">
+											<img src="<?php echo $this->config->item('base_url')."css/img/img_produto/".$produto->foto_produto."\""?> data-src="holder.js/100%x180" class="img-responsive" alt="Responsive image">
 										</div>
-										<div class="caption" align="center">
-											<ul class="pager">
+										<div id="trocaImg" class="caption" align="center" style=" display: none">
+											<ul class="pager" >
 												<li>
-													<a href="<?php echo site_url("produtos/novaFoto")?>">Selecionar</a>
+													<a href="<?php echo site_url("produtos/novaFoto")?>" >Selecionar</a>
 												</li>
 											</ul>
-
 										</div>
 									</div>
 								</div>
 							</div>
 							<div class="row">
 								<div class="form-group" align="center">
-									<button type="submit" class="btn btn-primary " style="width: 100px;">
-										Criar
-									</button>
+									<p><a  href="<?php echo site_url("produtos/alterar/".$produto->id_produto)?>" class="btn btn-primary" role="button"> Alterar </a> 
+									<a  href="<?php echo site_url("produtos/deletar/".$produto->foto_produto."/".$produto->id_produto);?>" class="btn btn-danger" role="button"> Deletar </a>
+									<a href="<?php echo site_url("produtos/busca")?>" class="btn btn-default" role="button"> Voltar </a>  </p>
 								</div>
 							</div>
 						</form>
@@ -90,12 +88,12 @@ function SomenteNumero(e){
 						<a href="<?php echo site_url("produtos")?>"> Produtos </a>
 					</li>
 
-					<li>
+					<li class="active">
 						<a href="<?php echo site_url("produtos/busca")?>">Buscar Produto</a>
 
 					</li>
-					<li class="active">
-						<a href="#">Novo Produto</a>
+					<li>
+						<a href="<?php echo site_url("produtos/novo")?>">Novo Produto</a>
 					</li>
 					<li>
 						<a href="<?php echo site_url("produtos/etiquetas")?>">Etiquetas</a>

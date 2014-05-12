@@ -35,7 +35,7 @@
 								<div class="caption">
 									<h3><?php echo $todos[$i]["cod_barra_produto"]; ?></h3>
 									<p>
-										<a href="#" class="btn btn-primary" role="button">Detalhes do Profuto</a>
+										<a href="<?php echo site_url("produtos/busca2/".$todos[$i]["id_produto"])?>" class="btn btn-primary" role="button">Detalhes do Profuto</a>
 									</p>
 								</div>
 							</div>
@@ -76,7 +76,7 @@
 						<a href="<?php echo site_url("produtos/etiquetas")?>">Etiquetas</a>
 					</li>
 					<li>
-						<a href="#">Estoque</a>
+						<a href="<?php echo site_url("produtos/estoque")?>">Estoque</a>
 					</li>
 					<li >
 						<a href="<?php echo site_url("home")?>">Voltar</a>

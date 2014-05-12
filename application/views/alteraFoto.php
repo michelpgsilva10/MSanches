@@ -14,11 +14,11 @@
 									<?php	echo $mensagem; ?>
 								</div>
 								<?php } ?>
-								<form method="post"  role="form"  enctype="multipart/form-data"  action="<?php echo site_url("produtos/uloadF")?>" >
+								<form method="post"  role="form"  enctype="multipart/form-data"  action="<?php echo site_url("produtos/uloadFA")?>" >
 									<br />
 									<input type="file"  name="fileF" id="FileF">
 									<br />
-									
+									<input style="display: none;" name="id" id="id" value="<?php echo $id;  ?>" />
 									<button type="submit" class="btn btn-primary">
 										Enviar
 									</button>
@@ -46,7 +46,7 @@
 						<a href="<?php echo site_url("produtos/etiquetas")?>">Etiquetas</a>
 					</li>
 					<li>
-						<a href="<?php echo site_url("produtos/estoque")?>">Estoque</a>
+						<a href="#">Estoque</a>
 					</li>
 					<li >
 						<a href="<?php echo site_url("home")?>">Voltar</a>

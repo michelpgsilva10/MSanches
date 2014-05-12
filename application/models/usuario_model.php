@@ -37,6 +37,12 @@ Class Usuario_model  extends CI_Model {
 			return FALSE;
 		}
 	}
+	function deletarProduto($id){
+		
+		$this->db->where('id_produto', $id);
+		$this->db->delete('produto'); 
+		
+	}
 	
 	
 	function setProduto($tipo,$valor,$quantidade,$nome,$code) {
@@ -50,11 +56,23 @@ Class Usuario_model  extends CI_Model {
 		$this->db->insert('produto', $data); 
 	}
 	
+	function updateProduto($id,$tipo,$valor,$quantidade,$nome,$code) {
+		$data = array(
+		'tipo_produto' => $tipo,
+		'valor_produto' =>$valor,
+		'estoque_produto' => $quantidade,
+		'foto_produto' => $nome,
+		'cod_barra_produto' => $code
+		);
+		$this->db->where('id_produto', $id);
+		$this->db->update('produto', $data); 
+	}
+	
 	function getProdutos($inicio){
 		$this -> db -> select('*');
 		$this -> db -> from('produto');
 		$this -> db -> where('estoque_produto !=', '0');
-		$this->db->limit($inicio,6);
+		$this -> db -> limit(12,$inicio);
 		$query = $this -> db -> get();
 		if ($query -> num_rows() > 0) {
 			return $query ->result_array();
@@ -62,10 +80,14 @@ Class Usuario_model  extends CI_Model {
 			return FALSE;
 		}
 	}
-	function getProduto($id){
-		$this -> db -> select('tipo_produto,valor_produto,estoque_produto,foto_produto,cod_barra_produto');
+	function getProduto($id,$code){
+		$this -> db -> select('*');
 		$this -> db -> from('produto');
-		$this -> db -> where('id_produto',$id);
+		if(strcmp ($code,"0")==0){
+			$this -> db -> where('id_produto',$id);
+		}else{
+			$this -> db -> where('cod_barra_produto',$code);
+		}
 		$query = $this -> db -> get();
 		if ($query -> num_rows() > 0) {
 			return $query ->row();

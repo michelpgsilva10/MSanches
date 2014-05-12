@@ -100,7 +100,7 @@
 						<a href="#">Etiquetas</a>
 					</li>
 					<li>
-						<a href="#">Estoque</a>
+						<a href="<?php echo site_url("produtos/estoque")?>">Estoque</a>
 					</li>
 					<li >
 						<a href="<?php echo site_url("home")?>">Voltar</a>

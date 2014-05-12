@@ -1,6 +1,13 @@
 <script language="JavaScript">
-	$('.collapse').collapse();
-	$('.dropdown-toggle').dropdown(); 
+
+function Enter(evento) {
+
+	if ((evento.keyCode == 13)&&(document.getElementById("codigoP").value!=""))//event.which para FF
+		{
+			document.forms['formB'].submit();
+		}
+	}
+
 </script>
 <div class="panel panel-default">
 	<div class="panel-body">
@@ -10,9 +17,9 @@
 					<div class="container-fluid" align="center">
 						<div class="row">
 							<div class="col-md-6 col-md-offset-3" align="center" >
-								<form >
+								<form  name="formB" id="formB" class="form-horizontal" role="form"  method="post" action="<?php echo site_url("produtos/busca")?>">
 									<div class="col-xs-5" style="margin-top: 50px; margin-left: 35%" align="center">
-										<input type="text" class="form-control" name="codigo" id="codigo" placeholder="Exemplo: BR00000000">
+										<input type="text" class="form-control" name="codigo" id="codigo" placeholder="Exemplo: BR00000000" required onkeypress=" Enter(event) ">
 										<span class="help-block">Digite o Código do Produto</span>
 										<br />
 										<button type="submit" class="btn btn-primary">
@@ -44,7 +51,7 @@
 						<a href="<?php echo site_url("produtos/etiquetas")?>">Etiquetas</a>
 					</li>
 					<li>
-						<a href="#">Estoque</a>
+						<a href="<?php echo site_url("produtos/estoque")?>">Estoque</a>
 					</li>
 					<li >
 						<a href="<?php echo site_url("home")?>">Voltar</a>
