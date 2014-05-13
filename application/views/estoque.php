@@ -6,46 +6,63 @@
 				<div  class="panel panel-default">
 					<div class="container-fluid" align="center">
 						<div class="row">
-							<div class="col-md-6 col-md-offset-3" align="center" >
+							<div class="col-md-8 col-md-offset-2" align="center" >
 								<table class="table table-striped table-hover">
 									<thead>
+										<th></th>
 										<th style="text-align: center">Tipo</th>
 										<th style="text-align: center">Quantidade</th>
+										<th style="text-align: center">Quantidade em Estoque</th>
 									</thead>
 									<tbody>
 										<tr>
+											<td style="text-align: center">1</td>
 											<td style="text-align: center">Anel</td>
 											<td style="text-align: center"><?php echo $anel; ?></td>
+											<td style="text-align: center"><?php echo $anel2; ?></td>
 										</tr>
 										<tr>
+											<td style="text-align: center"> 2 </td>
 											<td style="text-align: center">Bracelete</td>
 											<td style="text-align: center"><?php echo $bracelete; ?></td>
+											<td style="text-align: center"><?php echo $bracelete2; ?></td>
 										</tr>
 										<tr>
+											<td style="text-align: center">3</td>
 											<td style="text-align: center">Brinco</td>
 											<td style="text-align: center"><?php echo $brinco; ?></td>
+											<td style="text-align: center"><?php echo $brinco2; ?></td>
 										</tr>
 										<tr>
-											<td style="text-align: center">Conjunto</td>
-											<td style="text-align: center"><?php echo $conjunto; ?></td>
-										</tr>
-										<tr>
+											<td style="text-align: center">4</td>
 											<td style="text-align: center">Colar</td>
 											<td style="text-align: center"><?php echo $colar; ?></td>
+											<td style="text-align: center"><?php echo $colar2; ?></td>
 										</tr>
 										<tr>
+											<td style="text-align: center">5</td>
+											<td style="text-align: center">Conjunto</td>
+											<td style="text-align: center"><?php echo $conjunto; ?></td>
+											<td style="text-align: center"><?php echo $conjunto2; ?></td>
+										</tr>
+										<tr>
+											<td style="text-align: center">6</td>
 											<td style="text-align: center">Pulceira</td>
 											<td style="text-align: center"><?php echo $pulceira; ?></td>
+											<td style="text-align: center"><?php echo $pulceira2; ?></td>
 										</tr>
 										<tr>
+											<td style="text-align: center">7</td>
 											<td style="text-align: center">Tornozeleira</td>
 											<td style="text-align: center"><?php echo $tornozeleira; ?></td>
+											<td style="text-align: center"><?php echo $tornozeleira2; ?></td>
 										</tr>
 									</tbody>
 									<tfoot>
 										<tr>
-											<td style="text-align: center"><b> Total </b></td>
+											<td style="text-align: center" colspan="2"><b> Total </b></td>
 											<td style="text-align: center"><?php echo $tornozeleira+$brinco+$anel+$colar+$pulceira+$bracelete+$conjunto+$tornozeleira; ?></td>
+											<td style="text-align: center"><?php echo $tornozeleira2+$brinco2+$anel2+$colar2+$pulceira2+$bracelete2+$conjunto2+$tornozeleira2; ?></td>
 										</tr>
 									</tfoot>
 								</table>

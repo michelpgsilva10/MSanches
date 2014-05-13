@@ -38,13 +38,13 @@ function SomenteNumero(e){
 										<div class="col-sm-7">
 											<select class="form-control" name="tipo" id="tipo" required  disabled>
 												<option value=""></option>
-												<option value="Br" <?php if(strcmp ( $produto->tipo_produto,"Br")==0){echo "selected"; } ?>>Brinco</option>
-												<option value="An" <?php if(strcmp ( $produto->tipo_produto,"An")==0){echo "selected"; } ?>>Anel</option>
-												<option value="Cl" <?php if(strcmp ( $produto->tipo_produto,"Cl")==0){echo "selected"; } ?>>Colar</option>
-												<option value="Pl" <?php if(strcmp ( $produto->tipo_produto,"Pl")==0){echo "selected"; } ?>>Pulceira</option>
-												<option value="Bl" <?php if(strcmp ( $produto->tipo_produto,"Bl")==0){echo "selected"; } ?>>Bracelete</option>
-												<option value="Tr" <?php if(strcmp ( $produto->tipo_produto,"Tr")==0){echo "selected"; } ?>>Tornozeleira</option>
-												<option value="Cj" <?php if(strcmp ( $produto->tipo_produto,"Cj")==0){echo "selected"; } ?>>Conjunto</option>
+												<option value="3" <?php if($produto->tipo_produto==3){echo "selected"; } ?>>Brinco</option>
+												<option value="1" <?php if($produto->tipo_produto==1){echo "selected"; } ?>>Anel</option>
+												<option value="4" <?php if($produto->tipo_produto==4){echo "selected"; } ?>>Colar</option>
+												<option value="6" <?php if($produto->tipo_produto==6){echo "selected"; } ?>>Pulceira</option>
+												<option value="2" <?php if($produto->tipo_produto==2){echo "selected"; } ?>>Bracelete</option>
+												<option value="7" <?php if($produto->tipo_produto==7){echo "selected"; } ?>>Tornozeleira</option>
+												<option value="5" <?php if($produto->tipo_produto==5){echo "selected"; } ?>>Conjunto</option>
 											</select>
 										</div> 
 									</div>

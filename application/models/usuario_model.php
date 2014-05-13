@@ -34,7 +34,18 @@ Class Usuario_model  extends CI_Model {
 		if ($query -> num_rows() > 0) {
 			return $query ->row(); 
 		} else {
-			return FALSE;
+			return 0;
+		}
+	}
+	function getQantidadeItem($tipo) {
+		$this -> db -> select('SUM(estoque_produto) AS total');
+		$this -> db -> from('produto');
+		$this -> db -> where('tipo_produto', $tipo);
+		$query = $this -> db -> get();
+		if ($query -> num_rows() > 0) {
+			return $query ->row(); 
+		} else {
+			return 0;
 		}
 	}
 	function deletarProduto($id){

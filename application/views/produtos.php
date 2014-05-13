@@ -8,6 +8,7 @@
 				<div class="panel panel-default">
 					<br />
 					<div class="container-fluid" align="center">
+						<?php if($todos!=FALSE){ ?>
 						<div class="row" align="center">
 							<div class=".col-xs-3 .col-md-4" align="center">
 								<div class="col-sm-4" align="center" style="margin-left: 34%;">
@@ -26,7 +27,6 @@
 						</div>
 						<br />
 						<?php 
-						 if($todos!=FALSE){
 						 	for($i=0;$i<count($todos);$i++){
 						?>
 						<div class="col-sm-6 col-md-4">
@@ -45,6 +45,7 @@
 							echo "<p> Não Possui Produtos Cadastrados </p>";
 						} ?>
 					</div>
+					<?php if($todos!=FALSE){ ?>
 					<div class="row" align="center">
 							<div class=".col-xs-3 .col-md-4" align="center">
 								<ul class="pager">
@@ -57,6 +58,7 @@
 								</ul>
 							</div>
 						</div>
+					<?php } ?>
 				</div>
 			</div>
 			<div class="col-md-3 col-md-pull-9">
