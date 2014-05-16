@@ -8,6 +8,7 @@
 <script src="<?php echo $this->config->item('base_url') ?>css/js/transition.js"></script>
 <script src="<?php echo $this->config->item('base_url') ?>css/js/modal.js"></script>
 <script src="<?php echo $this->config->item('base_url') ?>css/msanches.js"></script>
+<script src="<?php echo $this->config->item('base_url') ?>css/js/jquery.maskedinput.js"></script>
 <head>
 <title>MSanches</title>
 

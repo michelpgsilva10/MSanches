@@ -13,7 +13,7 @@
 			<div class="form-group">
 				<label for="inputEmail3" class="col-sm-2 control-label">Login</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" id="login" name="login" placeholder="Login" maxlength="100" required>
+					<input type="text" class="form-control" id="login" name="login" placeholder="Login" maxlength="100" required autofocus>
 				</div>
 			</div>
 			<div class="form-group">

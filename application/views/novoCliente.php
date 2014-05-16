@@ -28,16 +28,16 @@
 								</div>
 								<div class="form-input-position">
 									<div class="form-spacing-input">
-										<input type="text" class="form-control" name="nome_cliente" value="<?php echo set_value('nome_cliente'); ?>" style="width: 475px;"/>
+										<input type="text" class="form-control" name="nome_cliente" value="<?php echo set_value('nome_cliente'); ?>" style="width: 475px;" autofocus/>
 									</div>
 									<div class="form-spacing-input">
-										<input type="text" class="form-control" name="cpf_cliente" value="<?php echo set_value('cpf_cliente'); ?>" style="width: 200px;"/>
+										<input id="cpf_cliente" type="text" class="form-control" name="cpf_cliente" value="<?php echo set_value('cpf_cliente'); ?>" style="width: 200px;" />
 									</div>
 									<div class="form-spacing-input">
 										<input type="text" class="form-control" name="ref_comercial_cliente" value="<?php echo set_value('ref_comercial_cliente'); ?>" style="width: 475px;"/>
 									</div>
 									<div class="form-spacing-input">
-										<input type="text" class="form-control" name="tel_cliente" value="<?php echo set_value('tel_cliente'); ?>" style="width: 200px;"/>
+										<input id="tel_cliente" type="text" class="form-control" name="tel_cliente" value="<?php echo set_value('tel_cliente'); ?>" style="width: 200px;"/>
 									</div>
 								</div>
 							</div>
