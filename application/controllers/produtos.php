@@ -214,8 +214,13 @@ class Produtos extends MY_Controller {
 			if ($this -> input -> post('codigo', TRUE) != "") {
 				$cod = $this -> input -> post('codigo', TRUE);
 				$produto = $this -> usuario_model -> getProduto(0, trim($cod));
-				$data = array('produto' => $produto);
-				$this -> my_load_view('resultBusca.php', $data);
+				if($produto!=FALSE){
+					$data = array('produto' => $produto);
+					$this -> my_load_view('resultBusca.php', $data);
+				}else{
+					$data = array('mensagem' => "Produto não encontrado");
+					$this -> my_load_view('buscaProduto.php', $data);
+				}
 			} else {
 				$this -> my_load_view('buscaProduto', NULL);
 			}

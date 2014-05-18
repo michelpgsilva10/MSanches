@@ -14,12 +14,20 @@ function Enter(evento) {
 		<div class="row">
 			<div class="col-md-9 col-md-push-3">
 				<div  class="panel panel-default">
+					<?php if (isset($mensagem))
+					{
+								?>
+								<div class="alert alert-danger alert-dismissable">
+									<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+									<?php	echo $mensagem; ?>
+								</div>
+					<?php } ?>
 					<div class="container-fluid" align="center">
 						<div class="row">
 							<div class="col-md-6 col-md-offset-3" align="center" >
 								<form  name="formB" id="formB" class="form-horizontal" role="form"  method="post" action="<?php echo site_url("produtos/busca")?>">
 									<div class="col-xs-5" style="margin-top: 50px; margin-left: 35%" align="center">
-										<input type="text" class="form-control" name="codigo" id="codigo" placeholder="Exemplo: BR00000000" required onkeypress=" Enter(event) ">
+										<input type="text" class="form-control" name="codigo" id="codigo" placeholder="199999999" required onkeypress=" Enter(event) ">
 										<span class="help-block">Digite o Código do Produto</span>
 										<br />
 										<button type="submit" class="btn btn-primary">
