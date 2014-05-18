@@ -105,14 +105,15 @@
 			</div>
 			<div class="col-md-3 col-md-pull-9">
 				<ul class="nav nav-pills nav-stacked">
+					<li>
+						<a href="<?php echo site_url('cliente') ?>">Buscar Cliente</a>
+					</li>
 					<li class="active">
 						<a href="#">Novo Cliente</a>
 					</li>
+					
 					<li>
-						<a href="#">Buscar Cliente</a>
-					</li>
-					<li >
-						<a href="<?php echo site_url("home")?>">Voltar</a>
+						<a href="<?php echo site_url('home')?>">Voltar</a>
 					</li>
 				</ul>
 

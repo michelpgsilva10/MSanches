@@ -190,6 +190,22 @@ Class Usuario_model  extends CI_Model {
 			return FALSE;
 		}
 	}
+	function getCliente($inicio) {
+		$this -> db -> select('*');
+		$this -> db -> from('cliente');
+		$this -> db -> join('endereco', 'cliente.endereco_fk = endereco.id_endereco');
+		$this -> db -> where('del_cliente', 0);
+		
+		//$this -> db -> limit($inicio, 15);
+		
+		$query = $this -> db -> get();
+		
+		if ($query -> num_rows() > 0) {
+			return $query -> result_array();
+		} else {
+			return false;
+		}
+	}
 	
 }
 ?>
