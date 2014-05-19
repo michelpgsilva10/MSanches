@@ -56,10 +56,11 @@ Class Usuario_model  extends CI_Model {
 	}
 	
 	
-	function setProduto($tipo,$valor,$quantidade,$nome,$code) {
+	function setProduto($tipo,$valor,$quantidade,$model,$nome,$code) {
 		$data = array(
 		'tipo_produto' => $tipo,
 		'valor_produto' =>$valor,
+		'modelo_produto'=>$model,
 		'estoque_produto' => $quantidade,
 		'foto_produto' => $nome,
 		'cod_barra_produto' => $code
@@ -67,11 +68,12 @@ Class Usuario_model  extends CI_Model {
 		$this->db->insert('produto', $data); 
 	}
 	
-	function updateProduto($id,$tipo,$valor,$quantidade,$nome,$code) {
+	function updateProduto($id,$tipo,$valor,$quantidade,$model,$nome,$code) {
 		$data = array(
 		'tipo_produto' => $tipo,
 		'valor_produto' =>$valor,
 		'estoque_produto' => $quantidade,
+		'modelo_produto'=>$model,
 		'foto_produto' => $nome,
 		'cod_barra_produto' => $code
 		);

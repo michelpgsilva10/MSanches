@@ -46,48 +46,47 @@ class Produtos extends MY_Controller {
 					$data = array('produto' => $produto);
 					$this -> my_load_view('alterarProduto.php', $data);
 				} else {
-					$code1 = str_split($produto -> cod_barra_produto);
-					$code1[0] = $tipo;
-					$modelo = "";
-					for ($i = count($code1) - 1; ($code1[$i] != 0) && ($i != 0); $i--) {
-						if ($i == count($code1)) {
-							$modelo = $code1[$i];
-						} else {
-							$modelo = $code1[$i] . $modelo;
+					if ($tipo != $produto -> tipo_produto) {
+						$model = $this -> usuario_model -> getQantidade($tipo) -> id + 1;
+						if ($model < 10) {
+							$model = "000" . $model;
+						} else if ($model < 100) {
+							$model = "00" . $model;
+						} else if ($id < 1000) {
+							$model = "0" . $model;
+						} else if ($model > 10000) {
+							$data = array('foto' => TRUE, '$mensagem' => "Estouro de Tipo - Fale com o Tecnico");
+							$this -> my_load_view('alterarProduto', $data);
+						}
+					} else {
+						$model = $produto -> modelo_produto;
+						if ($model < 10) {
+							$model = "000" . $model;
+						} else if ($model < 100) {
+							$model = "00" . $model;
+						} else if ($id < 1000) {
+							$model = "0" . $model;
+						} else if ($model > 10000) {
+							$data = array('foto' => TRUE, '$mensagem' => "Estouro de Tipo - Fale com o Tecnico");
+							$this -> my_load_view('alterarProduto', $data);
 						}
 					}
 					$valor = $this -> input -> post('valor', TRUE);
-					$code = "";
-					if ($tipo != $produto -> tipo_produto) {
-						$aux = 	$this -> usuario_model -> getQantidade($tipo) -> id + 1;
-						if ($aux < 10) {
-							$aux = "0000000" . $aux;
-						} else if ($aux < 100) {
-							$aux = "000000" . $aux;
-						} else if ($aux < 1000) {
-							$aux = "00000" . $aux;
-						} else if ($aux < 10000) {
-							$aux = "0000" . $aux;
-						} else if ($aux < 100000) {
-							$aux = "000" . $aux;
-						} else if ($id < 1000000) {
-							$aux = "00" . $aux;
-						} else if ($aux < 10000000) {
-							$aux = "0" . $aux;
-						} else if ($aux < 100000000) {
-							$data = array('foto' => TRUE, '$mensagem' => "Estouro de Tipo - Fale com o Tecnico");
-							$this -> my_load_view('novoProduto', $data);
-						}
-						$code = $tipo . $aux;
-					} else {
-						for ($i = 0; $i < count($code1); $i++) {
-							$code = $code . $code1[$i];
-						}
+					if ($valor < 10) {
+						$valor = "000" . $valor;
+					} else if ($valor < 100) {
+						$valor = "00" . $valor;
+					} else if ($valor < 1000) {
+						$valor = "0" . $valor;
+					} else if ($valor > 10000) {
+						$data = array('foto' => TRUE, '$mensagem' => "Valor Superior que 10.000");
+						$this -> my_load_view('novoProduto', $data);
 					}
+					$code = $tipo . $model . $valor;
 					$nome = $produto -> foto_produto;
 					$quantidade = $this -> input -> post('quant', TRUE);
-					$this -> usuario_model -> updateProduto($id, $tipo, $valor, $quantidade, $nome, $code);
-					redirect('produtos/perEtiqueta/' . $code . '/' . $modelo . '/' . $valor);
+					$this -> usuario_model -> updateProduto($id, $tipo, $valor, $quantidade, $model, $nome, $code);
+					redirect('produtos/perEtiqueta/' . $code);
 				}
 			} else {
 				$produto = $this -> usuario_model -> getProduto(trim($id), 0);
@@ -114,48 +113,48 @@ class Produtos extends MY_Controller {
 					$data = array('produto' => $produto, 'foto' => TRUE);
 					$this -> my_load_view('alterarProduto.php', $data);
 				} else {
-					$code1 = str_split($produto -> cod_barra_produto);
-					$code1[0] = $tipo;
-					$modelo = "";
-					for ($i = count($code1) - 1; ($code1[$i] != 0) && $i != 0; $i--) {
-						if ($i == count($code1)) {
-							$modelo = $code1[$i];
-						} else {
-							$modelo = $code1[$i] . $modelo;
+					if ($tipo != $produto -> tipo_produto) {
+						$model = $this -> usuario_model -> getQantidade($tipo) -> id + 1;
+						if ($model < 10) {
+							$model = "000" . $model;
+						} else if ($model < 100) {
+							$model = "00" . $model;
+						} else if ($id < 1000) {
+							$model = "0" . $model;
+						} else if ($model > 10000) {
+							$data = array('foto' => TRUE, '$mensagem' => "Estouro de Tipo - Fale com o Tecnico");
+							$this -> my_load_view('alterarProduto', $data);
+						}
+					} else {
+						$model = $produto -> modelo_produto;
+						if ($model < 10) {
+							$model = "000" . $model;
+						} else if ($model < 100) {
+							$model = "00" . $model;
+						} else if ($id < 1000) {
+							$model = "0" . $model;
+						} else if ($model > 10000) {
+							$data = array('foto' => TRUE, '$mensagem' => "Estouro de Tipo - Fale com o Tecnico");
+							$this -> my_load_view('alterarProduto', $data);
 						}
 					}
 					$valor = $this -> input -> post('valor', TRUE);
-					if ($tipo != $produto -> tipo_produto) {
-						$aux = 	$this -> usuario_model -> getQantidade($tipo) -> id + 1;
-						if ($aux < 10) {
-							$aux = "0000000" . $aux;
-						} else if ($aux < 100) {
-							$aux = "000000" . $aux;
-						} else if ($aux < 1000) {
-							$aux = "00000" . $aux;
-						} else if ($aux < 10000) {
-							$aux = "0000" . $aux;
-						} else if ($aux < 100000) {
-							$aux = "000" . $aux;
-						} else if ($id < 1000000) {
-							$aux = "00" . $aux;
-						} else if ($aux < 10000000) {
-							$aux = "0" . $aux;
-						} else if ($aux < 100000000) {
-							$data = array('foto' => TRUE, '$mensagem' => "Estouro de Tipo - Fale com o Tecnico");
-							$this -> my_load_view('novoProduto', $data);
-						}
-						$code = $tipo . $aux;
-					} else {
-						for ($i = 0; $i < count($code1); $i++) {
-							$code = $code . $code1[$i];
-						}
+					if ($valor < 10) {
+						$valor = "000" . $valor;
+					} else if ($valor < 100) {
+						$valor = "00" . $valor;
+					} else if ($valor < 1000) {
+						$valor = "0" . $valor;
+					} else if ($valor > 10000) {
+						$data = array('foto' => TRUE, '$mensagem' => "Valor Superior que 10.000");
+						$this -> my_load_view('novoProduto', $data);
 					}
+					$code = $tipo . $model . $valor;
 					$nome = $produto -> foto_produto;
 					$quantidade = $this -> input -> post('quant', TRUE);
-					rename("D:\Dropbox\Dropbox\Projetos Trabalho\MSanches\css\img\img_produto\defu.jpg", "D:/Dropbox/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto/" . $nome);
-					$this -> usuario_model -> updateProduto($id, $tipo, $valor, $quantidade, $nome, $code);
-					redirect('produtos/perEtiqueta/' . $code . '/' . $modelo . '/' . $valor);
+					rename("D:/Dropbox\Dropbox\Projetos Trabalho\MSanches\css\img\img_produto\defu.jpg", "D:/Dropbox/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto/" . $nome);
+					$this -> usuario_model -> updateProduto($id, $tipo, $valor, $quantidade, $model, $nome, $code);
+					redirect('produtos/perEtiqueta/' . $code);
 				}
 			} else {
 				$produto = $this -> usuario_model -> getProduto(trim($id), 0);
@@ -257,25 +256,27 @@ class Produtos extends MY_Controller {
 			$config['max_size'] = '2048';
 
 			$this -> load -> library('upload', $config);
-			unlink("D:\Dropbox\Dropbox\Projetos Trabalho\MSanches\css\img\img_produto\defu.jpg");
+			if (file_exists("D:\Dropbox\Dropbox\Projetos Trabalho\MSanches\css\img\img_produto\defu.jpg")) {
+				unlink("D:\Dropbox\Dropbox\Projetos Trabalho\MSanches\css\img\img_produto\defu.jpg");
+			}
 			if (!$this -> upload -> do_upload("fileF")) {
 				$data = array('mensagem' => $this -> upload -> display_errors());
 
 				$this -> my_load_view('selFoto', $data);
 			} else {
-				redirect('Produtos/alterar2/' . $tipo = $this -> input -> post('id', TRUE));
+				redirect('produtos/alterar2/' . $tipo = $this -> input -> post('id', TRUE));
 			}
 		} else {
 			redirect('login');
 		}
 	}
 
-	public function perEtiqueta($code, $modelo, $valor) {
+	public function perEtiqueta($code) {
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
-			$data = array('code' => $code, 'modelo' => $modelo, 'valor' => $valor);
+			$data = array('code' => $code);
 			$this -> my_load_view('etiqueta', $data);
 		} else {
 			redirect('login');
@@ -334,28 +335,30 @@ class Produtos extends MY_Controller {
 					$valor = $this -> input -> post('valor', TRUE);
 					$quantidade = $this -> input -> post('quant', TRUE);
 					if ($id < 10) {
-						$id = "0000000" . $id;
-					} else if ($id < 100) {
-						$id = "000000" . $id;
-					} else if ($id < 1000) {
-						$id = "00000" . $id;
-					} else if ($id < 10000) {
-						$id = "0000" . $id;
-					} else if ($id < 100000) {
 						$id = "000" . $id;
-					} else if ($id < 1000000) {
+					} else if ($id < 100) {
 						$id = "00" . $id;
-					} else if ($id < 10000000) {
+					} else if ($id < 1000) {
 						$id = "0" . $id;
-					} else if ($id < 100000000) {
+					} else if ($id > 10000) {
 						$data = array('foto' => TRUE, '$mensagem' => "Estouro de Tipo - Fale com o Tecnico");
 						$this -> my_load_view('novoProduto', $data);
 					}
-					$code = $tipo . $id;
-					$id = $this -> usuario_model -> getQantidade($tipo) -> id + 1;
+					if ($valor < 10) {
+						$valor = "000" . $valor;
+					} else if ($valor < 100) {
+						$valor = "00" . $valor;
+					} else if ($valor < 1000) {
+						$valor = "0" . $valor;
+					} else if ($valor > 10000) {
+						$data = array('foto' => TRUE, '$mensagem' => "Valor Superior que 10.000");
+						$this -> my_load_view('novoProduto', $data);
+					}
+
+					$code = $tipo . $id . $valor;
 					rename("D:\Dropbox\Dropbox\Projetos Trabalho\MSanches\css\img\img_produto\defu.jpg", "D:/Dropbox/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto/" . $nome);
-					$this -> usuario_model -> setProduto($tipo, $valor, $quantidade, $nome, $code);
-					redirect('produtos/perEtiqueta/' . $code . '/' . $id . '/' . $valor);
+					$this -> usuario_model -> setProduto($tipo, $valor, $quantidade, $id, $nome, $code);
+					redirect('produtos/perEtiqueta/' . $code);
 				}
 			} else {
 
@@ -378,13 +381,14 @@ class Produtos extends MY_Controller {
 			$config['max_size'] = '2048';
 
 			$this -> load -> library('upload', $config);
-			unlink("D:\Dropbox\Dropbox\Projetos Trabalho\MSanches\css\img\img_produto\defu.jpg");
-
+			if (file_exists("D:\Dropbox\Dropbox\Projetos Trabalho\MSanches\css\img\img_produto\defu.jpg")) {
+				unlink("D:\Dropbox\Dropbox\Projetos Trabalho\MSanches\css\img\img_produto\defu.jpg");
+			}
 			if (!$this -> upload -> do_upload("fileF")) {
 				$data = array('mensagem' => $this -> upload -> display_errors());
 				$this -> my_load_view('selFoto', $data);
 			} else {
-				redirect('Produtos/novo2');
+				redirect('produtos/novo2');
 			}
 		} else {
 			redirect('login');

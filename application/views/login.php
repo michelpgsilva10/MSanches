@@ -9,7 +9,7 @@
 	<div class="col-md-6 col-md-offset-3">
 	</div>	
 	<div class="col-md-6 col-md-offset-3">
-		<form method="post" class="form-horizontal" role="form" action="<?php echo site_url("Login")?>">
+		<form method="post" class="form-horizontal" role="form" action="<?php echo site_url("login")?>">
 			<div class="form-group">
 				<label for="inputEmail3" class="col-sm-2 control-label">Login</label>
 				<div class="col-sm-10">

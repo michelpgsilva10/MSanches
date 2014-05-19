@@ -45,19 +45,20 @@ location.href="<?php echo site_url("produtos")?>
 												<input type="text" maxlength="3" value="1" class="form-control" id="quantidade" name="quantidade">
 											</div>
 										</div>
+										<?php 
+										 $aux = str_split($code);
+										 if($aux[0]<1){
+										?>
+										<div class="form-group">
+											<label for="inputEmail3" class="col-sm-4 control-label">Inicio</label>
+											<div class="col-sm-7">
+												<input type="text" maxlength="3" value="1" class="form-control" id="inicioE" name="inicioE">
+											</div>
+										</div>
+										<?php } ?>
 										<div class="form-group">
 											<div>
 												<input type="text" style="display: none;" value="<?php echo $code ?>" class="form-control" id="code" name="code"  >
-											</div>
-										</div>
-										<div class="form-group">
-											<div>
-												<input type="text" style="display: none;"  value="<?php echo $modelo ?>" class="form-control" id="modelo" name="modelo" >
-											</div>
-										</div>
-										<div class="form-group">
-											<div>
-												<input type="text" style="display: none;" value="<?php echo $valor ?>" class="form-control" id="valor" name="valor" >
 											</div>
 										</div>
 										<button type="button" style="margin-top: 5%;"  class="btn btn-primary" onclick="Sim();">

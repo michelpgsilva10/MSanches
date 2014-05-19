@@ -40,9 +40,9 @@
 								<form  class="form-horizontal" method="post" role="form">
 									<div class="row" style="margin-top: 10%">
 										<div class="form-group">
-											<label for="inputEmail3" class="col-sm-5 control-label">Posição inicial</label>
+											<label for="inputEmail3" class="col-sm-5 control-label">Quantidade</label>
 											<div class="col-sm-7">
-												<input type="text" maxlength="3" class="form-control" id="inicioE" name="inicioE" placeholder="de 1 até 140">
+												<input type="text" maxlength="3" class="form-control" id="quantidade" name="quantidade" placeholder="de 1 até 140">
 											</div>
 										</div>
 										<div class="form-group">
