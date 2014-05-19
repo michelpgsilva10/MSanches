@@ -11,7 +11,7 @@
 									<thead>
 										<th></th>
 										<th style="text-align: center">Tipo</th>
-										<th style="text-align: center">Quantidade</th>
+										<th style="text-align: center">Quntidade de Modelos</th>
 										<th style="text-align: center">Quantidade em Estoque</th>
 									</thead>
 									<tbody>

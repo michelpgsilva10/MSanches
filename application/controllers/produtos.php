@@ -48,57 +48,46 @@ class Produtos extends MY_Controller {
 				} else {
 					$code1 = str_split($produto -> cod_barra_produto);
 					$code1[0] = $tipo;
-					if ($tipo != $produto -> tipo_produto) {
-						$aux2 = $this -> usuario_model -> getQantidade($tipo);
-						$novoqt = $aux2 -> id + 1;
-						if ($novoqt < 10) {
-							$code1[4] = $novoqt;
-						} else if ($novoqt < 100) {
-							$qt = str_split($novoqt);
-							$code1[4] = $qt[0];
-							$code1[3] = $qt[1];
-						} else if ($novoqt < 1000) {
-							$qt = str_split($novoqt);
-							$code1[4] = $qt[0];
-							$code1[3] = $qt[1];
-							$code1[2] = $qt[2];
+					$modelo = "";
+					for ($i = count($code1) - 1; ($code1[$i] != 0) && ($i != 0); $i--) {
+						if ($i == count($code1)) {
+							$modelo = $code1[$i];
 						} else {
-							$qt = str_split($novoqt);
-							$code1[4] = $qt[0];
-							$code1[3] = $qt[1];
-							$code1[2] = $qt[2];
-							$code1[1] = $qt[3];
+							$modelo = $code1[$i] . $modelo;
 						}
 					}
 					$valor = $this -> input -> post('valor', TRUE);
-					if ($valor != $produto -> valor_produto) {
-						if ($valor < 10) {
-							$code1[count($code1) - 1] = $novoqt;
-						} else if ($valor < 100) {
-							$qt = str_split($valor);
-							$code1[count($code1) - 1] = $qt[0];
-							$code1[count($code1) - 2] = $qt[1];
-						} else if ($valor < 1000) {
-							$qt = str_split($valor);
-							$code1[count($code1) - 1] = $qt[0];
-							$code1[count($code1) - 2] = $qt[1];
-							$code1[count($code1) - 3] = $qt[2];
-						} else {
-							$qt = str_split($valor);
-							$code1[count($code1) - 1] = $qt[0];
-							$code1[count($code1) - 2] = $qt[1];
-							$code1[count($code1) - 3] = $qt[2];
-							$code1[count($code1) - 4] = $qt[3];
-						}
-					}
 					$code = "";
-					for ($i = 0; $i < count($code1); $i++) {
-						$code = $code . $code1[$i];
+					if ($tipo != $produto -> tipo_produto) {
+						$aux = 	$this -> usuario_model -> getQantidade($tipo) -> id + 1;
+						if ($aux < 10) {
+							$aux = "0000000" . $aux;
+						} else if ($aux < 100) {
+							$aux = "000000" . $aux;
+						} else if ($aux < 1000) {
+							$aux = "00000" . $aux;
+						} else if ($aux < 10000) {
+							$aux = "0000" . $aux;
+						} else if ($aux < 100000) {
+							$aux = "000" . $aux;
+						} else if ($id < 1000000) {
+							$aux = "00" . $aux;
+						} else if ($aux < 10000000) {
+							$aux = "0" . $aux;
+						} else if ($aux < 100000000) {
+							$data = array('foto' => TRUE, '$mensagem' => "Estouro de Tipo - Fale com o Tecnico");
+							$this -> my_load_view('novoProduto', $data);
+						}
+						$code = $tipo . $aux;
+					} else {
+						for ($i = 0; $i < count($code1); $i++) {
+							$code = $code . $code1[$i];
+						}
 					}
 					$nome = $produto -> foto_produto;
 					$quantidade = $this -> input -> post('quant', TRUE);
 					$this -> usuario_model -> updateProduto($id, $tipo, $valor, $quantidade, $nome, $code);
-					redirect('produtos/perEtiqueta/' . $code);
+					redirect('produtos/perEtiqueta/' . $code . '/' . $modelo . '/' . $valor);
 				}
 			} else {
 				$produto = $this -> usuario_model -> getProduto(trim($id), 0);
@@ -127,58 +116,46 @@ class Produtos extends MY_Controller {
 				} else {
 					$code1 = str_split($produto -> cod_barra_produto);
 					$code1[0] = $tipo;
-					if ($tipo != $produto -> tipo_produto) {
-						$aux2 = $this -> usuario_model -> getQantidade($tipo);
-						$novoqt = $aux2 -> id + 1;
-						if ($novoqt < 10) {
-							$code1[4] = $novoqt;
-						} else if ($novoqt < 100) {
-							$qt = str_split($novoqt);
-							$code1[4] = $qt[0];
-							$code1[3] = $qt[1];
-						} else if ($novoqt < 1000) {
-							$qt = str_split($novoqt);
-							$code1[4] = $qt[0];
-							$code1[3] = $qt[1];
-							$code1[2] = $qt[2];
+					$modelo = "";
+					for ($i = count($code1) - 1; ($code1[$i] != 0) && $i != 0; $i--) {
+						if ($i == count($code1)) {
+							$modelo = $code1[$i];
 						} else {
-							$qt = str_split($novoqt);
-							$code1[4] = $qt[0];
-							$code1[3] = $qt[1];
-							$code1[2] = $qt[2];
-							$code1[1] = $qt[3];
+							$modelo = $code1[$i] . $modelo;
 						}
 					}
 					$valor = $this -> input -> post('valor', TRUE);
-					if ($valor != $produto -> valor_produto) {
-						if ($valor < 10) {
-							$code1[count($code1) - 1] = $novoqt;
-						} else if ($valor < 100) {
-							$qt = str_split($valor);
-							$code1[count($code1) - 1] = $qt[0];
-							$code1[count($code1) - 2] = $qt[1];
-						} else if ($valor < 1000) {
-							$qt = str_split($valor);
-							$code1[count($code1) - 1] = $qt[0];
-							$code1[count($code1) - 2] = $qt[1];
-							$code1[count($code1) - 3] = $qt[2];
-						} else {
-							$qt = str_split($valor);
-							$code1[count($code1) - 1] = $qt[0];
-							$code1[count($code1) - 2] = $qt[1];
-							$code1[count($code1) - 3] = $qt[2];
-							$code1[count($code1) - 4] = $qt[3];
+					if ($tipo != $produto -> tipo_produto) {
+						$aux = 	$this -> usuario_model -> getQantidade($tipo) -> id + 1;
+						if ($aux < 10) {
+							$aux = "0000000" . $aux;
+						} else if ($aux < 100) {
+							$aux = "000000" . $aux;
+						} else if ($aux < 1000) {
+							$aux = "00000" . $aux;
+						} else if ($aux < 10000) {
+							$aux = "0000" . $aux;
+						} else if ($aux < 100000) {
+							$aux = "000" . $aux;
+						} else if ($id < 1000000) {
+							$aux = "00" . $aux;
+						} else if ($aux < 10000000) {
+							$aux = "0" . $aux;
+						} else if ($aux < 100000000) {
+							$data = array('foto' => TRUE, '$mensagem' => "Estouro de Tipo - Fale com o Tecnico");
+							$this -> my_load_view('novoProduto', $data);
 						}
-					}
-					$code = "";
-					for ($i = 0; $i < count($code1); $i++) {
-						$code = $code . $code1[$i];
+						$code = $tipo . $aux;
+					} else {
+						for ($i = 0; $i < count($code1); $i++) {
+							$code = $code . $code1[$i];
+						}
 					}
 					$nome = $produto -> foto_produto;
 					$quantidade = $this -> input -> post('quant', TRUE);
 					rename("D:\Dropbox\Dropbox\Projetos Trabalho\MSanches\css\img\img_produto\defu.jpg", "D:/Dropbox/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto/" . $nome);
 					$this -> usuario_model -> updateProduto($id, $tipo, $valor, $quantidade, $nome, $code);
-					redirect('produtos/perEtiqueta/' . $code);
+					redirect('produtos/perEtiqueta/' . $code . '/' . $modelo . '/' . $valor);
 				}
 			} else {
 				$produto = $this -> usuario_model -> getProduto(trim($id), 0);
@@ -214,10 +191,10 @@ class Produtos extends MY_Controller {
 			if ($this -> input -> post('codigo', TRUE) != "") {
 				$cod = $this -> input -> post('codigo', TRUE);
 				$produto = $this -> usuario_model -> getProduto(0, trim($cod));
-				if($produto!=FALSE){
+				if ($produto != FALSE) {
 					$data = array('produto' => $produto);
 					$this -> my_load_view('resultBusca.php', $data);
-				}else{
+				} else {
 					$data = array('mensagem' => "Produto não encontrado");
 					$this -> my_load_view('buscaProduto.php', $data);
 				}
@@ -262,21 +239,7 @@ class Produtos extends MY_Controller {
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
-			$data = array('brinco' => $this -> usuario_model -> getQantidade(3) -> id,
-						  'anel' => $this -> usuario_model -> getQantidade(1) -> id,
-						  'colar' => $this -> usuario_model -> getQantidade(4) -> id,
-						  'pulceira' => $this -> usuario_model -> getQantidade(6) -> id,
-						  'bracelete' => $this -> usuario_model -> getQantidade(2) -> id,
-						  'conjunto' => $this -> usuario_model -> getQantidade(5) -> id,
-						  'tornozeleira' => $this -> usuario_model -> getQantidade(7) -> id,
-						  'brinco2' => $this -> usuario_model -> getQantidadeItem(3) -> total,
-						  'anel2' => $this -> usuario_model -> getQantidadeItem(1) -> total,
-						  'colar2' => $this -> usuario_model -> getQantidadeItem(4) -> total,
-						  'pulceira2' => $this -> usuario_model -> getQantidadeItem(6) -> total,
-						  'bracelete2' => $this -> usuario_model -> getQantidadeItem(2) -> total,
-						  'conjunto2' => $this -> usuario_model -> getQantidadeItem(5) -> total,
-						  'tornozeleira2' => $this -> usuario_model -> getQantidadeItem(7) -> total
-						 );
+			$data = array('brinco' => $this -> usuario_model -> getQantidade(3) -> id, 'anel' => $this -> usuario_model -> getQantidade(1) -> id, 'colar' => $this -> usuario_model -> getQantidade(4) -> id, 'pulceira' => $this -> usuario_model -> getQantidade(6) -> id, 'bracelete' => $this -> usuario_model -> getQantidade(2) -> id, 'conjunto' => $this -> usuario_model -> getQantidade(5) -> id, 'tornozeleira' => $this -> usuario_model -> getQantidade(7) -> id, 'brinco2' => $this -> usuario_model -> getQantidadeItem(3) -> total, 'anel2' => $this -> usuario_model -> getQantidadeItem(1) -> total, 'colar2' => $this -> usuario_model -> getQantidadeItem(4) -> total, 'pulceira2' => $this -> usuario_model -> getQantidadeItem(6) -> total, 'bracelete2' => $this -> usuario_model -> getQantidadeItem(2) -> total, 'conjunto2' => $this -> usuario_model -> getQantidadeItem(5) -> total, 'tornozeleira2' => $this -> usuario_model -> getQantidadeItem(7) -> total);
 			$this -> my_load_view('estoque', $data);
 		} else {
 			redirect('login');
@@ -307,12 +270,12 @@ class Produtos extends MY_Controller {
 		}
 	}
 
-	public function perEtiqueta($code) {
+	public function perEtiqueta($code, $modelo, $valor) {
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
-			$data = array('code' => $code);
+			$data = array('code' => $code, 'modelo' => $modelo, 'valor' => $valor);
 			$this -> my_load_view('etiqueta', $data);
 		} else {
 			redirect('login');
@@ -367,32 +330,32 @@ class Produtos extends MY_Controller {
 						$id = "0" . $id;
 					}
 					$nome = $tipo . $id . ".jpg";
-					$id = $this -> usuario_model -> getQantidade($tipo);
-					if ($id == FALSE) {
-						$id = 0001;
-					} else {
-						$id = $id -> id + 1;
-						if ($id < 10) {
-							$id = "000" . $id;
-						} else if ($id < 100) {
-							$id = "00" . $id;
-						} else if ($id < 1000) {
-							$id = "0" . $id;
-						}
-					}
+					$id = $this -> usuario_model -> getQantidade($tipo) -> id + 1;
 					$valor = $this -> input -> post('valor', TRUE);
-					if ($valor < 10) {
-						$valor = "000" . $valor;
-					} else if ($valor < 100) {
-						$valor = "00" . $valor;
-					} else if ($valor < 1000) {
-						$valor = "0" . $valor;
-					}
 					$quantidade = $this -> input -> post('quant', TRUE);
-					$code = $tipo . $id . $valor;
+					if ($id < 10) {
+						$id = "0000000" . $id;
+					} else if ($id < 100) {
+						$id = "000000" . $id;
+					} else if ($id < 1000) {
+						$id = "00000" . $id;
+					} else if ($id < 10000) {
+						$id = "0000" . $id;
+					} else if ($id < 100000) {
+						$id = "000" . $id;
+					} else if ($id < 1000000) {
+						$id = "00" . $id;
+					} else if ($id < 10000000) {
+						$id = "0" . $id;
+					} else if ($id < 100000000) {
+						$data = array('foto' => TRUE, '$mensagem' => "Estouro de Tipo - Fale com o Tecnico");
+						$this -> my_load_view('novoProduto', $data);
+					}
+					$code = $tipo . $id;
+					$id = $this -> usuario_model -> getQantidade($tipo) -> id + 1;
 					rename("D:\Dropbox\Dropbox\Projetos Trabalho\MSanches\css\img\img_produto\defu.jpg", "D:/Dropbox/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto/" . $nome);
 					$this -> usuario_model -> setProduto($tipo, $valor, $quantidade, $nome, $code);
-					redirect('produtos/perEtiqueta/' . $code);
+					redirect('produtos/perEtiqueta/' . $code . '/' . $id . '/' . $valor);
 				}
 			} else {
 

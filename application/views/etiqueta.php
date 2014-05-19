@@ -1,18 +1,19 @@
 <script language="JavaScript">
 	var cont=1;
-	function Sim(){
-		if(cont==1){
-		$( "#pergunta" ).fadeOut(10);
-		$( "#seSim" ).fadeIn( "slow" );
-		cont=0;
-		}else{
-			$( "#seSim" ).fadeOut( "slow" );
-			$( "#pergunta" ).fadeIn( "slow" );
-			cont=1;
-		}
-	}
-	function nao(){
-		location.href="<?php echo site_url("produtos")?>";
+function Sim(){
+if(cont==1){
+$( "#pergunta" ).fadeOut(10);
+$( "#seSim" ).fadeIn( "slow" );
+cont=0;
+}else{
+$( "#seSim" ).fadeOut( "slow" );
+$( "#pergunta" ).fadeIn( "slow" );
+cont=1;
+}
+}
+function nao(){
+location.href="<?php echo site_url("produtos")?>
+	";
 	}
 </script>
 <div class="panel panel-default">
@@ -36,23 +37,33 @@
 										</button>
 									</div>
 								</div>
-								<form >
-									<div id="seSim" style="margin-top: 50px; margin-left: 15%; display: none;" align="center">
+								<form  role="form"  method="post" action="<?php echo site_url("etiqueta")?>" >
+									<div id="seSim" style="margin-top: 50px; margin-left: 15%; display: none;">
 										<div class="form-group">
-											<label for="inputEmail3" class="col-sm-3 control-label">Posição inicial</label>
+											<label for="inputEmail3" class="col-sm-4 control-label">Quantidade</label>
 											<div class="col-sm-7">
-												<input type="text" maxlength="3" required class="form-control" id="inicioE" name="inicioE" placeholder="de 1 até 140">
+												<input type="text" maxlength="3" value="1" class="form-control" id="quantidade" name="quantidade">
 											</div>
 										</div>
 										<div class="form-group">
-											<div class="col-sm-7" style="margin-top: 2%">
-												<input type="text" maxlength="3" value="<?php echo $code ?>" class="form-control" id="code" name="code" disabled>
+											<div>
+												<input type="text" style="display: none;" value="<?php echo $code ?>" class="form-control" id="code" name="code"  >
 											</div>
 										</div>
-										<button type="button" style="margin-top: 5%" class="btn btn-primary" onclick="Sim();">
+										<div class="form-group">
+											<div>
+												<input type="text" style="display: none;"  value="<?php echo $modelo ?>" class="form-control" id="modelo" name="modelo" >
+											</div>
+										</div>
+										<div class="form-group">
+											<div>
+												<input type="text" style="display: none;" value="<?php echo $valor ?>" class="form-control" id="valor" name="valor" >
+											</div>
+										</div>
+										<button type="button" style="margin-top: 5%;"  class="btn btn-primary" onclick="Sim();">
 											Voltar
 										</button>
-										<button type="submit" style="margin-top: 5%" class="btn btn-primary">
+										<button type="submit" style="margin-top: 5%;" class="btn btn-primary" onclick="nao()">
 											Criar
 										</button>
 									</div>
