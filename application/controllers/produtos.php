@@ -7,19 +7,45 @@ class Produtos extends MY_Controller {
 	}
 
 	public function index() {
+		$this->load->library('pagination');
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
-			$todos = $this -> usuario_model -> getProdutos(0);
-			$data = array('todos' => $todos);
+			$todos = $this -> usuario_model -> getProdutos(0,0);
+			$QItens = $this -> usuario_model -> getQantidade(0)->id;
+			$data = array('todos' => $todos,
+						  'pagina'=> 0,
+						  'tipo'=>0,
+						  'QItens'=>$QItens,
+						  'proximo'=>1,
+						  'caminho'=>"produtos/pagina/0",
+						  'anterior'=>-1
+						  );
 			$this -> my_load_view('produtos', $data);
 		} else {
 			redirect('login');
 
 		}
 	}
-
+	public function pagina($inicio=0,$tipo=0) {
+		$datestring = "%m%d";
+		$time = time();
+		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
+		if ($this -> session -> userdata('load') == $load) {
+			$QItens = $this -> usuario_model -> getQantidade($tipo)->id;
+			$todos = $this -> usuario_model -> getProdutos($inicio*12,$tipo);
+			if($inicio>0){
+				$data = array('todos' => $todos,'anterior'=>TRUE,'proximo'=>$inicio+1,'QItens'=>$QItens,'tipo'=>$tipo,'caminho'=>"produtos/pagina/0",'anterior'=>$inicio-1);
+			}else{
+				$data = array('todos' => $todos,'tipo'=>$tipo,'proximo'=>$inicio+1,'QItens'=>$QItens,'caminho'=>"produtos/pagina/0",'anterior'=>$inicio-1);
+			}
+			$this -> my_load_view('produtos', $data);
+		} else {
+			redirect('login');
+		}
+	}
+	
 	public function Deletar($foto, $id) {
 		$datestring = "%m%d";
 		$time = time();

@@ -1,5 +1,9 @@
-<script language="JavaScript">
- 
+<script>
+	function troca(){
+		d = document.getElementById("tipo").value;
+		location.href="<?php echo site_url($caminho)?>"+"/"+d;
+	}
+	
 </script>
 <div class="panel panel-default">
 	<div class="panel-body">
@@ -8,25 +12,25 @@
 				<div class="panel panel-default">
 					<br />
 					<div class="container-fluid" align="center">
-						<?php if($todos!=FALSE){ ?>
 						<div class="row" align="center">
 							<div class=".col-xs-3 .col-md-4" align="center">
 								<div class="col-sm-4" align="center" style="margin-left: 34%;">
-									<select class="form-control" name="tipo" id="tipo" style="text-align: center" align="center">
-										<option value="Todos">Todos</option>
-										<option value="Br">Brinco</option>
-										<option value="An">Anel</option>
-										<option value="Cl">Colar</option>
-										<option value="Pl">Pulceira</option>
-										<option value="Bl">Bracelete</option>
-										<option value="Tr">Tornozeleira</option>
-										<option value="Cj">Conjunto</option>
+									<select class="form-control" name="tipo" id="tipo" style="text-align: center;" onchange="troca();" align="center">
+										<option value="0" <?php if($tipo==0){echo "selected"; } ?>>Todos</option>
+										<option value="3" <?php if($tipo==3){echo "selected"; } ?>>Brinco</option>
+										<option value="1" <?php if($tipo==1){echo "selected"; } ?>>Anel</option>
+										<option value="4" <?php if($tipo==4){echo "selected"; } ?>>Colar</option>
+										<option value="6" <?php if($tipo==6){echo "selected"; } ?>>Pulceira</option>
+										<option value="2" <?php if($tipo==2){echo "selected"; } ?>>Bracelete</option>
+										<option value="7" <?php if($tipo==7){echo "selected"; } ?>>Tornozeleira</option>
+										<option value="5" <?php if($tipo==5){echo "selected"; } ?>>Conjunto</option>
 									</select>
 								</div>
 							</div>
 						</div>
 						<br />
 						<?php 
+						if($todos!=FALSE){
 						 	for($i=0;$i<count($todos);$i++){
 						?>
 						<div class="col-sm-6 col-md-4">
@@ -49,12 +53,17 @@
 					<div class="row" align="center">
 							<div class=".col-xs-3 .col-md-4" align="center">
 								<ul class="pager">
+								<?php if($anterior>=0){ ?>
 									<li>
-										<a onclick="">Anterior</a>
+										<a href="<?php echo site_url("produtos/pagina/".$anterior."/".$tipo)?>">Anterior</a>
 									</li>
-									<li>
-										<a href="#">Proximo</a>
+								<?php } 
+								if($proximo*12<$QItens){
+									?>
+									<li>										
+										<a href="<?php echo site_url("produtos/pagina/".$proximo."/".$tipo)?>">Proximo</a>
 									</li>
+								<?php }?>
 								</ul>
 							</div>
 						</div>
@@ -64,7 +73,7 @@
 			<div class="col-md-3 col-md-pull-9">
 				<ul class="nav nav-pills nav-stacked">
 					<li class="active">
-						<a href="#">Produtos</a>
+						<a href="<?php echo site_url("produtos")?>">Produtos</a>
 					</li>
 
 					<li>

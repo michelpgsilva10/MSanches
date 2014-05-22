@@ -29,7 +29,9 @@ Class Usuario_model  extends CI_Model {
 	function getQantidade($tipo) {
 		$this -> db -> select('COUNT(\'id_produto\') AS id');
 		$this -> db -> from('produto');
-		$this -> db -> where('tipo_produto', $tipo);
+		if($tipo!=0){
+			$this -> db -> where('tipo_produto', $tipo);	
+		}
 		$query = $this -> db -> get();
 		if ($query -> num_rows() > 0) {
 			return $query ->row(); 
@@ -54,7 +56,13 @@ Class Usuario_model  extends CI_Model {
 		$this->db->delete('produto'); 
 		
 	}
-	
+	function logs($id,$tipo,$data){
+		if($tipo==0){
+			$data = array('logs'=>"Logou no sistema", 
+						'id_user_logs'=>$id,				
+						'date_logs'=>$data);
+		}
+	}
 	
 	function setProduto($tipo,$valor,$quantidade,$model,$nome,$code) {
 		$data = array(
@@ -81,10 +89,13 @@ Class Usuario_model  extends CI_Model {
 		$this->db->update('produto', $data); 
 	}
 	
-	function getProdutos($inicio){
+	function getProdutos($inicio,$tipo){
 		$this -> db -> select('*');
 		$this -> db -> from('produto');
-		$this -> db -> where('estoque_produto !=', '0');
+		$this -> db -> where('del_produto !=', '1');
+		if($tipo!=0){
+			$this -> db -> where('tipo_produto', $tipo);
+		}
 		$this -> db -> limit(12,$inicio);
 		$query = $this -> db -> get();
 		if ($query -> num_rows() > 0) {
