@@ -34,7 +34,7 @@ class Cliente extends MY_Controller {
 	public function adicionar() {
 		#Validação para tabela Cliente
 		$this -> form_validation -> set_rules('nome_cliente', 'Nome', 'required');
-		$this -> form_validation -> set_rules('cpf_cliente', 'CPF', 'callback_validaCPF');
+		$this -> form_validation -> set_rules('cpf_cliente', 'CPF', 'callback_validaCPF|callback_cpfExistente');
 		$this -> form_validation -> set_rules('tel_cliente', 'Telefone', 'required');
 		$this -> form_validation -> set_rules('ref_comercial_cliente', 'Ref. Comercial', '');
 
@@ -47,6 +47,8 @@ class Cliente extends MY_Controller {
 		$this -> form_validation -> set_rules('uf_cliente', 'Estado', '');	
 				
 		$this->form_validation->set_message('required', 'O campo %s é obrigatório.');
+		$this->form_validation->set_message('validaCPF', 'O %s digitado não é válido!');
+		$this->form_validation->set_message('cpfExistente', 'O %s digitado já foi cadastrado!');;
 				
 		$this->form_validation->set_error_delimiters('<div class="alert-danger alert-dismissable alert-space">', '</div>');
 		
@@ -78,7 +80,7 @@ class Cliente extends MY_Controller {
 				$this -> db -> insert('cliente', $cliente_insert);
 				
 				$data["cadastro_cliente"] = TRUE;
-				$data["clientes"] = NULL;
+				$data["clientes"] = $this -> usuario_model -> getCliente(0);
 				
 				$this -> my_load_view('clientes', $data);
 			}				
@@ -89,9 +91,10 @@ class Cliente extends MY_Controller {
 	function validaCPF($cpf) {
 		// Verifica se o número digitado contém todos os digitos
 		$cpf = str_pad(preg_replace('[^0-9]', '', $cpf), 11, '0', STR_PAD_LEFT);
+		$cpf = str_replace('.', '', $cpf);
+		$cpf = str_replace('-', '', $cpf);
 		// Verifica se nenhuma das sequências abaixo foi digitada, caso seja, retorna falso
 		if (strlen($cpf) != 11 || $cpf == '00000000000' || $cpf == '11111111111' || $cpf == '22222222222' || $cpf == '33333333333' || $cpf == '44444444444' || $cpf == '55555555555' || $cpf == '66666666666' || $cpf == '77777777777' || $cpf == '88888888888' || $cpf == '99999999999') {
-			$this->form_validation->set_message('validaCPF', 'O campo %s é obrigatório.');
 			return false;
 		} else {// Calcula os números para verificar se o CPF é verdadeiro
 			for ($t = 9; $t < 11; $t++) {
@@ -102,13 +105,21 @@ class Cliente extends MY_Controller {
 				$d = ((10 * $d) % 11) % 10;
 
 				if ($cpf{$c} != $d) {
-					$this->form_validation->set_message('validaCPF', 'O campo %s é inválido.');
 					return false;
 				}
 			}
 
 			return true;
 		}
+	}
+
+	function cpfExistente($cpf) {
+		$retorno = $this -> usuario_model -> getCpf($cpf);
+		if ($retorno) {
+			return false;
+		}
+		
+		return true;
 	}
 
 }

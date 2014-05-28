@@ -155,6 +155,21 @@ Class Usuario_model  extends CI_Model {
 			return false;
 		}
 	}
+
+	function getCpf($cpf) {
+		$this -> db -> select('cpf_cliente');
+		$this -> db -> from('cliente');
+		$this -> db -> where('del_cliente', 0);
+		$this -> db -> where('cpf_cliente', $cpf);
+		
+		$query = $this -> db -> get();
+		
+		if ($query -> num_rows() > 0) {
+			return $query -> row();
+		} else {
+			return false;
+		}
+	}
 	
 }
 ?>
