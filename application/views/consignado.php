@@ -19,30 +19,38 @@
 					<?php } ?>						
 						<div class="panel-body">
 							<div class="row">
-					<div class="col-md-9 ">
-						<table class="table table-bordered table-hover"  style="margin-left: 18%">
+					<div class="col-md-10 ">
+						<?php if(isset($vendas)){ ?>
+						<table class="table table-bordered table-hover"  style="margin-left: 11%">
 							<thead>
 								<tr class="info">
-									<th style="text-align: center" >Código do Poroduto</th>
-									<th style="text-align: center">Quantidade</th>
-									<th style="text-align: center" colspan="2">Unidade  |  Total </th>
+									<th style="text-align: center" >Código do Venda</th>
+									<th style="text-align: center">Nome do Cliente</th>
+									<th style="text-align: center">Valor Total </th>
+									<th style="text-align: center">Data de Venda</th>
+									<th style="text-align: center">Data de Devolução</th>
 									<th style="text-align: center"></th>
 								</tr>
 							</thead>
 							<tbody id="tabelaV">
-								<?php if(isset($vendas)){ 
-								 for($i=0;$i<count($vendas);$i++){
+								<?php for($i=0;$i<count($vendas);$i++){
 								 ?>
 								  <tr>
-								  	<td style="text-align: center;"> <?php echo $produtos[$i]->	cod_barra_produto ?> </td>
-								  	<td style="text-align: center;"> <?php echo $produtos[$i]->	estoque_produto ?> </td>
-								  	<td style="text-align: center;"> <?php echo $produtos[$i]->	valor_produto ?> </td>
-								  	<td style="text-align: center;"> <?php echo $produtos[$i]->valor_produto*$produtos[$i]->estoque_produto ?></td>
-								  	<td style="text-align: center;"> <a type="button" class="btn btn-info" href="<?php echo site_url("venda/deletaItem/".$i."/".$total)?>">Deletar</a>
+								  	<td style="text-align: center;"> <?php echo $vendas[$i]->id_venda ?> </td>
+								  	<td style="text-align: center;"> <?php echo $vendas[$i]->cliente_fk?> </td>
+								  	<td style="text-align: center;"> <?php echo $vendas[$i]->valor_venda ?> </td>
+								  	<td style="text-align: center;"> <?php echo $vendas[$i]->data_venda ?></td>
+								  	<td style="text-align: center;"> <?php echo $vendas[$i]->data_devoução_venda ?></td>
+								  	<td style="text-align: center;"> <a type="button" class="btn btn-info" href="<?php echo site_url("venda/retornoCom/".$vendas[$i]->id_venda)?>">Finalizar Fatura</a>
 								  </tr> 
-								<?php } }?>
+								<?php } ?>
 							</tbody>
 						</table>
+						<?php
+						}else{
+						echo "<h5>Não possui nem uma Fatura a ser Finalizada</h5>";
+						}
+						?>
 					</div>
 				</div>
 						</div>
@@ -55,7 +63,7 @@
 						<a href="<?php echo site_url("venda/consignado")?>"> Vendas Consignado </a>
 					</li>
 					<li >
-						<a href="#">Nova Venda</a>
+						<a href="<?php echo site_url("venda/novoCom")?>">Nova Venda</a>
 					</li>
 					<li >
 						<a href="<?php echo site_url("home")?>">Voltar</a>

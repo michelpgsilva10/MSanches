@@ -6,7 +6,10 @@
 		document.forms['formV'].submit();
 		}
 	}
-
+ 	$(function() {
+ 		 $( "#retornoData" ).datepicker();
+		 $( "#retornoData" ).datepicker( "option", "dateFormat", "dd/mm/yy");
+	});
 </script>
 <div class="panel panel-default">
 	<div class="panel-body">
@@ -28,6 +31,12 @@
 								<label for="inputEmail3" class="col-sm-5 control-label">Cliente:</label>
 								<div class="col-sm-7">
 									<input type="text" class="form-control" id="nomeCliente" name="nomeCliente" placeholder="Nome">
+								</div>
+							</div>
+							<div class="form-group" style="margin-right: 15%;">
+								<label for="inputEmail3" class="col-sm-5 control-label">Data de Retorno:</label>
+								<div class="col-sm-7">
+									<input type="text" class="form-control" id="retornoData" name="retornoData" placeholder="Ex: 31/12/9999">
 								</div>
 							</div>
 						</div>
@@ -89,10 +98,10 @@
 					<div class="col-md-6 col-md-offset-3" align="center">
 						<ul class="pager">
 							<li>
-								<a type="button" href="<?php echo site_url("venda/sair")?>">Sair</a>
+								<a type="button" href="<?php echo site_url("venda/sair/1")?>">Sair</a>
 							</li>
 							<li>
-								<a type="button" href="<?php echo site_url("venda/finalizarCompra/".$total)?>">Finalizar</a>
+								<a type="button" href="<?php echo site_url("venda/finalizarCompraC/".$total)?>">Finalizar</a>
 							</li>
 						</ul>
 					</div>
