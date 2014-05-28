@@ -65,6 +65,7 @@
 									} else {
 										echo '<div>';
 										echo '	Nenhum cliente cadastrado!';
+										echo '</div>';
 									}
 								?>
 							</div>
