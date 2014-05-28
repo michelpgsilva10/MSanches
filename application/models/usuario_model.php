@@ -56,12 +56,31 @@ Class Usuario_model  extends CI_Model {
 		$this->db->delete('produto'); 
 		
 	}
-	function logs($id,$tipo,$data){
+	function logs($id,$tipo,$produto=0){
+			
 		if($tipo==0){
 			$data = array('logs'=>"Logou no sistema", 
-						'id_user_logs'=>$id,				
-						'date_logs'=>$data);
+           				  'id_user_logs'=>$id);
+		}else if($tipo==1){
+			$data = array('logs'=>"Criou um novo produto com o codigo: ".$produto, 
+           				  'id_user_logs'=>$id);
+		}else if($tipo==2){
+			$data = array('logs'=>"Adcionou a foto defu", 
+           				  'id_user_logs'=>$id);
+		}else if($tipo==3){
+			$data = array('logs'=>"Alterou o pruduto com o codigo: ".$produto, 
+           				  'id_user_logs'=>$id);
+		}else if($tipo==4){
+			$data = array('logs'=>"Deletou o pruduto com o codigo: ".$produto, 
+           				  'id_user_logs'=>$id);
+		}else if($tipo==5){
+			$data = array('logs'=>"Saiu do sistema", 
+           				  'id_user_logs'=>$id);
+		}else if($tipo==6){
+			$data = array('logs'=>"Imprimiu Etiqueta do produto com o codigo: ".$produto, 
+           				  'id_user_logs'=>$id);
 		}
+		$this->db->insert('logs', $data); 
 	}
 	
 	function setProduto($tipo,$valor,$quantidade,$model,$nome,$code) {
@@ -119,90 +138,7 @@ Class Usuario_model  extends CI_Model {
 			return FALSE;
 		}
 	}	
-	function getBrinco($inicio){
-		$this -> db -> select('*');
-		$this -> db -> from('produto');
-		$this -> db -> where('tipo_produto', 'Br');
-		$this->db->limit($inicio,6);
-		$query = $this -> db -> get();
-		if ($query -> num_rows() > 0) {
-			return $query ->result_array();
-		} else {
-			return FALSE;
-		}
-	}
-	function getAnel($inicio){
-		$this -> db -> select('*');
-		$this -> db -> from('produto');
-		$this -> db -> where('tipo_produto', 'An');
-		$this->db->limit($inicio,6);
-		$query = $this -> db -> get();
-		if ($query -> num_rows() > 0) {
-			return $query ->result_array();
-		} else {
-			return FALSE;
-		}
-	}
-	function getColar($inicio){
-		$this -> db -> select('*');
-		$this -> db -> from('produto');
-		$this -> db -> where('tipo_produto', 'Cl');
-		$this->db->limit($inicio,6);
-		$query = $this -> db -> get();
-		if ($query -> num_rows() > 0) {
-			return $query ->result_array();
-		} else {
-			return FALSE;
-		}
-	}
-	function getPulceira($inicio){
-		$this -> db -> select('*');
-		$this -> db -> from('produto');
-		$this -> db -> where('tipo_produto', 'Pl');
-		$this->db->limit($inicio,6);
-		$query = $this -> db -> get();
-		if ($query -> num_rows() > 0) {
-			return $query ->result_array();
-		} else {
-			return FALSE;
-		}
-	}
-	function getBracelete($inicio){
-		$this -> db -> select('*');
-		$this -> db -> from('produto');
-		$this -> db -> where('tipo_produto', 'Bl');
-		$this->db->limit($inicio,6);
-		$query = $this -> db -> get();
-		if ($query -> num_rows() > 0) {
-			return $query ->result_array();
-		} else {
-			return FALSE;
-		}
-	}
-	function getConjunto($inicio){
-		$this -> db -> select('*');
-		$this -> db -> from('produto');
-		$this -> db -> where('tipo_produto', 'Cj');
-		$this->db->limit($inicio,6);
-		$query = $this -> db -> get();
-		if ($query -> num_rows() > 0) {
-			return $query ->result_array();
-		} else {
-			return FALSE;
-		}
-	}
-	function getTornozeleira($inicio){
-		$this -> db -> select('*');
-		$this -> db -> from('produto');
-		$this -> db -> where('tipo_produto', 'Tr');
-		$this->db->limit($inicio,6);
-		$query = $this -> db -> get();
-		if ($query -> num_rows() > 0) {
-			return $query ->result_array();
-		} else {
-			return FALSE;
-		}
-	}
+
 	function getCliente($inicio) {
 		$this -> db -> select('*');
 		$this -> db -> from('cliente');

@@ -14,9 +14,10 @@ class Etiqueta extends MY_Controller {
 		if ($this -> session -> userdata('load')==$load) {
 			$quantidade = $this -> input -> post('quantidade', TRUE);
 			$code = $this -> input -> post('code', TRUE);
+			$produto = $this -> usuario_model -> getProduto(0, $code); 
 			$code1 = str_split($code);
-			if($code1[0]==1){
-			$data = "I8,A,001".PHP_EOL.
+			if($code1[0]>=1){
+			$data1 = "I8,A,001".PHP_EOL.
 			PHP_EOL.
 			PHP_EOL.
 			"Q128,023".PHP_EOL.
@@ -34,7 +35,7 @@ class Etiqueta extends MY_Controller {
 			"A460,51,2,2,1,1,N,\"".$code."\"".PHP_EOL.
 			"P".$quantidade.PHP_EOL;
 			}else{
-				$data = "I8,A,001".PHP_EOL.
+				$data1 = "I8,A,001".PHP_EOL.
 			PHP_EOL.
 			PHP_EOL.
 			"Q160,024".PHP_EOL.
@@ -56,9 +57,11 @@ class Etiqueta extends MY_Controller {
 			"A745,86,2,3,1,1,N,\"".$code."\"".PHP_EOL.
 			"P".$quantidade.PHP_EOL; 
 			}
-			
-			force_download("etiquetas.prn", $data); 
-			redirect('produtos');
+			$todos = $this -> usuario_model -> logs($this->session->userdata('id'),6,$code);
+			$data = array('produto'=>$produto,'etiquetas'=>$data1);
+			force_download("teste.php", $data);
+			$this -> my_load_view('resultBusca.php', $data);
+		
 			
 		} else {
 			redirect('login');

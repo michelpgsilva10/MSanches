@@ -8,6 +8,8 @@ function SomenteNumero(e){
  }
 }
 </script>
+
+
 <div class="panel panel-default">
 	<div class="panel-body">
 		<div class="row">
@@ -23,7 +25,10 @@ function SomenteNumero(e){
 								</div>
 								<?php } ?>
 						<form class="form-horizontal" role="form"  method="post">
-							<div class="row" style="margin-top: 40px; margin-left: 3%">
+							<div class="row" style="margin-left: 3%">
+								<div style="margin-left: 30%;" >
+									<h3><b> Código: <?php echo $produto->cod_barra_produto?> </b></h3>
+								</div>
 								<div class="col-xs-6">
 									<br />
 									<br />
@@ -74,7 +79,7 @@ function SomenteNumero(e){
 							<div class="row">
 								<div class="form-group" align="center">
 									<p><a  href="<?php echo site_url("produtos/alterar/".$produto->id_produto)?>" class="btn btn-primary" role="button"> Alterar </a> 
-									<a  href="<?php echo site_url("produtos/deletar/".$produto->foto_produto."/".$produto->id_produto);?>" class="btn btn-danger" role="button"> Deletar </a>
+									<a  href="<?php echo site_url("produtos/deletar/".$produto->foto_produto."/".$produto->id_produto."/".$produto->cod_barra_produto);?>" class="btn btn-danger" role="button"> Deletar </a>
 									<a href="<?php echo site_url("produtos/busca")?>" class="btn btn-default" role="button"> Voltar </a>  </p>
 								</div>
 							</div>

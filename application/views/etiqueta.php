@@ -12,9 +12,11 @@ cont=1;
 }
 }
 function nao(){
-location.href="<?php echo site_url("produtos")?>
-	";
-	}
+location.href="<?php echo site_url("produtos")?>";
+}
+function Setiquetas(){
+	document.forms['formE'].submit();	
+}
 </script>
 <div class="panel panel-default">
 	<div class="panel-body">
@@ -29,15 +31,15 @@ location.href="<?php echo site_url("produtos")?>
 										<label> Deseja imprimir as etiquetas?</label>
 										<br />
 										<br />
-										<button type="submit" class="btn btn-primary" onclick="Sim();">
+										<button type="button" class="btn btn-primary" onclick="Sim();">
 											Sim
 										</button>
-										<button type="submit" class="btn btn-primary" onclick="nao()">
+										<button type="button" class="btn btn-primary" onclick="nao()">
 											Não
 										</button>
 									</div>
 								</div>
-								<form  role="form"  method="post" action="<?php echo site_url("etiqueta")?>" >
+								<form name="formE" id="formE"  role="form"  method="post" action="<?php echo site_url("etiqueta")?>" >
 									<div id="seSim" style="margin-top: 50px; margin-left: 15%; display: none;">
 										<div class="form-group">
 											<label for="inputEmail3" class="col-sm-4 control-label">Quantidade</label>
@@ -64,7 +66,7 @@ location.href="<?php echo site_url("produtos")?>
 										<button type="button" style="margin-top: 5%;"  class="btn btn-primary" onclick="Sim();">
 											Voltar
 										</button>
-										<button type="submit" style="margin-top: 5%;" class="btn btn-primary" onclick="nao()">
+										<button type="button" style="margin-top: 5%;" class="btn btn-primary" onclick="Setiquetas()">
 											Criar
 										</button>
 									</div>

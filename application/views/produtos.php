@@ -55,6 +55,9 @@
 								<ul class="pager">
 								<?php if($anterior>=0){ ?>
 									<li>
+										<a href="<?php echo site_url("produtos/pagina/0/".$tipo)?>">Primeira</a>
+									</li>
+									<li>
 										<a href="<?php echo site_url("produtos/pagina/".$anterior."/".$tipo)?>">Anterior</a>
 									</li>
 								<?php } 
@@ -62,6 +65,9 @@
 									?>
 									<li>										
 										<a href="<?php echo site_url("produtos/pagina/".$proximo."/".$tipo)?>">Proximo</a>
+									</li>
+									<li>
+										<a href="<?php echo site_url("produtos/pagina/".$ultima."/".$tipo)?>">Ultima</a>
 									</li>
 								<?php }?>
 								</ul>
