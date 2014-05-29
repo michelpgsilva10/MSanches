@@ -13,7 +13,7 @@ class Cliente extends MY_Controller {
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
 			$data["cadastro_cliente"] = false;
-			$data["clientes"] = $this -> usuario_model -> getCliente(0);
+			$data["clientes"] = $this -> usuario_model -> getClientes(0);
 			$this -> my_load_view('clientes', $data);
 		} else {
 			redirect('login');
@@ -80,7 +80,7 @@ class Cliente extends MY_Controller {
 				$this -> db -> insert('cliente', $cliente_insert);
 				
 				$data["cadastro_cliente"] = TRUE;
-				$data["clientes"] = $this -> usuario_model -> getCliente(0);
+				$data["clientes"] = $this -> usuario_model -> getClientes(0);
 				
 				$this -> my_load_view('clientes', $data);
 			}				
