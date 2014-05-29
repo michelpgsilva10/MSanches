@@ -10,6 +10,18 @@
  		 $( "#retornoData" ).datepicker();
 		 $( "#retornoData" ).datepicker( "option", "dateFormat", "dd/mm/yy");
 	});
+	function SomenteNumero(e) {
+		var tecla = (window.event) ? event.keyCode : e.which;
+		if ((tecla > 47 && tecla < 58))
+			return true;
+		else {
+			if (tecla == 8 || tecla == 0)
+				return true;
+			else
+				return false;
+		}
+	}
+
 </script>
 <div class="panel panel-default">
 	<div class="panel-body">
@@ -24,7 +36,7 @@
 								</div>
 					<?php } ?>
 				<br />
-				<form class="form-horizontal" name="formV" method="post" role="form" action="<?php echo site_url("venda/novoitem/".$total)?>">
+				<form class="form-horizontal" name="formV" method="post" role="form" action="<?php echo site_url("venda/novoitem/".$total."/1")?>">
 					<div class="row">
 						<div class="col-md-6 col-md-offset-3" align="center">
 							<div class="form-group" style="margin-right: 15%;">
@@ -36,7 +48,7 @@
 							<div class="form-group" style="margin-right: 15%;">
 								<label for="inputEmail3" class="col-sm-5 control-label">Data de Retorno:</label>
 								<div class="col-sm-7">
-									<input type="text" class="form-control" id="retornoData" name="retornoData" placeholder="Ex: 31/12/9999">
+									<input type="text" class="form-control" id="retornoData" <?php if(isset($data)){ echo "value:\"".$data."\""; } ?> name="retornoData" placeholder="Ex: 31/12/9999">
 								</div>
 							</div>
 						</div>
@@ -47,7 +59,7 @@
 								<div class="form-group">
 									<label for="inputEmail3" class="col-sm-5 control-label">Quantidade:</label>
 									<div class="col-sm-7">
-										<input type="number" class="form-control" name="quantP"  id="quantP" value="1" style="text-align: center;" required>
+										<input type="text" maxlength="4" class="form-control" name="quantP"  id="quantP" value="1" onkeypress="return SomenteNumero(event);" style="text-align: center;" required>
 									</div>
 								</div>
 								<div class="form-group" style="margin-left: 10px;">
@@ -80,7 +92,7 @@
 								  	<td style="text-align: center;"> <?php echo $produtos[$i]->	estoque_produto ?> </td>
 								  	<td style="text-align: center;"> <?php echo $produtos[$i]->	valor_produto ?> </td>
 								  	<td style="text-align: center;"> <?php echo $produtos[$i]->valor_produto*$produtos[$i]->estoque_produto ?></td>
-								  	<td style="text-align: center;"> <a type="button" class="btn btn-info" href="<?php echo site_url("venda/deletaItem/".$i."/".$total)?>">Deletar</a>
+								  	<td style="text-align: center;"> <a type="button" class="btn btn-info" href="<?php echo site_url("venda/deletaItem/".$i."/".$total."/1")?>">Deletar</a>
 								  </tr> 
 								<?php } }?>
 							</tbody>
