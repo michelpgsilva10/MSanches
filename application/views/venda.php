@@ -32,6 +32,6 @@ a.button:hover {
 
 <div class="row" style=" text-align: center">
 <a href="<?php echo site_url("venda/comum")?>" class="button blue">Venda Comum</a><br/>
-<a href="<?php echo site_url("venda/consignado")?>" class="button green">Venda Consignato</a><br/>
+<a href="<?php echo site_url("venda/consignado")?>" class="button green">Venda Consignado</a><br/>
 <a href="<?php echo site_url("home")?>" class="button orange">Voltar</a><br/>
 </div>

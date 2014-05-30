@@ -6,10 +6,6 @@
 		document.forms['formV'].submit();
 		}
 	}
- 	$(function() {
- 		 $( "#retornoData" ).datepicker();
-		 $( "#retornoData" ).datepicker( "option", "dateFormat", "dd/mm/yy");
-	});
 	function SomenteNumero(e) {
 		var tecla = (window.event) ? event.keyCode : e.which;
 		if ((tecla > 47 && tecla < 58))
@@ -36,20 +32,13 @@
 								</div>
 					<?php } ?>
 				<br />
-				<form class="form-horizontal" name="formV" method="post" role="form" action="<?php echo site_url("venda/novoitem/".$total."/1")?>">
+				<form class="form-horizontal" name="formV" method="post" role="form" action="<?php if(isset($cliente)){echo site_url("venda/novoitem/".$total."/1/".$cliente[0]['id_cliente']);}else{ echo site_url("venda/novoitem/".$total."/1" );}?>">
 					<div class="row">
 						<div class="col-md-6 col-md-offset-3" align="center">
-							<div class="form-group" style="margin-right: 15%;">
-								<label for="inputEmail3" class="col-sm-5 control-label">Cliente:</label>
-								<div class="col-sm-7">
-									<input type="text" class="form-control" id="nomeCliente" name="nomeCliente" placeholder="Nome">
-								</div>
-							</div>
-							<div class="form-group" style="margin-right: 15%;">
-								<label for="inputEmail3" class="col-sm-5 control-label">Data de Retorno:</label>
-								<div class="col-sm-7">
-									<input type="text" class="form-control" id="retornoData" <?php if(isset($data)){ echo "value:\"".$data."\""; } ?> name="retornoData" placeholder="Ex: 31/12/9999">
-								</div>
+							<div class="form-group">
+								<label for="inputEmail3" control-label" >Cliente: <?php	if (isset($cliente)) { echo $cliente[0]['nome_cliente'];} else { echo "Não Selecionado";} ?></label>								
+									<a class="btn btn-default btn-xs" href="<?php echo site_url("venda/selCliente/-1/".$total."/1")?>" style="margin-left: 6%;" role="button">Selecionar</a>	
+									<input type="text" class="form-control" id="id" <?php if (isset($cliente)) { echo "value=\"" .$cliente[0]['id_cliente']. "\"";} else {echo "value=\"\" ";}?>  name="idCliente" placeholder="Nome" style="display: none" >
 							</div>
 						</div>
 					</div>
@@ -92,7 +81,7 @@
 								  	<td style="text-align: center;"> <?php echo $produtos[$i]->	estoque_produto ?> </td>
 								  	<td style="text-align: center;"> <?php echo $produtos[$i]->	valor_produto ?> </td>
 								  	<td style="text-align: center;"> <?php echo $produtos[$i]->valor_produto*$produtos[$i]->estoque_produto ?></td>
-								  	<td style="text-align: center;"> <a type="button" class="btn btn-info" href="<?php echo site_url("venda/deletaItem/".$i."/".$total."/1")?>">Deletar</a>
+								  	<td style="text-align: center;"> <a type="button" class="btn btn-info" href="<?php if(isset($cliente)){echo site_url("venda/deletaItem/".$i."/".$total."/1/".$cliente[0]['id_cliente']);}else{ echo site_url("venda/deletaItem/".$i."/".$total."/1"); }?>">Deletar</a>
 								  </tr> 
 								<?php } }?>
 							</tbody>
@@ -113,7 +102,7 @@
 								<a type="button" href="<?php echo site_url("venda/sair/1")?>">Sair</a>
 							</li>
 							<li>
-								<a type="button" href="<?php echo site_url("venda/finalizarCompraC/".$total)?>">Finalizar</a>
+								<a type="button" href="<?php if(isset($cliente)){echo site_url("venda/finalizarCompraC/".$total."/".$cliente[0]['id_cliente']);}else{ echo site_url("venda/finalizarCompraC/".$total);}?>">Proximo</a>
 							</li>
 						</ul>
 					</div>

@@ -49,11 +49,14 @@ class Venda extends MY_Controller {
 		}
 	}
 
-	public function novoitem($total, $tipo = 0) {
+	public function novoitem($total, $tipo = 0, $id = -1) {
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
+			if ($id != -1) {
+				$cliente = $this -> usuario_model -> getCliente($id, 0);
+			}
 			if ($this -> session -> userdata('produtos')) {
 				$produtos = $this -> session -> userdata('produtos');
 				$produto = $this -> usuario_model -> getProduto(0, trim($this -> input -> post('codigoP', TRUE)));
@@ -72,37 +75,77 @@ class Venda extends MY_Controller {
 							$total += $produto -> valor_produto * trim($this -> input -> post('quantP', TRUE));
 							$this -> session -> set_userdata('produtos', $produtos);
 							if ($tipo == 0) {
-								$data = array('total' => $total, 'produtos' => $produtos);
-								$this -> my_load_view('vendaComum', $data);
+								if ($id != -1) {
+									$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente);
+									$this -> my_load_view('vendaComum', $data);
+								} else {
+									$data = array('total' => $total, 'produtos' => $produtos);
+									$this -> my_load_view('vendaComum', $data);
+								}
 							} else {
-								$data = array('total' => $total, 'produtos' => $produtos);
-								$this -> my_load_view('vendaConsig', $data);
+								if ($id != -1) {
+									$data = array('total' => $total, 'produtos' => $produtos,  'cliente' => $cliente);
+									$this -> my_load_view('vendaConsig', $data);
+								} else {
+									$data = array('total' => $total, 'produtos' => $produtos);
+									$this -> my_load_view('vendaConsig', $data);
+								}
 							}
 						} else {
 							if ($tipo == 0) {
-								$data = array('total' => $total, 'produtos' => $produtos, 'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
-								$this -> my_load_view('vendaComum', $data);
+								if ($id != -1) {
+									$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente, 'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
+									$this -> my_load_view('vendaComum', $data);
+								} else {
+									$data = array('total' => $total, 'produtos' => $produtos, 'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
+									$this -> my_load_view('vendaComum', $data);
+								}
 							} else {
-								$data = array('total' => $total, 'produtos' => $produtos, 'mensagem' => "Quantidade do Produto Inesistente");
-								$this -> my_load_view('vendaConsig', $data);
+								if ($id != -1) {
+									$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente, 'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
+									$this -> my_load_view('vendaConsig', $data);
+								} else {
+									$data = array('total' => $total, 'produtos' => $produtos,'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
+									$this -> my_load_view('vendaConsig', $data);
+								}
 							}
 						}
 					} else {
 						if ($tipo == 0) {
-							$data = array('total' => $total, 'produtos' => $produtos, 'mensagem' => "Produto Já Inserido, Delete e Insira Novamente, Alterando a Quantidade");
-							$this -> my_load_view('vendaComum', $data);
+							if ($id != -1) {
+								$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente, 'mensagem' => "Produto Já Inserido, Delete e Insira Novamente, Alterando a Quantidade");
+								$this -> my_load_view('vendaComum', $data);
+							} else {
+								$data = array('total' => $total, 'produtos' => $produtos, 'mensagem' => "Produto Já Inserido, Delete e Insira Novamente, Alterando a Quantidade");
+								$this -> my_load_view('vendaComum', $data);
+							}
 						} else {
-							$data = array('total' => $total, 'produtos' => $produtos, 'mensagem' => "Produto Já Inserido, Delete e Insira Novamente, Alterando a Quantidade");
-							$this -> my_load_view('vendaConsig', $data);
+							if ($id != -1) {
+								$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente, 'mensagem' => "Produto Já Inserido, Delete e Insira Novamente, Alterando a Quantidade");
+								$this -> my_load_view('vendaConsig', $data);
+							} else {
+								$data = array('total' => $total, 'produtos' => $produtos,'mensagem' => "Produto Já Inserido, Delete e Insira Novamente, Alterando a Quantidade");
+								$this -> my_load_view('vendaConsig', $data);
+							}
 						}
 					}
 				} else {
 					if ($tipo == 0) {
-						$data = array('total' => $total, 'produtos' => $produtos, 'mensagem' => "Produto não Encontrado ou Quantidade Invalida");
-						$this -> my_load_view('vendaComum', $data);
+						if ($id != -1) {
+							$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente, 'mensagem' => "Produto não Encontrado ou Quantidade Invalida");
+							$this -> my_load_view('vendaComum', $data);
+						} else {
+							$data = array('total' => $total, 'produtos' => $produtos, 'mensagem' => "Produto não Encontrado ou Quantidade Invalida");
+							$this -> my_load_view('vendaComum', $data);
+						}
 					} else {
-						$data = array('total' => $total, 'produtos' => $produtos, 'mensagem' => "Produto não Encontrado ou Quantidade Invalida");
-						$this -> my_load_view('vendaConsig', $data);
+						if ($id != -1) {
+							$data = array('total' => $total, 'produtos' => $produtos,'cliente' => $cliente, 'mensagem' => "Produto não Encontrado ou Quantidade Invalida");
+							$this -> my_load_view('vendaConsig', $data);
+						} else {
+							$data = array('total' => $total, 'produtos' => $produtos,'mensagem' => "Produto não Encontrado ou Quantidade Invalida");
+							$this -> my_load_view('vendaConsig', $data);
+						}
 					}
 				}
 			} else {
@@ -113,28 +156,58 @@ class Venda extends MY_Controller {
 						$total += $produto -> valor_produto * trim($this -> input -> post('quantP', TRUE));
 						$this -> session -> set_userdata('produtos', $produtos);
 						if ($tipo == 0) {
-							$data = array('total' => $total, 'produtos' => $produtos);
-							$this -> my_load_view('vendaComum', $data);
+							if ($id != -1) {
+								$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente);
+								$this -> my_load_view('vendaComum', $data);
+							} else {
+								$data = array('total' => $total, 'produtos' => $produtos);
+								$this -> my_load_view('vendaComum', $data);
+							}
 						} else {
-							$data = array('total' => $total, 'produtos' => $produtos);
-							$this -> my_load_view('vendaConsig', $data);
+							if ($id != -1) {
+								$data = array('total' => $total,'produtos' => $produtos, 'cliente' => $cliente);
+								$this -> my_load_view('vendaConsig', $data);
+							} else {
+								$data = array('total' => $total,'produtos' => $produtos);
+								$this -> my_load_view('vendaConsig', $data);
+							}
 						}
 					} else {
 						if ($tipo == 0) {
-							$data = array('total' => $total, 'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
-							$this -> my_load_view('vendaComum', $data);
+							if ($id != -1) {
+								$data = array('total' => $total, 'cliente' => $cliente, 'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
+								$this -> my_load_view('vendaComum', $data);
+							} else {
+								$data = array('total' => $total, 'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
+								$this -> my_load_view('vendaComum', $data);
+							}
 						} else {
-							$data = array('total' => $total, 'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
-							$this -> my_load_view('vendaConsig', $data);
+							if ($id != -1) {
+								$data = array('total' => $total, 'cliente' => $cliente, 'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
+								$this -> my_load_view('vendaConsig', $data);
+							} else {
+								$data = array('total' => $total,'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
+								$this -> my_load_view('vendaConsig', $data);
+							}
 						}
 					}
 				} else {
 					if ($tipo == 0) {
-						$data = array('total' => $total, 'mensagem' => "Produto não Encontrado ou Quantidade Invalida");
-						$this -> my_load_view('vendaComum', $data);
+						if ($id != -1) {
+							$data = array('total' => $total, 'cliente' => $cliente, 'mensagem' => "Produto não Encontrado ou Quantidade Invalida");
+							$this -> my_load_view('vendaComum', $data);
+						} else {
+							$data = array('total' => $total, 'mensagem' => "Produto não Encontrado ou Quantidade Invalida");
+							$this -> my_load_view('vendaComum', $data);
+						}
 					} else {
-						$data = array('total' => $total, 'mensagem' => "Produto não Encontrado ou Quantidade Invalida");
-						$this -> my_load_view('vendaConsig', $data);
+						if ($id != -1) {
+							$data = array('total' => $total,'cliente' => $cliente, 'mensagem' => "Produto não Encontrado ou Quantidade Invalida");
+							$this -> my_load_view('vendaConsig', $data);
+						} else {
+							$data = array('total' => $total,'mensagem' => "Produto não Encontrado ou Quantidade Invalida");
+							$this -> my_load_view('vendaConsig', $data);
+						}
 					}
 				}
 			}
@@ -143,25 +216,30 @@ class Venda extends MY_Controller {
 		}
 	}
 
-	public function selCliente($id,$total) {
+	public function selCliente($id, $total, $tipo = 0) {
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
-			if($id<0){
-				$data = array('total'=>$total);
-				$this -> my_load_view('vendaCliente',$data);
-			}else{
-				$cliente =  $this -> usuario_model -> getCliente($id,0);
-				$data = array('total' => $total,'cliente'=>$cliente);
-				$this -> my_load_view('vendaComum', $data);
+			$produtos = $this -> session -> userdata('produtos');
+			if ($id < 0) {
+				$data = array('total' => $total, 'tipo' => $tipo);
+				$this -> my_load_view('vendaCliente', $data);
+			} else {
+				$cliente = $this -> usuario_model -> getCliente($id, 0);
+				$data = array('total' => $total, 'cliente' => $cliente, 'produtos' => $produtos);
+				if ($tipo == 0) {
+					$this -> my_load_view('vendaComum', $data);
+				} else {
+					$this -> my_load_view('vendaConsig', $data);
+				}
 			}
 		} else {
 			redirect('login');
 		}
 	}
 
-	public function buscaCliente($total) {
+	public function buscaCliente($total, $tipo) {
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
@@ -169,7 +247,7 @@ class Venda extends MY_Controller {
 			if ($this -> input -> post('tipo', TRUE) == 1) {
 				$aux = str_split(trim($this -> input -> post('nome', TRUE)));
 				if ((count($aux) > 11) || ((count($aux) < 11))) {
-					$data = array('total'=>$total,'mensagem' => "CPF Invalido");
+					$data = array('total' => $total, 'mensagem' => "CPF Invalido", 'tipo' => $tipo);
 					$this -> my_load_view('vendaCliente', $data);
 				} else {
 					$dado = "";
@@ -184,10 +262,10 @@ class Venda extends MY_Controller {
 					}
 					$cliente = $this -> usuario_model -> getCliente(trim($dado), $this -> input -> post('tipo', TRUE));
 					if ($cliente == FALSE) {
-						$data = array('total'=>$total,'mensagem' => "Cliente não Cadastrado");
+						$data = array('total' => $total, 'mensagem' => "Cliente não Cadastrado", 'tipo' => $tipo);
 						$this -> my_load_view('vendaCliente', $data);
 					} else {
-						$data = array('total'=>$total,'cliente' => $cliente);
+						$data = array('total' => $total, 'cliente' => $cliente, 'tipo' => $tipo);
 						$this -> my_load_view('vendaCliente', $data);
 					}
 				}
@@ -195,10 +273,10 @@ class Venda extends MY_Controller {
 				$dado = trim($this -> input -> post('nome', TRUE));
 				$dado = $this -> usuario_model -> getCliente($dado, $this -> input -> post('tipo', TRUE));
 				if ($dado == FALSE) {
-					$data = array('total'=>$total,'mensagem' => "Cliente não Cadastrado");
+					$data = array('total' => $total, 'mensagem' => "Cliente não Cadastrado", 'tipo' => $tipo);
 					$this -> my_load_view('vendaCliente', $data);
 				} else {
-					$data = array('total'=>$total,'cliente' => $dado);
+					$data = array('total' => $total, 'cliente' => $dado, 'tipo' => $tipo);
 					$this -> my_load_view('vendaCliente', $data);
 				}
 			}
@@ -207,13 +285,32 @@ class Venda extends MY_Controller {
 		}
 	}
 
-	public function finalizarCompra($total) {
+	public function finalizarCompra($total, $cliente = -1) {
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
 			$this -> session -> unset_userdata('produtos');
 			redirect('venda');
+		} else {
+			redirect('login');
+		}
+	}
+
+	public function finalizarCompraC($total, $cliente = -1) {
+		$datestring = "%m%d";
+		$time = time();
+		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
+		if ($this -> session -> userdata('load') == $load) {
+			if($this -> input -> post('data', TRUE)){
+				print_r($_POST);
+				$this -> session -> unset_userdata('produtos');
+				#redirect('venda');		
+			}else{
+				$data = array('total'=>$total,'cliente'=>$cliente);
+				$this -> my_load_view('vendaDateR', $data);
+			}
+			
 		} else {
 			redirect('login');
 		}
@@ -235,22 +332,35 @@ class Venda extends MY_Controller {
 		}
 	}
 
-	public function deletaItem($i, $total, $tipo = 0) {
+	public function deletaItem($i, $total, $tipo = 0, $id = -1) {
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
+			if ($id != -1) {
+				$cliente = $this -> usuario_model -> getCliente($id, 0);
+			}
 			$produtos = $this -> session -> userdata('produtos');
 			$total -= $produtos[$i] -> valor_produto * $produtos[$i] -> estoque_produto;
 			unset($produtos[$i]);
 			$produtos = array_values($produtos);
 			$this -> session -> set_userdata('produtos', $produtos);
 			if ($tipo == 0) {
-				$data = array('total' => $total, 'produtos' => $produtos);
-				$this -> my_load_view('vendaComum', $data);
+				if ($id != -1) {
+					$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente);
+					$this -> my_load_view('vendaComum', $data);
+				} else {
+					$data = array('total' => $total, 'produtos' => $produtos);
+					$this -> my_load_view('vendaComum', $data);
+				}
 			} else {
-				$data = array('total' => $total, 'produtos' => $produtos);
-				$this -> my_load_view('vendaConsig', $data);
+				if ($id != -1) {
+					$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente);
+					$this -> my_load_view('vendaConsig', $data);
+				} else {
+					$data = array('total' => $total, 'produtos' => $produtos);
+					$this -> my_load_view('vendaConsig', $data);
+				}
 			}
 		} else {
 			redirect('login');
