@@ -225,6 +225,7 @@ Class Usuario_model  extends CI_Model {
 		$this -> db -> join('produto', 'compra.produto_fk = produto.id_produto');
 		$this -> db -> join('cliente', 'compra.cliente_fk = cliente.id_cliente');
 		$this -> db -> join('endereco', 'cliente.endereco_fk = endereco.id_endereco');
+		$this -> db -> where('id_venda', $idVenda);
 		
 		$query = $this -> db -> get();
 		
