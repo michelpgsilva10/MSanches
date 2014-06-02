@@ -4,7 +4,10 @@ class Cliente extends MY_Controller {
 	function __construct() {
 		parent::__construct();
 		$this -> load -> library('session');
-		$this->load->library('form_validation');		
+		$this->load->library('form_validation');	
+		$this->load->library('fpdf'); // Load library
+		//define('FPDF_FONTPATH','/application/libraries/font/');
+    	//$this->fpdf->fontpath = 'application/libraries/font/';
 	}
 
 	public function index() {
@@ -86,6 +89,11 @@ class Cliente extends MY_Controller {
 			}				
 		}
 
+	}
+
+	function teste() {
+		$data["vendas"] = $this -> usuario_model -> getVenda(1);
+		$this -> my_load_view('romaneio', $data);
 	}
 
 	function buscarCliente() {		
