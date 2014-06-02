@@ -290,8 +290,13 @@ class Venda extends MY_Controller {
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
-			$this -> session -> unset_userdata('produtos');
-			redirect('venda');
+			if($cliente!=-1){
+				$this -> session -> unset_userdata('produtos');
+				redirect('venda');
+			}else{
+				$data = array('total' => $total, 'cliente' => $cliente, 'mensagem' => "Cliente não Selecionado");
+				$this -> my_load_view('vendaComum', $data);
+			}	
 		} else {
 			redirect('login');
 		}
@@ -396,6 +401,7 @@ class Venda extends MY_Controller {
 			if ($this -> session -> userdata('produtos')) {
 				$this -> session -> unset_userdata('produtos');
 			}
+			
 			echo "RETORNO DA FATURA";
 		} else {
 			redirect('login');
