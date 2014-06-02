@@ -88,8 +88,32 @@ class Cliente extends MY_Controller {
 
 	}
 
-	function buscarCliente() {
+	function buscarCliente() {		
 		
+		$opt = $this -> input -> post('opcao_pesquisa_cliente');
+		$this -> form_validation -> set_rules('opcao_pesquisa_cliente', 'Tipo de Pesquisa', '');
+		
+		if ($opt == 1) {
+			$this -> form_validation -> set_rules('pesquisa_cliente', 'CPF', 'callback_validaCPF');
+			$this -> form_validation -> set_message('validaCPF', 'O %s digitado é inválido.');
+		} else {
+			$this -> form_validation -> set_rules('pesquisa_cliente', 'Nome', 'required');
+			$this -> form_validation -> set_message('required', 'Você deve digitar um %s.');
+		}
+		
+		$this->form_validation->set_error_delimiters('<div class="alert-danger alert-dismissable alert-space " >', '</div>');
+		
+		if ($this -> input -> post('btn_pesquisa_cliente')) {
+			$data["cadastro_cliente"] = false;
+			if ($this -> form_validation -> run()) {
+				$data["clientes"] = $this -> usuario_model -> getCliente($this -> input -> post('pesquisa_cliente'), $opt);
+				$this -> my_load_view('clientes', $data);				
+			} else {
+				$data["cadastro_cliente"] = false;
+				$data["clientes"] = NULL;
+				$this -> my_load_view('clientes', $data);
+			}		
+		}
 	}
 
 	function validaCPF($cpf) {

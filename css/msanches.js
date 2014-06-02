@@ -11,7 +11,7 @@ $(document).ready(function() {
 	if ($('#tipo').val() == 1)
 		$("#nome").mask('999.999.999-99');
 		
-	if ($('#opcao_pesquisa_cliente').val() == 2)
+	if ($('#opcao_pesquisa_cliente').val() == 1)
 		$("#pesquisa_cliente").mask('999.999.999-99');		
 
 	$("#tipo").change(function() {//Quando houver uma mudança no select
@@ -27,7 +27,7 @@ $(document).ready(function() {
 	});
 	
 	$('#opcao_pesquisa_cliente').change(function() {				
-		if ($('#opcao_pesquisa_cliente').val() == 1) {			
+		if ($('#opcao_pesquisa_cliente').val() == 2) {			
 			$('#pesquisa_cliente').unmask();
 		} else {			
 			$('#pesquisa_cliente').mask('999.999.99-99');	 
