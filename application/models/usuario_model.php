@@ -149,7 +149,8 @@ Class Usuario_model  extends CI_Model {
 		if($tipo==1){
 			$this -> db -> where('cpf_cliente', $dado);
 		}else if($tipo==2){
-			$this -> db -> where('nome_cliente', $dado);
+			$term = strtolower($dado);
+			$this -> db -> where("(LOWER(nome_cliente) LIKE '%{$term}%')");
 		}else if($tipo==0){
 			$this -> db -> where('id_cliente', $dado);
 		}
@@ -175,6 +176,8 @@ Class Usuario_model  extends CI_Model {
 			return false;
 		}
 	}
+	
+	
 
 }
 ?>

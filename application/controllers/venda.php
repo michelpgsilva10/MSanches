@@ -246,20 +246,12 @@ class Venda extends MY_Controller {
 		if ($this -> session -> userdata('load') == $load) {
 			if ($this -> input -> post('tipo', TRUE) == 1) {
 				$aux = str_split(trim($this -> input -> post('nome', TRUE)));
-				if ((count($aux) > 11) || ((count($aux) < 11))) {
+				if ((count($aux) > 14) || ((count($aux) < 14))) {
 					$data = array('total' => $total, 'mensagem' => "CPF Invalido", 'tipo' => $tipo);
 					$this -> my_load_view('vendaCliente', $data);
 				} else {
-					$dado = "";
-					for ($i = 0; $i < count($aux); $i++) {
-						if (($i == 3) || ($i == 06)) {
-							$dado = $dado . "." . $aux[$i];
-						} else if ($i == 9) {
-							$dado = $dado . "-" . $aux[$i];
-						} else {
-							$dado = $dado . $aux[$i];
-						}
-					}
+					$dado = $this -> input -> post('nome');
+					
 					$cliente = $this -> usuario_model -> getCliente(trim($dado), $this -> input -> post('tipo', TRUE));
 					if ($cliente == FALSE) {
 						$data = array('total' => $total, 'mensagem' => "Cliente não Cadastrado", 'tipo' => $tipo);

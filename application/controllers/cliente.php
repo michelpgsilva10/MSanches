@@ -88,6 +88,10 @@ class Cliente extends MY_Controller {
 
 	}
 
+	function buscarCliente() {
+		
+	}
+
 	function validaCPF($cpf) {
 		// Verifica se o número digitado contém todos os digitos
 		$cpf = str_pad(preg_replace('[^0-9]', '', $cpf), 11, '0', STR_PAD_LEFT);

@@ -31,7 +31,7 @@
 							    </div>
   							</div>
   							<div class="form-group">
-  								 <select class="form-control" style="text-align: center;" name="tipo">
+  								 <select class="form-control" style="text-align: center;" name="tipo" id="tipo">
     								  	<option  value="1" style="text-align: center;" selected>CPF</option>
     								  	<option  value="2" style="text-align: center;"> Nome </option>
     							</select>
