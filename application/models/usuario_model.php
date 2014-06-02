@@ -218,7 +218,7 @@ Class Usuario_model  extends CI_Model {
 	}
 
 	
-	function getVenda($idVenda) {
+	function getVendaConsig($idVenda) {
 		$this -> db -> select('*');
 		$this -> db -> from('venda');
 		$this -> db -> join('compra', 'venda.id_venda = compra.venda_fk');

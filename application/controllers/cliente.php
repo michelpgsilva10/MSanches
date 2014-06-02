@@ -91,8 +91,8 @@ class Cliente extends MY_Controller {
 
 	}
 
-	function teste() {
-		$data["vendas"] = $this -> usuario_model -> getVenda(1);
+	function teste($id_venda) {
+		$data["vendas"] = $this -> usuario_model -> getVendaConsig(1);
 		$this -> my_load_view('romaneio', $data);
 	}
 
