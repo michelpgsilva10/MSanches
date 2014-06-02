@@ -16,6 +16,29 @@
 						</div>
 
 						<div class="row" style="margin-top: 20px; width: 100%; padding-left: 7%">
+							
+							<div class="form-separator">
+								Lista de Clientes
+							</div>
+							
+							<form class="form-horizontal form-padding" role="form"  method="post" enctype="multipart/form-data" action="<?php echo site_url("cliente/buscarCliente")?>">
+																					
+								<div class="form-line" align="center">
+									<div style="float: left; width: 25%; margin-right: 5px;" align="right">
+										<select id="opcao_pesquisa_cliente" name="opcao_pesquisa_cliente" class="form-control" style="width: 150px">
+											<option value="1">Nome</option>
+											<option value="2">CPF</option>
+										</select>
+									</div>
+									<div style="float: left; width: 55%; margin-right: 5px;">
+										<input class="form-control"	 type="text" name="pesquisa_cliente" value="" id="pesquisa_cliente" autofocus/>
+									</div>	
+									<div style="float: left; width: 15%;">
+										<input class="btn btn-primary form-control" type="submit" name="btn_pesquisa_cliente" value="Pesquisar" id="btn_pesquisa_cliente"/>
+									</div>						
+								</div>	
+							
+							</form>					
 
 							<div class="panel panel-default">
 								<?php
@@ -25,18 +48,26 @@
 								?>
 								<div class="list-group teste">
 	  								<a href="#" class="list-group-item">
-		    							<h4 class="list-group-item-heading"><?php echo $clientes[$i]["nome_cliente"]; ?></h4>
-		    							<h5 class="list-group-item-text"><span class="glyphicon glyphicon-phone"></span> <?php echo $clientes[$i]["tel_cliente"]; ?></h5>
-		    							<h5 class="list-group-item-text"><span class="glyphicon glyphicon-home"></span>  <?php echo $clientes[$i]["cidade_endereco"] . '-' . $clientes[$i]["uf_endereco"]; ?></h5>
+	  									<div style="display: table; width: 100%; padding-left: 5px;">
+	  										<div style="float: left; width: 45%;">
+	  											<h5 class="list-group-item-text"><span class="glyphicon glyphicon-user"></span> <?php echo $clientes[$i]["nome_cliente"]; ?></h5>
+	  										</div>
+	  										<div style="float: left; width: 25%">
+	  											<h5 class="list-group-item-text"><span class="glyphicon glyphicon-phone"></span> <?php echo $clientes[$i]["tel_cliente"]; ?></h5>
+	  										</div>
+	  										<div style="float: left; width: 30%">
+	  											<h5 class="list-group-item-text"><span class="glyphicon glyphicon-home"></span>  <?php echo $clientes[$i]["cidade_endereco"] . '-' . $clientes[$i]["uf_endereco"]; ?></h5>
+	  										</div>
+	  									</div>	    							
 	  								</a>
 								</div>			
 								<?php
-									}
-								
+								}
+
 								} else {
-									echo '<div>';
-									echo '	Nenhum cliente cadastrado!';
-									echo '</div>';
+								echo '<div>';
+								echo '	Nenhum cliente cadastrado!';
+								echo '</div>';
 								}
 								?>
 							</div>

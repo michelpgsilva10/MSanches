@@ -48,6 +48,9 @@
 	color: #FFFFFF;
 }
 
-.teste {
-	margin-bottom: 5px;
+.pesquisa-cliente {
+	border: 1px solid #CCCCCC;
+	border-radius: 5px;
+	padding: 10px;
+	margin-bottom: 10px;
 }
