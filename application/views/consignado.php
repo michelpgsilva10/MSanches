@@ -40,7 +40,7 @@
 								  	<td style="text-align: center;"> <?php echo $vendas[$i]->cliente_fk?> </td>
 								  	<td style="text-align: center;"> <?php echo $vendas[$i]->valor_venda ?> </td>
 								  	<td style="text-align: center;"> <?php echo $vendas[$i]->data_venda ?></td>
-								  	<td style="text-align: center;"> <?php echo $vendas[$i]->data_devoução_venda ?></td>
+								  	<td style="text-align: center;"> <?php echo $vendas[$i]->data_retorno_venda ?></td>
 								  	<td style="text-align: center;"> <a type="button" class="btn btn-info" href="<?php echo site_url("venda/retornoCom/".$vendas[$i]->id_venda)?>">Finalizar Fatura</a>
 								  </tr> 
 								<?php } ?>

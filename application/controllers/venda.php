@@ -43,7 +43,25 @@ class Venda extends MY_Controller {
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
-			$this -> my_load_view('consignado', NULL);
+			$vendas1 = $this -> usuario_model -> getVendaC();
+			if ($vendas1 != FALSE) {
+				for ($i = 0; $i < count($vendas1); $i++) {
+					$venda = $this -> usuario_model -> getVenda($vendas1[$i]['id_venda_inicio']);
+					$cliente = $this -> usuario_model -> getCliente($venda -> cliente_fk, 0);
+					$data1 = explode(" ", $venda -> data_venda);
+					$data1 = explode("-", $data1[0]);
+					$data = "" . $data1[2];
+					$data = $data . "-" . $data1[1];
+					$data = $data . "-" . $data1[0];
+					$venda -> data_venda = $data;
+					$venda -> cliente_fk = $cliente[0]['nome_cliente'];
+					$vendas[$i] = $venda;
+				}
+				$data = array('vendas' => $vendas);
+				$this -> my_load_view('consignado', $data);
+			} else {
+				$this -> my_load_view('consignado', NULL);
+			}
 		} else {
 			redirect('login');
 		}
@@ -84,7 +102,7 @@ class Venda extends MY_Controller {
 								}
 							} else {
 								if ($id != -1) {
-									$data = array('total' => $total, 'produtos' => $produtos,  'cliente' => $cliente);
+									$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente);
 									$this -> my_load_view('vendaConsig', $data);
 								} else {
 									$data = array('total' => $total, 'produtos' => $produtos);
@@ -105,7 +123,7 @@ class Venda extends MY_Controller {
 									$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente, 'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
 									$this -> my_load_view('vendaConsig', $data);
 								} else {
-									$data = array('total' => $total, 'produtos' => $produtos,'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
+									$data = array('total' => $total, 'produtos' => $produtos, 'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
 									$this -> my_load_view('vendaConsig', $data);
 								}
 							}
@@ -124,7 +142,7 @@ class Venda extends MY_Controller {
 								$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente, 'mensagem' => "Produto Já Inserido, Delete e Insira Novamente, Alterando a Quantidade");
 								$this -> my_load_view('vendaConsig', $data);
 							} else {
-								$data = array('total' => $total, 'produtos' => $produtos,'mensagem' => "Produto Já Inserido, Delete e Insira Novamente, Alterando a Quantidade");
+								$data = array('total' => $total, 'produtos' => $produtos, 'mensagem' => "Produto Já Inserido, Delete e Insira Novamente, Alterando a Quantidade");
 								$this -> my_load_view('vendaConsig', $data);
 							}
 						}
@@ -140,10 +158,10 @@ class Venda extends MY_Controller {
 						}
 					} else {
 						if ($id != -1) {
-							$data = array('total' => $total, 'produtos' => $produtos,'cliente' => $cliente, 'mensagem' => "Produto não Encontrado ou Quantidade Invalida");
+							$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente, 'mensagem' => "Produto não Encontrado ou Quantidade Invalida");
 							$this -> my_load_view('vendaConsig', $data);
 						} else {
-							$data = array('total' => $total, 'produtos' => $produtos,'mensagem' => "Produto não Encontrado ou Quantidade Invalida");
+							$data = array('total' => $total, 'produtos' => $produtos, 'mensagem' => "Produto não Encontrado ou Quantidade Invalida");
 							$this -> my_load_view('vendaConsig', $data);
 						}
 					}
@@ -152,6 +170,7 @@ class Venda extends MY_Controller {
 				$produto = $this -> usuario_model -> getProduto(0, $this -> input -> post('codigoP', TRUE));
 				if (($produto != FALSE) && (trim($this -> input -> post('quantP', TRUE)) != "")) {
 					if ($this -> input -> post('quantP', TRUE) <= $produto -> estoque_produto) {
+						$produto -> estoque_produto = $this -> input -> post('quantP', TRUE);
 						$produtos[0] = $produto;
 						$total += $produto -> valor_produto * trim($this -> input -> post('quantP', TRUE));
 						$this -> session -> set_userdata('produtos', $produtos);
@@ -165,10 +184,10 @@ class Venda extends MY_Controller {
 							}
 						} else {
 							if ($id != -1) {
-								$data = array('total' => $total,'produtos' => $produtos, 'cliente' => $cliente);
+								$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente);
 								$this -> my_load_view('vendaConsig', $data);
 							} else {
-								$data = array('total' => $total,'produtos' => $produtos);
+								$data = array('total' => $total, 'produtos' => $produtos);
 								$this -> my_load_view('vendaConsig', $data);
 							}
 						}
@@ -186,7 +205,7 @@ class Venda extends MY_Controller {
 								$data = array('total' => $total, 'cliente' => $cliente, 'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
 								$this -> my_load_view('vendaConsig', $data);
 							} else {
-								$data = array('total' => $total,'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
+								$data = array('total' => $total, 'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
 								$this -> my_load_view('vendaConsig', $data);
 							}
 						}
@@ -202,10 +221,10 @@ class Venda extends MY_Controller {
 						}
 					} else {
 						if ($id != -1) {
-							$data = array('total' => $total,'cliente' => $cliente, 'mensagem' => "Produto não Encontrado ou Quantidade Invalida");
+							$data = array('total' => $total, 'cliente' => $cliente, 'mensagem' => "Produto não Encontrado ou Quantidade Invalida");
 							$this -> my_load_view('vendaConsig', $data);
 						} else {
-							$data = array('total' => $total,'mensagem' => "Produto não Encontrado ou Quantidade Invalida");
+							$data = array('total' => $total, 'mensagem' => "Produto não Encontrado ou Quantidade Invalida");
 							$this -> my_load_view('vendaConsig', $data);
 						}
 					}
@@ -251,7 +270,7 @@ class Venda extends MY_Controller {
 					$this -> my_load_view('vendaCliente', $data);
 				} else {
 					$dado = $this -> input -> post('nome');
-					
+
 					$cliente = $this -> usuario_model -> getCliente(trim($dado), $this -> input -> post('tipo', TRUE));
 					if ($cliente == FALSE) {
 						$data = array('total' => $total, 'mensagem' => "Cliente não Cadastrado", 'tipo' => $tipo);
@@ -282,13 +301,36 @@ class Venda extends MY_Controller {
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
-			if($cliente!=-1){
-				$this -> session -> unset_userdata('produtos');
-				redirect('venda');
-			}else{
-				$data = array('total' => $total, 'cliente' => $cliente, 'mensagem' => "Cliente não Selecionado");
+			$produtos = $this -> session -> userdata('produtos');
+			if ($cliente != -1) {
+				$cliente = $this -> usuario_model -> getCliente($cliente, 0);
+				$idVenda = $this -> usuario_model -> setVenda($cliente[0]['id_cliente'], $total);
+				$sProduto = -1;
+				for ($i = 0; $i < count($produtos); $i++) {
+					$produto = $this -> usuario_model -> getProduto($produtos[$i] -> id_produto, 0);
+					if ($produtos[$i] -> estoque_produto <= $produto -> estoque_produto) {
+						if ($produtos[$i] -> estoque_produto == $produto -> estoque_produto) {
+							$this -> usuario_model -> updateVendaProduto($produtos[$i] -> id_produto, 0);
+						} else {
+							$this -> usuario_model -> updateVendaProduto($produtos[$i] -> id_produto, $produto -> estoque_produto - $produtos[$i] -> estoque_produto);
+						}
+						$this -> usuario_model -> setCompra($cliente[0]['id_cliente'], $produtos[$i] -> estoque_produto, $produtos[$i] -> id_produto, $idVenda);
+					} else {
+						$sProduto = $produtos[$i] -> cod_barra_produto;
+						break;
+					}
+				}
+				if ($sProduto != -1) {
+					$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente, 'mensagem' => "O produto " . $sProduto . " não possui essa quantidade mias ou Já foi vendido todos os itens");
+					$this -> my_load_view('vendaComum', $data);
+				} else {
+					$this -> session -> unset_userdata('produtos');
+					redirect('venda');
+				}
+			} else {
+				$data = array('total' => $total, 'produtos' => $produtos, 'mensagem' => "Cliente não Selecionado");
 				$this -> my_load_view('vendaComum', $data);
-			}	
+			}
 		} else {
 			redirect('login');
 		}
@@ -299,15 +341,48 @@ class Venda extends MY_Controller {
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
-			if($this -> input -> post('data', TRUE)){
-				print_r($_POST);
-				$this -> session -> unset_userdata('produtos');
-				#redirect('venda');		
-			}else{
-				$data = array('total'=>$total,'cliente'=>$cliente);
-				$this -> my_load_view('vendaDateR', $data);
+			$produtos = $this -> session -> userdata('produtos');
+			if ($this -> input -> post('data', TRUE)) {
+				if ($cliente != -1) {
+					$cliente = $this -> usuario_model -> getCliente($cliente, 0);
+					$idVenda = $this -> usuario_model -> setVenda($cliente[0]['id_cliente'], $total, $this -> input -> post('data', TRUE));
+					$this -> usuario_model -> setVendaC($idVenda);
+					$sProduto = -1;
+					for ($i = 0; $i < count($produtos); $i++) {
+						$produto = $this -> usuario_model -> getProduto($produtos[$i] -> id_produto, 0);
+						if ($produtos[$i] -> estoque_produto <= $produto -> estoque_produto) {
+							if ($produtos[$i] -> estoque_produto == $produto -> estoque_produto) {
+								$this -> usuario_model -> updateVendaProduto($produtos[$i] -> id_produto, 0);
+							} else {
+								$this -> usuario_model -> updateVendaProduto($produtos[$i] -> id_produto, $produto -> estoque_produto - $produtos[$i] -> estoque_produto);
+							}
+							$this -> usuario_model -> setCompra($cliente[0]['id_cliente'], $produtos[$i] -> estoque_produto, $produtos[$i] -> id_produto, $idVenda);
+						} else {
+							$sProduto = $produtos[$i] -> cod_barra_produto;
+							break;
+						}
+					}
+					if ($sProduto != -1) {
+						$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente, 'mensagem' => "O produto " . $sProduto . " não possui essa quantidade mias ou Já foi vendido todos os itens");
+						$this -> my_load_view('vendaComum', $data);
+					} else {
+						$this -> session -> unset_userdata('produtos');
+						redirect('venda');
+					}
+				} else {
+					$data = array('total' => $total, 'produtos' => $produtos, 'mensagem' => "Cliente não Selecionado");
+					$this -> my_load_view('vendaConsig', $data);
+				}
+			} else {
+				if ($cliente != -1) {
+					$data = array('total' => $total, 'cliente' => $cliente);
+					$this -> my_load_view('vendaDateR', $data);
+				} else {
+					$data = array('total' => $total, 'produtos' => $produtos, 'mensagem' => "Cliente não Selecionado");
+					$this -> my_load_view('vendaConsig', $data);
+				}
 			}
-			
+
 		} else {
 			redirect('login');
 		}
@@ -385,6 +460,66 @@ class Venda extends MY_Controller {
 		}
 	}
 
+	public function verificaItem($total, $idCliente, $id) {
+		$datestring = "%m%d";
+		$time = time();
+		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
+		if ($this -> session -> userdata('load') == $load) {
+			if ($this -> session -> userdata('produtos')) {
+				$cliente = $this -> usuario_model -> getCliente($idCliente, 0);
+				$produtos = $this -> session -> userdata('produtos');
+				$verifica = -1;
+				for ($i = 0; $i < count($produtos); $i++) {
+					if (strcmp($produtos[$i] -> cod_barra_produto, trim($this -> input -> post('codigoP', TRUE))) == 0) {
+						if ($produtos[$i] -> estoque_produto >= $this -> input -> post('quantP', TRUE)) {
+							$produtos[$i] -> modelo_produto = $this -> input -> post('quantP', TRUE);
+							$produtos[$i] -> tipo_produto = 1;
+							$total -= $this -> input -> post('quantP', TRUE) * $produtos[$i] -> valor_produto;
+							$verifica = 0;
+						} else {
+							$verifica = -2;
+						}
+					}
+				}
+				if ($verifica == -1) {
+					$data = array('cliente' => $cliente, 'total' => $total, 'produtos' => $produtos, 'mensagem' => "Produto não está na Lista", 'id' => $id);
+					$this -> my_load_view('vendaRetorno', $data);
+				} else if ($verifica == -2) {
+					$data = array('cliente' => $cliente, 'total' => $total, 'produtos' => $produtos, 'mensagem' => "Quantidade de produto Devolvido Superior a Quantidade Levada ", 'id' => $id);
+					$this -> my_load_view('vendaRetorno', $data);
+				} else {
+
+					$this -> session -> set_userdata('produtos', $produtos);
+					$data = array('cliente' => $cliente, 'total' => $total, 'produtos' => $produtos, 'id' => $id);
+					$this -> my_load_view('vendaRetorno', $data);
+				}
+			} else {
+				$vendas1 = $this -> usuario_model -> getVendaC();
+				if ($vendas1 != FALSE) {
+					for ($i = 0; $i < count($vendas1); $i++) {
+						$venda = $this -> usuario_model -> getVenda($vendas1[$i]['id_venda_inicio']);
+						$cliente = $this -> usuario_model -> getCliente($venda -> cliente_fk, 0);
+						$data1 = explode(" ", $venda -> data_venda);
+						$data1 = explode("-", $data1[0]);
+						$data = "" . $data1[2];
+						$data = $data . "-" . $data1[1];
+						$data = $data . "-" . $data1[0];
+						$venda -> data_venda = $data;
+						$venda -> cliente_fk = $cliente[0]['nome_cliente'];
+						$vendas[$i] = $venda;
+					}
+					$data = array('vendas' => $vendas, 'mensagem' => "Erro ao na criação da lista de produto");
+					$this -> my_load_view('consignado', $data);
+				} else {
+					$this -> my_load_view('consignado', NULL);
+				}
+			}
+
+		} else {
+			redirect('login');
+		}
+	}
+
 	public function retornoCom($id) {
 		$datestring = "%m%d";
 		$time = time();
@@ -393,8 +528,62 @@ class Venda extends MY_Controller {
 			if ($this -> session -> userdata('produtos')) {
 				$this -> session -> unset_userdata('produtos');
 			}
-			
-			echo "RETORNO DA FATURA";
+			$compras = $this -> usuario_model -> getCompras($id);
+			$venda = $this -> usuario_model -> getVenda($id);
+			$cliente = $this -> usuario_model -> getCliente($venda -> cliente_fk, 0);
+			for ($i = 0; $i < count($compras); $i++) {
+				$produto = $this -> usuario_model -> getProduto($compras[$i]['produto_fk'], 0);
+				$produto -> estoque_produto = $compras[$i]['quantidade_produto'];
+				$produto -> modelo_produto = 0;
+				$produto -> tipo_produto = 0;
+				$produtos[$i] = $produto;
+			}
+			$this -> session -> set_userdata('produtos', $produtos);
+			$total = $venda -> valor_venda;
+			$data = array('cliente' => $cliente, 'total' => $total, 'produtos' => $produtos, 'id' => $id);
+			$this -> my_load_view('vendaRetorno', $data);
+		} else {
+			redirect('login');
+		}
+	}
+
+	public function voltarCom($i,$total,$idCliente,$id) {
+		$datestring = "%m%d";
+		$time = time();
+		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
+		if ($this -> session -> userdata('load') == $load) {
+			$cliente = $this -> usuario_model -> getCliente($idCliente, 0);
+			$produtos = $this -> session -> userdata('produtos');
+			$total+= $produtos[$i]->modelo_produto*$produtos[$i]->valor_produto;
+			$produtos[$i]->modelo_produto=0;
+			$produtos[$i]->tipo_produto=0;
+			$this -> session -> set_userdata('produtos', $produtos);
+			$data = array('cliente' => $cliente, 'total' => $total, 'produtos' => $produtos, 'id' => $id);
+			$this -> my_load_view('vendaRetorno', $data);			
+		} else {
+			redirect('login');
+		}
+	}
+
+	public function finalizarRetorno($total, $idCliente, $idVenda) {
+		$datestring = "%m%d";
+		$time = time();
+		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
+		if ($this -> session -> userdata('load') == $load) {
+			$produtos = $this -> session -> userdata('produtos');
+			$vendaRtorno = $this -> usuario_model -> setVenda($idCliente, $total);
+			for ($i = 0; $i < count($produtos); $i++) {
+				$produto = $this -> usuario_model -> getProduto($produtos[$i] -> id_produto, 0);
+				$produto -> estoque_produto += $produtos[$i] -> modelo_produto;
+				$this -> usuario_model -> updateVendaProduto($produto -> id_produto, $produto -> estoque_produto);
+				if ($produtos[$i] -> modelo_produto != $produtos[$i] -> estoque_produto) {
+					$this -> usuario_model -> setCompra($idCliente, $produtos[$i] -> estoque_produto - $produtos[$i] -> modelo_produto, $produto -> id_produto, $vendaRtorno);
+				}
+			}
+			$vendasC = $this -> usuario_model -> getVendaC($idVenda);
+			$this -> usuario_model -> updateVendaCom($vendasC[0]['id_venda_consignado'], $vendaRtorno);
+			$this -> session -> unset_userdata('produtos');
+			redirect('venda');
 		} else {
 			redirect('login');
 		}
