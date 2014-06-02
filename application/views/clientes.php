@@ -10,6 +10,8 @@
 							echo '	Cadastro realizado com sucesso!';
 							echo '</div>';
 						}
+						
+						echo validation_errors();
 						?>
 						<div>
 
@@ -26,8 +28,8 @@
 								<div class="form-line" align="center">
 									<div style="float: left; width: 25%; margin-right: 5px;" align="right">
 										<select id="opcao_pesquisa_cliente" name="opcao_pesquisa_cliente" class="form-control" style="width: 150px">
-											<option value="1">Nome</option>
-											<option value="2">CPF</option>
+											<option value="2" <?php echo set_select('opcao_pesquisa_cliente', 2); ?>>Nome</option>
+											<option value="1" <?php echo set_select('opcao_pesquisa_cliente', 1); ?>>CPF</option>
 										</select>
 									</div>
 									<div style="float: left; width: 55%; margin-right: 5px;">
@@ -65,8 +67,8 @@
 								}
 
 								} else {
-								echo '<div>';
-								echo '	Nenhum cliente cadastrado!';
+								echo '<div style="padding: 10px; width: 100%" align="center">';
+								echo '	Nenhum cliente encontrado!';
 								echo '</div>';
 								}
 								?>
