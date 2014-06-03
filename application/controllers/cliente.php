@@ -124,6 +124,11 @@ class Cliente extends MY_Controller {
 		}
 	}
 
+	function infoCliente($id_cliente) {
+		$data["cliente"] = $this -> usuario_model -> getCliente($id_cliente, 0);
+		$this -> my_load_view('infoCliente', $data);	
+	}
+
 	function validaCPF($cpf) {
 		// Verifica se o número digitado contém todos os digitos
 		$cpf = str_pad(preg_replace('[^0-9]', '', $cpf), 11, '0', STR_PAD_LEFT);
