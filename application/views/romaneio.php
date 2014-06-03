@@ -103,5 +103,4 @@ if ($vendas) {
 	ob_clean();
 
 	$pdf -> Output('romaneio.pdf', 'I');
-}
-?>
+}?>
