@@ -63,6 +63,15 @@
 						</table>
 					</div>
 				</div>
+				<div class="row">
+					<div class="col-md-6 col-md-offset-3" align="center">
+						<ul class="pager">
+							<li>
+								<a type="button" href="<?php if($tipo==0){echo site_url("venda/comum");}else{echo site_url("venda/novoCom");}?>">Voltar</a>
+							</li>
+						</ul>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -18,6 +18,18 @@ class Venda extends MY_Controller {
 		}
 	}
 
+	public function criaRomaneio($idvenda) {
+		$datestring = "%m%d";
+		$time = time();
+		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
+		if ($this -> session -> userdata('load') == $load) {
+			$data = array('romaneio' => $idvenda);
+			$this -> my_load_view('venda', $data);
+		} else {
+			redirect('login');
+		}
+	}
+
 	public function comum() {
 		$datestring = "%m%d";
 		$time = time();
@@ -214,10 +226,10 @@ class Venda extends MY_Controller {
 					} else {
 						if ($tipo == 0) {
 							if ($id != -1) {
-								$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente, 'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
+								$data = array('total' => $total, 'cliente' => $cliente, 'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
 								$this -> my_load_view('vendaComum', $data);
 							} else {
-								$data = array('total' => $total, 'produtos' => $produtos, 'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
+								$data = array('total' => $total, 'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
 								$this -> my_load_view('vendaComum', $data);
 							}
 						} else {
@@ -324,36 +336,49 @@ class Venda extends MY_Controller {
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
 			session_start();
-			$produtos = $_SESSION['produtos'];
+			if (isset($_SESSION['produtos'])) {
+				$produtos = $_SESSION['produtos'];
+			}
 			if ($cliente != -1) {
-				$cliente = $this -> usuario_model -> getCliente($cliente, 0);
-				$idVenda = $this -> usuario_model -> setVenda($cliente[0]['id_cliente'], $total);
-				$sProduto = -1;
-				for ($i = 0; $i < count($produtos); $i++) {
-					$produto = $this -> usuario_model -> getProduto($produtos[$i] -> id_produto, 0);
-					if ($produtos[$i] -> estoque_produto <= $produto -> estoque_produto) {
-						if ($produtos[$i] -> estoque_produto == $produto -> estoque_produto) {
-							$this -> usuario_model -> updateVendaProduto($produtos[$i] -> id_produto, 0);
+				if ($total != 0) {
+					$cliente = $this -> usuario_model -> getCliente($cliente, 0);
+					$idVenda = $this -> usuario_model -> setVenda($cliente[0]['id_cliente'], $total);
+					$sProduto = -1;
+					for ($i = 0; $i < count($produtos); $i++) {
+						$produto = $this -> usuario_model -> getProduto($produtos[$i] -> id_produto, 0);
+						if ($produtos[$i] -> estoque_produto <= $produto -> estoque_produto) {
+							if ($produtos[$i] -> estoque_produto == $produto -> estoque_produto) {
+								$this -> usuario_model -> updateVendaProduto($produtos[$i] -> id_produto, 0);
+							} else {
+								$this -> usuario_model -> updateVendaProduto($produtos[$i] -> id_produto, $produto -> estoque_produto - $produtos[$i] -> estoque_produto);
+							}
+							$this -> usuario_model -> setCompra($cliente[0]['id_cliente'], $produtos[$i] -> estoque_produto, $produtos[$i] -> id_produto, $idVenda);
 						} else {
-							$this -> usuario_model -> updateVendaProduto($produtos[$i] -> id_produto, $produto -> estoque_produto - $produtos[$i] -> estoque_produto);
+							$sProduto = $produtos[$i] -> cod_barra_produto;
+							break;
 						}
-						$this -> usuario_model -> setCompra($cliente[0]['id_cliente'], $produtos[$i] -> estoque_produto, $produtos[$i] -> id_produto, $idVenda);
-					} else {
-						$sProduto = $produtos[$i] -> cod_barra_produto;
-						break;
 					}
-				}
-				if ($sProduto != -1) {
-					$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente, 'mensagem' => "O produto " . $sProduto . " não possui essa quantidade mias ou Já foi vendido todos os itens");
-					$this -> my_load_view('vendaComum', $data);
+					if ($sProduto != -1) {
+						$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente, 'mensagem' => "O produto " . $sProduto . " não possui essa quantidade mias ou Já foi vendido todos os itens");
+						$this -> my_load_view('vendaComum', $data);
+					} else {
+						session_destroy();
+						session_write_close();
+						redirect('venda/criaRomaneio/' . $idVenda);
+					}
 				} else {
-					session_destroy();
 					session_write_close();
-					redirect('venda');
+					$data = array('total' => $total, 'mensagem' => "Nem um produto Selecionado");
+					$this -> my_load_view('vendaComum', $data);
 				}
 			} else {
-				$data = array('total' => $total, 'produtos' => $produtos, 'mensagem' => "Cliente não Selecionado");
-				$this -> my_load_view('vendaComum', $data);
+				if (isset($_SESSION['produtos'])) {
+					$data = array('total' => $total, 'produtos' => $produtos, 'mensagem' => "Cliente não Selecionado");
+					$this -> my_load_view('vendaComum', $data);
+				} else {
+					$data = array('total' => $total, 'mensagem' => "Cliente não Selecionado");
+					$this -> my_load_view('vendaComum', $data);
+				}
 			}
 		} else {
 			redirect('login');
@@ -366,7 +391,9 @@ class Venda extends MY_Controller {
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
 			session_start();
-			$produtos = $_SESSION['produtos'];
+			if (isset($_SESSION['produtos'])) {
+				$produtos = $_SESSION['produtos'];
+			}
 			if ($this -> input -> post('data', TRUE)) {
 				if ($cliente != -1) {
 					$cliente = $this -> usuario_model -> getCliente($cliente, 0);
@@ -393,20 +420,34 @@ class Venda extends MY_Controller {
 					} else {
 						session_destroy();
 						session_write_close();
-						redirect('venda');
+						redirect('venda/criaRomaneio/' . $idVenda);
 					}
 				} else {
+					session_write_close();
 					$data = array('total' => $total, 'produtos' => $produtos, 'mensagem' => "Cliente não Selecionado");
 					$this -> my_load_view('vendaConsig', $data);
 				}
 			} else {
-				session_write_close();
 				if ($cliente != -1) {
-					$data = array('total' => $total, 'cliente' => $cliente);
-					$this -> my_load_view('vendaDateR', $data);
+					if ($total != 0) {
+						session_write_close();
+						$data = array('total' => $total, 'cliente' => $cliente);
+						$this -> my_load_view('vendaDateR', $data);
+					} else {
+						session_write_close();
+						$data = array('total' => $total, 'mensagem' => "Nem um produto Selecionado");
+						$this -> my_load_view('vendaConsig', $data);
+					}
 				} else {
-					$data = array('total' => $total, 'produtos' => $produtos, 'mensagem' => "Cliente não Selecionado");
-					$this -> my_load_view('vendaConsig', $data);
+					if (isset($_SESSION['produtos'])) {
+						session_write_close();
+						$data = array('total' => $total, 'produtos' => $produtos, 'mensagem' => "Cliente não Selecionado");
+						$this -> my_load_view('vendaConsig', $data);
+					} else {
+						session_write_close();
+						$data = array('total' => $total, 'mensagem' => "Cliente não Selecionado");
+						$this -> my_load_view('vendaConsig', $data);
+					}
 				}
 			}
 
@@ -522,7 +563,7 @@ class Venda extends MY_Controller {
 					$this -> my_load_view('vendaRetorno', $data);
 				} else if ($verifica == -2) {
 					session_write_close();
-					$data = array('cliente' => $cliente, 'total' => $total, 'produtos' => $produtos, 'mensagem' => "Quantidade de produto Devolvido Superior a Quantidade Levada ", 'id' => $id);
+					$data = array('cliente' => $cliente, 'total' => $total, 'produtos' => $produtos, 'mensagem' => "Quantidade de produto Devolvido é Superior a Quantidade Levada ", 'id' => $id);
 					$this -> my_load_view('vendaRetorno', $data);
 				} else {
 					unset($_SESSION['produtos']);
@@ -628,7 +669,33 @@ class Venda extends MY_Controller {
 			$this -> usuario_model -> updateVendaCom($vendasC[0]['id_venda_consignado'], $vendaRtorno);
 			session_destroy();
 			session_write_close();
-			redirect('venda');
+			if ($total != 0) {
+				redirect('venda/criaRomaneio/' . $vendaRtorno);
+			} else {
+				redirect('venda');
+			}
+		} else {
+			redirect('login');
+		}
+	}
+
+	public function visualizaI($idProduto,$total,$tipo = 0,$idCliente,$id) {
+		$datestring = "%m%d";
+		$time = time();
+		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
+		if ($this -> session -> userdata('load') == $load) {
+			if($idProduto==-1){
+				session_start();
+				$produtos = $_SESSION['produtos'];
+				session_write_close();
+				$cliente = $this -> usuario_model -> getCliente($idCliente, 0);
+				$data = array('cliente' => $cliente, 'total' => $total, 'produtos' => $produtos, 'id' => $id);
+				$this -> my_load_view('vendaRetorno', $data);
+			}else{
+				$produto = $this -> usuario_model -> getProduto(trim($id), 0);
+				$data = array('idCliente' => $idCliente, 'tipo'=>$tipo, 'total' => $total, 'produto' => $produto, 'id' => $id);
+				$this -> my_load_view('vendaVerProduto', $data);
+			}
 		} else {
 			redirect('login');
 		}

@@ -25,7 +25,7 @@
 						<table class="table table-bordered table-hover"  style="margin-left: 11%">
 							<thead>
 								<tr class="info">
-									<th style="text-align: center" >Código do Venda</th>
+									<th style="text-align: center" >Código da Venda</th>
 									<th style="text-align: center">Nome do Cliente</th>
 									<th style="text-align: center">Valor Total </th>
 									<th style="text-align: center">Data de Venda</th>

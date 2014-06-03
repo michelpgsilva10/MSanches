@@ -27,6 +27,7 @@
 				<?php if (isset($mensagem))
 				{
 				?>
+				<br />
 				<div class="alert alert-danger alert-dismissable">
 					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
 						&times;
@@ -79,7 +80,7 @@
 								<?php if($total!=0){
 									for($i=0;$i<count($produtos);$i++){?>
 								<tr>
-									<td style="text-align: center;"> <?php echo $i ?></td>	
+									<td style="text-align: center;"> <?php echo $i+1; ?></td>	
 									<td style="text-align: center;"> <?php echo $produtos[$i]->	cod_barra_produto ?></td>
 									<td style="text-align: center;"> <?php echo $produtos[$i]->	estoque_produto ?></td>
 									<td style="text-align: center;"> <?php echo $produtos[$i]->	valor_produto ?></td>

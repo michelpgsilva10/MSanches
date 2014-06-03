@@ -45,6 +45,7 @@ Class Usuario_model  extends CI_Model {
 	function getQantidadeItem($tipo) {
 		$this -> db -> select('SUM(estoque_produto) AS total');
 		$this -> db -> from('produto');
+		$this -> db -> where('estoque_produto !=',0);
 		$this -> db -> where('tipo_produto', $tipo);
 		$query = $this -> db -> get();
 		if ($query -> num_rows() > 0) {

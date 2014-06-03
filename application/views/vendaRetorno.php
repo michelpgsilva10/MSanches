@@ -66,10 +66,11 @@
 				</form>
 				<br />
 				<div class="row">
-					<div class="col-md-9 ">
-						<table class="table table-bordered table-hover"  style="margin-left: 18%">
+					<div class="col-md-10 ">
+						<table class="table table-bordered table-hover"  style="margin-left: 10%">
 							<thead>
 								<tr class="info">
+									<th style="text-align: center">#</th>
 									<th style="text-align: center" >Código do Poroduto</th>
 									<th style="text-align: center">Quantidade Levada</th>
 									<th style="text-align: center">Quantidade Devolvida</th>
@@ -82,6 +83,7 @@
 for($i=0;$i<count($produtos);$i++){
 ?>
 <tr <?php if($produtos[$i]->tipo_produto==1){?> class="success" <?php } ?>>
+	<td style="text-align: center;"> <?php echo $i+1; ?> </td>
 								<td style="text-align: center;"> <?php echo $produtos[$i]->	cod_barra_produto ?>
 								 <?php if($produtos[$i]->tipo_produto==1){ ?>
 								 	<span class="glyphicon glyphicon-ok form-control-feedback"></span>
@@ -106,8 +108,8 @@ for($i=0;$i<count($produtos);$i++){
 							</tbody>
 							<tfoot>
 								<tr class="info">
-									<td style="text-align: center;" ><strong> Total </strong></td>
-									<td colspan = 5 style="text-align: center;"><label> <b> <?php echo $total; ?> </b></label></td>
+									<td colspan = 3 style="text-align: center;" ><strong> Total </strong></td>
+									<td colspan = 4 style="text-align: center;"><label> <b> <?php echo $total; ?> </b></label></td>
 								</tr>
 							</tfoot>
 						</table>
