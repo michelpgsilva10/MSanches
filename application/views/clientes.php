@@ -38,7 +38,7 @@
 									<div style="float: left; width: 15%;">
 										<input class="btn btn-primary form-control" type="submit" name="btn_pesquisa_cliente" value="Pesquisar" id="btn_pesquisa_cliente"/>
 									</div>	
-									<a href="<?php echo site_url("cliente/teste") ?>" target="_blank">
+									<a href="<?php echo site_url("cliente/teste/2") ?>" target="_blank">
 										Teste
 									</a>					
 								</div>	
