@@ -40,7 +40,7 @@
 						<div class="col-md-7 col-md-offset-3" align="center">
 							<div class="form-group">
 								<label for="inputEmail3" control-label" >Cliente: <?php	if (isset($cliente)) { echo $cliente[0]['nome_cliente'];} else { echo "Não Selecionado";} ?></label>								
-									<a class="btn btn-default btn-xs" href="<?php echo site_url("venda/selCliente/-1/".$total."/0")?>" style="margin-left: 6%;" role="button">Selecionar</a>	
+									<a class="btn btn-default btn-xs" href="<?php session_write_close (); echo site_url("venda/selCliente/-1/".$total."/0")?>" style="margin-left: 6%;" role="button">Selecionar</a>	
 							</div>
 						</div>
 					</div>
@@ -68,6 +68,7 @@
 						<table class="table table-bordered table-hover"  style="margin-left: 18%">
 							<thead>
 								<tr class="info">
+									<th style="text-align: center">#</th>
 									<th style="text-align: center" >Código do Poroduto</th>
 									<th style="text-align: center">Quantidade</th>
 									<th style="text-align: center" colspan="2">Unidade  |  Total </th>
@@ -76,24 +77,21 @@
 							</thead>
 							<tbody id="tabelaV">
 								<?php if($total!=0){
-for($i=0;$i<count($produtos);$i++){
-?>
-<tr>
-<td style="text-align: center;"> <?php echo $produtos[$i]->	cod_barra_produto ?>
-								</td>
-								<td style="text-align: center;"> <?php echo $produtos[$i]->	estoque_produto ?>
-								</td>
-								<td style="text-align: center;"> <?php echo $produtos[$i]->	valor_produto ?>
-								</td>
-								<td style="text-align: center;"> <?php echo $produtos[$i]->valor_produto*$produtos[$i]->estoque_produto ?></td>
-								<td style="text-align: center;"> <a type="button" class="btn btn-info" href="<?php if(isset($cliente)){echo site_url("venda/deletaItem/".$i."/".$total."/0/".$cliente[0]['id_cliente']);}else{ echo site_url("venda/deletaItem/".$i."/".$total); }?>">Deletar</a>
+									for($i=0;$i<count($produtos);$i++){?>
+								<tr>
+									<td style="text-align: center;"> <?php echo $i ?></td>	
+									<td style="text-align: center;"> <?php echo $produtos[$i]->	cod_barra_produto ?></td>
+									<td style="text-align: center;"> <?php echo $produtos[$i]->	estoque_produto ?></td>
+									<td style="text-align: center;"> <?php echo $produtos[$i]->	valor_produto ?></td>
+									<td style="text-align: center;"> <?php echo $produtos[$i]->valor_produto*$produtos[$i]->estoque_produto ?></td>
+									<td style="text-align: center;"> <a type="button" class="btn btn-info" href="<?php session_write_close (); if(isset($cliente)){echo site_url("venda/deletaItem/".$i."/".$total."/0/".$cliente[0]['id_cliente']);}else{ echo site_url("venda/deletaItem/".$i."/".$total); }?>">Deletar</a>
 								</tr>
 								<?php } } ?>
 							</tbody>
 							<tfoot>
 								<tr class="info">
 									<td style="text-align: center;" ><strong> Total </strong></td>
-									<td colspan = 4 style="text-align: center;"><label> <b> <?php echo $total; ?> </b></label></td>
+									<td colspan = 5 style="text-align: center;"><label> <b> <?php echo $total; ?> </b></label></td>
 								</tr>
 							</tfoot>
 						</table>
