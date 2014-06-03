@@ -39,8 +39,8 @@ if ($vendas) {
 	}
 
 	$pdf = new PDF('P', 'cm', 'A4');
-	$pdf -> Open();
 	$pdf -> SetMargins(2, 2);
+	$pdf -> Open();	
 	$pdf -> AddPage();
 	$pdf -> SetFont('Arial', '', 11);
 	$pdf -> Cell(2, 0.8, 'Nome', 1, 0, 'L');
