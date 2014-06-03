@@ -5,7 +5,7 @@ class Pdf extends FPDF {
 	function Header() {
 		$cliente = new Cliente();
 		// Logo
-		$this -> Image($cliente -> config -> item('base_url') . 'css/MSanches-logo.png', 2, 2, 4);
+		$this -> Image($cliente -> config -> item('base_url') . 'css/MSanches-logo.png', 2, 2, 6);
 		// Arial bold 15
 		$this -> SetFont('Arial', 'B', 16);
 
