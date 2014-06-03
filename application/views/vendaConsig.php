@@ -26,6 +26,7 @@
 				<?php if (isset($mensagem))
 					{
 								?>
+								<br />
 								<div class="alert alert-danger alert-dismissable">
 									<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 									<?php	echo $mensagem; ?>
@@ -66,6 +67,7 @@
 						<table class="table table-bordered table-hover"  style="margin-left: 18%">
 							<thead>
 								<tr class="info">
+									<th style="text-align: center">#</th>
 									<th style="text-align: center" >Código do Poroduto</th>
 									<th style="text-align: center">Quantidade</th>
 									<th style="text-align: center" colspan="2">Unidade  |  Total </th>
@@ -77,6 +79,7 @@
 								 for($i=0;$i<count($produtos);$i++){
 								 ?>
 								  <tr>
+								  	<td style="text-align: center;"> <?php echo $i?> </td>
 								  	<td style="text-align: center;"> <?php echo $produtos[$i]->	cod_barra_produto ?> </td>
 								  	<td style="text-align: center;"> <?php echo $produtos[$i]->	estoque_produto ?> </td>
 								  	<td style="text-align: center;"> <?php echo $produtos[$i]->	valor_produto ?> </td>
@@ -88,7 +91,7 @@
 							<tfoot>
 								<tr class="info">
 									<td style="text-align: center;" ><strong> Total </strong></td>
-									<td colspan = 4 style="text-align: center;"><label> <b> <?php echo $total; ?>
+									<td colspan = 5 style="text-align: center;"><label> <b> <?php echo $total; ?>
 										</b></label></td>
 								</tr>
 							</tfoot>
