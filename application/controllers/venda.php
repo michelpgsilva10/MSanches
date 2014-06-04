@@ -276,11 +276,15 @@ class Venda extends MY_Controller {
 				$data = array('total' => $total, 'tipo' => $tipo);
 				$this -> my_load_view('vendaCliente', $data);
 			} else {
+				$cliente = $this -> usuario_model -> getCliente($id, 0);	
 				session_start();
-				$produtos = $_SESSION['produtos'];
+				if(isset($_SESSION['produtos'])){
+					$produtos = $_SESSION['produtos'];
+					$data = array('total' => $total, 'cliente' => $cliente, 'produtos' => $produtos);
+				}else{
+					$data = array('total' => $total, 'cliente' => $cliente);
+				}				
 				session_write_close();
-				$cliente = $this -> usuario_model -> getCliente($id, 0);
-				$data = array('total' => $total, 'cliente' => $cliente, 'produtos' => $produtos);
 				if ($tipo == 0) {
 					$this -> my_load_view('vendaComum', $data);
 				} else {
@@ -342,8 +346,8 @@ class Venda extends MY_Controller {
 				$total = 0;
 			}
 			if ($cliente != -1) {
+				$cliente = $this -> usuario_model -> getCliente($cliente, 0);
 				if ($total != 0) {
-					$cliente = $this -> usuario_model -> getCliente($cliente, 0);
 					$idVenda = $this -> usuario_model -> setVenda($cliente[0]['id_cliente'], $total);
 					$sProduto = -1;
 					for ($i = 0; $i < count($produtos); $i++) {
@@ -371,7 +375,7 @@ class Venda extends MY_Controller {
 					}
 				} else {
 					session_write_close();
-					$data = array('total' => $total, 'mensagem' => "Nem um produto Selecionado ou erro no Sistema(Se for erro no sisteme ligue para o tecnico)");
+					$data = array('total' => $total, 'mensagem' => "Nem um produto Selecionado ou erro no Sistema(Se for erro no Sistema ligue para o tecnico)",'cliente' => $cliente);
 					$this -> my_load_view('vendaComum', $data);
 				}
 			} else {
@@ -401,8 +405,8 @@ class Venda extends MY_Controller {
 			}
 			if ($this -> input -> post('data', TRUE)) {
 				if ($cliente != -1) {
+					$cliente = $this -> usuario_model -> getCliente($cliente, 0);
 					if ($total != 0) {
-						$cliente = $this -> usuario_model -> getCliente($cliente, 0);
 						$idVenda = $this -> usuario_model -> setVenda($cliente[0]['id_cliente'], $total, $this -> input -> post('data', TRUE));
 						$this -> usuario_model -> setVendaC($idVenda);
 						$sProduto = -1;
@@ -431,7 +435,7 @@ class Venda extends MY_Controller {
 						}
 					} else {
 						session_write_close();
-						$data = array('total' => $total, 'mensagem' => "Nem um produto Selecionado ou erro no Sistema(Se for erro no sisteme ligue para o tecnico)");
+						$data = array('total' => $total, 'mensagem' => "Nem um produto Selecionado ou erro no Sistema(Se for erro no Sistema ligue para o tecnico)",'cliente' => $cliente);
 						$this -> my_load_view('vendaComum', $data);
 					}
 				} else {
@@ -451,7 +455,8 @@ class Venda extends MY_Controller {
 						$this -> my_load_view('vendaDateR', $data);
 					} else {
 						session_write_close();
-						$data = array('total' => $total, 'mensagem' => "Nem um produto Selecionado");
+						$cliente = $this -> usuario_model -> getCliente($cliente, 0);
+						$data = array('total' => $total, 'mensagem' => "Nem um produto Selecionado ou erro no Sistema(Se for erro no Sistema ligue para o tecnico)",'cliente' => $cliente);
 						$this -> my_load_view('vendaConsig', $data);
 					}
 				} else {
@@ -695,6 +700,7 @@ class Venda extends MY_Controller {
 		if ($this -> session -> userdata('load') == $load) {
 			session_start();
 			$produtos = $_SESSION['produtos'];
+			$cliente = $this -> usuario_model -> getCliente($idCliente, 0);
 			$vendaRtorno = $this -> usuario_model -> setVenda($idCliente, $total);
 			for ($i = 0; $i < count($produtos); $i++) {
 				$produto = $this -> usuario_model -> getProduto($produtos[$i] -> id_produto, 0);

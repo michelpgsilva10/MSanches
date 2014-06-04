@@ -20,9 +20,9 @@
 					<?php } ?>						
 						<div class="panel-body">
 							<div class="row">
-					<div class="col-md-10 ">
+					<div class="col-md-11 ">
 						<?php if(isset($vendas)){ ?>
-						<table class="table table-bordered table-hover"  style="margin-left: 11%">
+						<table class="table table-bordered table-hover"  style="margin-left: 5%">
 							<thead>
 								<tr class="info">
 									<th style="text-align: center" >Código da Venda</th>
