@@ -37,7 +37,7 @@
 				<?php } ?>
 				<br />
 				<form class="form-inline" name="formV" method="post" role="form" action="<?php
-				echo site_url("venda/verificaItem/" . $total . "/" . $cliente[0]['id_cliente']."/".$id);
+				echo site_url("venda/verificaItem/" . $total . "/" . $cliente[0]['id_cliente']."/".$id."/".$valorMim);
 				?>">
 					<div class="row">
 						<div class="col-md-7 col-md-offset-3" align="center">
@@ -98,9 +98,9 @@ for($i=0;$i<count($produtos);$i++){
 								</td>
 								<td style="text-align: center;"> <?php echo $produtos[$i]->valor_produto*($produtos[$i]->estoque_produto-$produtos[$i]->modelo_produto) ?></td>
 								<td style="text-align: center;"> <a type="button" class="btn btn-info btn-sm" href="<?php
-								echo site_url("venda/visualizaI/" . $produtos[$i]->id_produto . "/" . $total . "/0/" . $cliente[0]['id_cliente']."/".$id);
+								echo site_url("venda/visualizaI/" . $produtos[$i]->id_produto . "/" . $total . "/0/" . $cliente[0]['id_cliente']."/".$id."/".$valorMim);
 								?>">Ver Produto</a><?php if($produtos[$i]->tipo_produto==1){ ?> <a type="button" class="btn btn-info btn-sm" href="<?php
-								echo site_url("venda/voltarCom/" .$i. "/" . $total . "/" . $cliente[0]['id_cliente']."/".$id);
+								echo site_url("venda/voltarCom/" .$i. "/" . $total . "/" . $cliente[0]['id_cliente']."/".$id."/".$valorMim);
 								?>">Desfazer Ação</a><?php } ?>
 								
 								<?php }  ?>

@@ -62,7 +62,7 @@ Class Usuario_model  extends CI_Model {
 
 	}
 
-	function logs($id, $tipo, $produto = 0) {
+	function logs($id, $tipo, $produto = 0,$valor=0,$idVenda=0) {
 
 		if ($tipo == 0) {
 			$data = array('logs' => "Logou no sistema", 'id_user_logs' => $id);
@@ -78,7 +78,14 @@ Class Usuario_model  extends CI_Model {
 			$data = array('logs' => "Saiu do sistema", 'id_user_logs' => $id);
 		} else if ($tipo == 6) {
 			$data = array('logs' => "Imprimiu Etiqueta do produto com o codigo: " . $produto, 'id_user_logs' => $id);
+		} else if ($tipo == 7) {
+			$data = array('logs' => "Efetuou um venda Comum para o cliente: " . $produto." com o valor de ".$valor, 'id_user_logs' => $id);
+		} else if ($tipo == 8) {
+			$data = array('logs' => "Efetuou um venda Consignado para o cliente: " . $produto." com o valor de ".$valor, 'id_user_logs' => $id);
+		} else if ($tipo == 9) {
+			$data = array('logs' => "Efetuou o retorno do Consignado do cliente: " . $produto." com o valor de ".$valor." referente a venda de numero ".$idVenda, 'id_user_logs' => $id);
 		}
+		
 		$this -> db -> insert('logs', $data);
 	}
 

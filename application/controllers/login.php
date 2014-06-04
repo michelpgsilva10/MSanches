@@ -25,7 +25,7 @@ class Login extends MY_Controller {
 				$result = array('nome' => $aux ->NOME_USER, 'id' => $aux ->ID_USER, 'nivel' => $aux ->NIVEL_USER);
 				$this -> session -> set_userdata('load', $load);
 				$this -> session -> set_userdata($result);
-				$todos = $this -> usuario_model -> logs( $aux ->ID_USER,0);
+				$this -> usuario_model -> logs( $aux ->ID_USER,0);
 				redirect('home');
 			} else {
 				$data["mensagem"] = "Senha ou Email Incorretos, Tente Novamente";
@@ -35,7 +35,7 @@ class Login extends MY_Controller {
 	}
 
 	public function sair() {
-		$todos = $this -> usuario_model -> logs($this->session->userdata('id'),5);
+		$this -> usuario_model -> logs($this->session->userdata('id'),5);
 		$this -> session -> sess_destroy();
 		redirect('login');
 	}
