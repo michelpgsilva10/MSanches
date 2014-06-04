@@ -80,9 +80,10 @@ if ($vendas) {
 		$pdf -> Cell(4, 0.8, $vendas[$i]["cod_barra_produto"], 1, 0, 'C');
 		$pdf -> Cell(2, 0.8, $vendas[$i]["quantidade_produto"], 1, 0, 'C');
 		$pdf -> Cell(2, 0.8, '', 1, 0, 'C');
-		$pdf -> Cell(3, 0.8, $vendas[$i]["valor_produto"], 1, 0, 'C');
+		$pdf -> Cell(2, 0.8, '', 1, 0, 'C');
+		$pdf -> Cell(2, 0.8, $vendas[$i]["valor_produto"], 1, 0, 'C');
 		$pdf -> Cell(3, 0.8, 'R$ ' . number_format($vendas[$i]["valor_produto"] * $vendas[$i]["quantidade_produto"], 2, ',', '.'), 1, 0, 'C');
-		$pdf -> Cell(3, 0.8, 'R$ ', 1, 1, 'L');
+		$pdf -> Cell(2, 0.8, 'R$ ', 1, 1, 'L');
 	}
 
 	$pdf -> SetFont('Arial', 'B', 11);
@@ -94,7 +95,7 @@ if ($vendas) {
 
 	$pdf -> Cell(3, 4 * 0.8, '', 0, 1, 'L');
 	
-	$pdf -> Cell(7, 0, '', 1, 1, 'L');
+	$pdf -> Cell(7, 0, '', 1, 0, 'L');
 	$pdf -> Cell(3, 0, '', 0, 0, 'L');
 	$pdf -> Cell(7, 0, '', 1, 1, 'L');
 
