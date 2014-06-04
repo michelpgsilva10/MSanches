@@ -30,7 +30,7 @@ $(document).ready(function() {
 		if ($('#opcao_pesquisa_cliente').val() == 2) {			
 			$('#pesquisa_cliente').unmask();
 		} else {			
-			$('#pesquisa_cliente').mask('999.999.99-99');	 
+			$('#pesquisa_cliente').mask('999.999.999-99');	 
 		}
 		$('#pesquisa_cliente').focus();	
 	});

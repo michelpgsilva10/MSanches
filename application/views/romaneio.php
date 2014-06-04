@@ -69,9 +69,10 @@ if ($vendas) {
 	$pdf -> Cell(4, 0.8, 'Item', 1, 0, 'C');
 	$pdf -> Cell(2, 0.8, 'Pegou', 1, 0, 'C');
 	$pdf -> Cell(2, 0.8, 'Vendeu', 1, 0, 'C');
-	$pdf -> Cell(3, 0.8, 'Valor Un.', 1, 0, 'C');
+	$pdf -> Cell(2, 0.8, 'DEV', 1, 0, 'C');
+	$pdf -> Cell(2, 0.8, 'Valor Un.', 1, 0, 'C');
 	$pdf -> Cell(3, 0.8, 'Subtotal', 1, 0, 'C');
-	$pdf -> Cell(3, 0.8, 'Total', 1, 1, 'C');
+	$pdf -> Cell(2, 0.8, 'Total', 1, 1, 'C');
 
 	$pdf -> SetFont('Arial', '', 11);
 
@@ -92,13 +93,16 @@ if ($vendas) {
 	$pdf -> Cell(3, 0.8, 'R$ ', 1, 1, 'L');
 
 	$pdf -> Cell(3, 4 * 0.8, '', 0, 1, 'L');
-	$pdf -> Cell(10, 0, '', 0, 0, 'L');
+	
+	$pdf -> Cell(7, 0, '', 1, 1, 'L');
+	$pdf -> Cell(3, 0, '', 0, 0, 'L');
 	$pdf -> Cell(7, 0, '', 1, 1, 'L');
 
 	$pdf -> SetFont('Arial', '', 11);
 
-	$pdf -> Cell(10, 0, '', 0, 0, 'L');
-	$pdf -> Cell(7, 0.8, $vendas[0]["nome_cliente"], 0, 0, 'C');
+	$pdf -> Cell(7, 0.8, 'Assinatura do Vendedor', 0, 0, 'C');
+	$pdf -> Cell(3, 0, '', 0, 0, 'L');
+	$pdf -> Cell(7, 0.8, 'Assinatura do Cliente', 0, 0, 'C');
 
 	ob_clean();
 

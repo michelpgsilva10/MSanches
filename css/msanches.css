@@ -54,3 +54,13 @@
 	padding: 10px;
 	margin-bottom: 10px;
 }
+
+.info-cliente-padding {
+	padding: 10px;
+}
+
+.subtitulo-info-cliente {	
+	padding-left: 2%;
+	font-size: 20px;
+	color: #428BCA;
+}
