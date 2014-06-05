@@ -242,7 +242,8 @@ Class Usuario_model  extends CI_Model {
 			return false;
 		}
 	}
-	function getVendasConsig($id_venda_consig) {
+	
+	function getIdVendasConsig($id_venda_consig) {
 		$this -> db -> select('*');
 		$this -> db -> from('venda_consignado');
 		$this -> db -> where('id_venda_consignado', $id_venda_consig);
@@ -256,15 +257,22 @@ Class Usuario_model  extends CI_Model {
 		}
 	}
 	
-	function getVendaConsigRetorno($idVendaConsig) {
+	function getVendaConsigTipo($id_venda, $tipo) {
 		$this -> db -> select('*');
 		$this -> db -> from('venda_consignado');
-		$this -> db -> join('venda', 'venda_consignado.id_venda_inicio = venda.id_venda');
+		if ($tipo == 1)
+			$this -> db -> join('venda', 'venda_consignado.id_venda_inicio = venda.id_venda');
+		else
+			$this -> db -> join('venda', 'venda_consignado.id_venda_retorno = venda.id_venda');
 		$this -> db -> join('compra', 'venda.id_venda = compra.venda_fk');
 		$this -> db -> join('produto', 'compra.produto_fk = produto.id_produto');
 		$this -> db -> join('cliente', 'compra.cliente_fk = cliente.id_cliente');
 		$this -> db -> join('endereco', 'cliente.endereco_fk = endereco.id_endereco');
-		$this -> db -> orderby('produto.cod_barra_produto', 'asc');
+		if ($tipo == 1)
+			$this -> db -> where('venda_consignado.id_venda_inicio', $id_venda);
+		else
+			$this -> db -> where('venda_consignado.id_venda_retorno', $id_venda);
+		$this -> db -> order_by('produto.cod_barra_produto', 'asc');
 		
 		$query = $this -> db -> get();
 		

@@ -33,9 +33,11 @@ class Pdf extends FPDF {
 if ($vendas) {
 
 	$subtotal = 0;
+	$total = 0;
 
 	for ($i = 0; $i < count($vendas); $i++) {
 		$subtotal += $vendas[$i]["quantidade_produto"] * $vendas[$i]["valor_produto"];
+		$total += $vendas_retorno[$i]["quantidade_produto"] * $vendas_retorno[$i]["valor_produto"];
 	}
 
 	$pdf = new PDF('P', 'cm', 'A4');
@@ -67,27 +69,39 @@ if ($vendas) {
 
 	$pdf -> SetFont('Arial', 'B', 11);
 	$pdf -> Cell(4, 0.8, 'Item', 1, 0, 'C');
-	$pdf -> Cell(2, 0.8, 'Pegou', 1, 0, 'C');
-	$pdf -> Cell(2, 0.8, 'Vendeu', 1, 0, 'C');
-	$pdf -> Cell(2, 0.8, 'DEV', 1, 0, 'C');
-	$pdf -> Cell(3, 0.8, 'Valor Un.', 1, 0, 'C');
-	$pdf -> Cell(4, 0.8, 'Subtotal', 1, 1, 'C');
+	$pdf -> Cell(1.5, 0.8, 'Pegou', 1, 0, 'C');
+	$pdf -> Cell(1.5, 0.8, 'Vendeu', 1, 0, 'C');
+	$pdf -> Cell(1.5, 0.8, 'DEV', 1, 0, 'C');
+	$pdf -> Cell(2.5, 0.8, 'Valor Un.', 1, 0, 'C');
+	$pdf -> Cell(3, 0.8, 'Subtotal', 1, 0, 'C');
+	$pdf -> Cell(3, 0.8, 'Total', 1, 1, 'C');
 
 	$pdf -> SetFont('Arial', '', 11);
 
 	for ($i = 0; $i < count($vendas); $i++) {
 		$pdf -> Cell(4, 0.8, $vendas[$i]["cod_barra_produto"], 1, 0, 'C');
-		$pdf -> Cell(3, 0.8, $vendas[$i]["quantidade_produto"], 1, 0, 'C');
-		$pdf -> Cell(4, 0.8, 'R$ ' . number_format($vendas[$i]["valor_produto"], 2, ',', '.'), 1, 0, 'C');
-		$pdf -> Cell(5, 0.8, 'R$ ' . number_format($vendas[$i]["valor_produto"] * $vendas[$i]["quantidade_produto"], 2, ',', '.'), 1, 1, 'C');
+		$pdf -> Cell(1.5, 0.8, $vendas[$i]["quantidade_produto"], 1, 0, 'C');
+		
+		$qtde_produto = 0;
+		if ($vendas_retorno[$i]["quantidade_produto"] != NULL)
+			$qtde_produto = $vendas_retorno[$i]["quantidade_produto"];			
+		$pdf -> Cell(1.5, 0.8, $qtde_produto, 1, 0, 'C');
+		$pdf -> Cell(1.5, 0.8, $vendas[$i]["quantidade_produto"] - $vendas_retorno[$i]["quantidade_produto"], 1, 0, 'C');
+		$pdf -> Cell(2.5, 0.8, 'R$ ' . number_format($vendas[$i]["valor_produto"], 2, ',', '.'), 1, 0, 'C');
+		$pdf -> Cell(3, 0.8, 'R$ ' . number_format($vendas_retorno[$i]["valor_produto"] * $vendas_retorno[$i]["quantidade_produto"], 2, ',', '.'), 1, 0, 'C');
+		$pdf -> Cell(3, 0.8, 'R$ ' . number_format($vendas[$i]["valor_produto"] * $vendas_retorno[$i]["quantidade_produto"], 2, ',', '.'), 1, 1, 'C');
 	}
 
+	$pdf -> Cell(5, 0.8, '', 1, 0, 'C');
+	$pdf -> Cell(2, 0.8, 'Subtotal', 1, 0, 'C');
+	$pdf -> Cell(4, 0.8, 'R$ ' . number_format($subtotal, 2, ',', '.'), 1, 0, 'C');
+	
 	$pdf -> SetFont('Arial', 'B', 11);
-
-	$pdf -> Cell(10, 0.8, '', 1, 0, 'C');
+	
 	$pdf -> Cell(2, 0.8, 'Total', 1, 0, 'C');
-	$pdf -> Cell(5, 0.8, 'R$ ' . number_format($total, 2, ',', '.'), 1, 1, 'C');
-
+	$pdf -> Cell(4, 0.8, 'R$ ' . number_format($total, 2, ',', '.'), 1, 1, 'C');
+	
+	$pdf -> SetFont('Arial', '', 11);
 	$pdf -> Cell(3, 4 * 0.8, '', 0, 1, 'L');
 	
 	$pdf -> Cell(7, 0, '', 1, 0, 'L');
@@ -98,7 +112,7 @@ if ($vendas) {
 
 	$pdf -> Cell(7, 0.8, 'Assinatura do Vendedor', 0, 0, 'C');
 	$pdf -> Cell(3, 0, '', 0, 0, 'L');
-	$pdf -> Cell(7, 0.8, 'Assinatura do Cliente', 0, 0, 'C');
+	$pdf -> Cell(7, 0.8, 'Assinatura do Cliente', 0, 1, 'C');
 
 	$pdf -> Output('romaneio-retorno.pdf', 'I');
 }

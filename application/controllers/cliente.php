@@ -97,10 +97,12 @@ class Cliente extends MY_Controller {
 	}
 	
 	function gerarPDFVolta($id_venda_consig) {
-		$venda_inicio = $this -> usuario_model -> getVendasConsig($id_venda_consig) -> id_venda_inicio;
-		$venda_retorno = $this -> usuario_model -> getVendasConsig($id_venda_consig) -> id_venda_retorno;
+		$venda_consig = $this -> usuario_model -> getIdVendasConsig($id_venda_consig);
+	
+		$data["vendas"] = $this -> usuario_model -> getVendaConsig($venda_consig -> id_venda_inicio, 1);
+		$data["vendas_retorno"] = $this -> usuario_model -> getVendaConsig($venda_consig -> id_venda_retorno, 2);
 		
-		
+		$this -> load -> view('romaneio-volta', $data);
 	}
 	
 	function teste() {
