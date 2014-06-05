@@ -96,6 +96,11 @@ class Cliente extends MY_Controller {
 		$this -> load -> view('romaneio', $data);
 	}
 	
+	function gerarPDFInicio($id_venda) {
+		$data["vendas"] = $this -> usuario_model -> getVendaConsig($id_venda);
+		$this -> load -> view('romaneio-inicio', $data);
+	}
+	
 	function gerarPDFVolta($id_venda_consig) {
 		$venda_consig = $this -> usuario_model -> getIdVendasConsig($id_venda_consig);
 	
