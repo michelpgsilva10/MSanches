@@ -18,12 +18,16 @@ class Venda extends MY_Controller {
 		}
 	}
 
-	public function criaRomaneio($idvenda) {
+	public function criaRomaneio($idvenda, $tipo = 0) {
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
-			$data = array('romaneio' => $idvenda);
+			if ($tipo == 1) {
+				$data = array('romaneio' => $idvenda,'consig'=>TRUE);	
+			} else {
+				$data = array('romaneio' => $idvenda);
+			}
 			$this -> my_load_view('venda', $data);
 		} else {
 			redirect('login');
@@ -276,14 +280,14 @@ class Venda extends MY_Controller {
 				$data = array('total' => $total, 'tipo' => $tipo);
 				$this -> my_load_view('vendaCliente', $data);
 			} else {
-				$cliente = $this -> usuario_model -> getCliente($id, 0);	
+				$cliente = $this -> usuario_model -> getCliente($id, 0);
 				session_start();
-				if(isset($_SESSION['produtos'])){
+				if (isset($_SESSION['produtos'])) {
 					$produtos = $_SESSION['produtos'];
 					$data = array('total' => $total, 'cliente' => $cliente, 'produtos' => $produtos);
-				}else{
+				} else {
 					$data = array('total' => $total, 'cliente' => $cliente);
-				}				
+				}
 				session_write_close();
 				if ($tipo == 0) {
 					$this -> my_load_view('vendaComum', $data);
@@ -375,7 +379,7 @@ class Venda extends MY_Controller {
 					}
 				} else {
 					session_write_close();
-					$data = array('total' => $total, 'mensagem' => "Nem um produto Selecionado ou erro no Sistema(Se for erro no Sistema ligue para o tecnico)",'cliente' => $cliente);
+					$data = array('total' => $total, 'mensagem' => "Nem um produto Selecionado ou erro no Sistema(Se for erro no Sistema ligue para o tecnico)", 'cliente' => $cliente);
 					$this -> my_load_view('vendaComum', $data);
 				}
 			} else {
@@ -430,12 +434,12 @@ class Venda extends MY_Controller {
 						} else {
 							session_destroy();
 							session_write_close();
-							$this -> usuario_model -> logs($this -> session -> userdata('id'), 8, $cliente[0]['id_cliente'], $total,$idVenda);
+							$this -> usuario_model -> logs($this -> session -> userdata('id'), 8, $cliente[0]['id_cliente'], $total, $idVenda);
 							redirect('venda/criaRomaneio/' . $idVenda);
 						}
 					} else {
 						session_write_close();
-						$data = array('total' => $total, 'mensagem' => "Nem um produto Selecionado ou erro no Sistema(Se for erro no Sistema ligue para o tecnico)",'cliente' => $cliente);
+						$data = array('total' => $total, 'mensagem' => "Nem um produto Selecionado ou erro no Sistema(Se for erro no Sistema ligue para o tecnico)", 'cliente' => $cliente);
 						$this -> my_load_view('vendaComum', $data);
 					}
 				} else {
@@ -456,7 +460,7 @@ class Venda extends MY_Controller {
 					} else {
 						session_write_close();
 						$cliente = $this -> usuario_model -> getCliente($cliente, 0);
-						$data = array('total' => $total, 'mensagem' => "Nem um produto Selecionado ou erro no Sistema(Se for erro no Sistema ligue para o tecnico)",'cliente' => $cliente);
+						$data = array('total' => $total, 'mensagem' => "Nem um produto Selecionado ou erro no Sistema(Se for erro no Sistema ligue para o tecnico)", 'cliente' => $cliente);
 						$this -> my_load_view('vendaConsig', $data);
 					}
 				} else {
@@ -708,8 +712,8 @@ class Venda extends MY_Controller {
 				$this -> usuario_model -> updateVendaProduto($produto -> id_produto, $produto -> estoque_produto);
 				if ($produtos[$i] -> modelo_produto != $produtos[$i] -> estoque_produto) {
 					$this -> usuario_model -> setCompra($idCliente, $produtos[$i] -> estoque_produto - $produtos[$i] -> modelo_produto, $produto -> id_produto, $vendaRtorno);
-				}else{
-					$this -> usuario_model -> setCompra($idCliente,0, $produto -> id_produto, $vendaRtorno);
+				} else {
+					$this -> usuario_model -> setCompra($idCliente, 0, $produto -> id_produto, $vendaRtorno);
 				}
 			}
 			$vendasC = $this -> usuario_model -> getVendaC($idVenda);
@@ -717,10 +721,10 @@ class Venda extends MY_Controller {
 			session_destroy();
 			session_write_close();
 			if ($total != 0) {
-				$this -> usuario_model -> logs($this -> session -> userdata('id'), 9, $cliente[0]['id_cliente'], $total,$idVenda);
-				redirect('venda/criaRomaneio/' . $vendaRtorno);
+				$this -> usuario_model -> logs($this -> session -> userdata('id'), 9, $cliente[0]['id_cliente'], $total, $idVenda);
+				redirect('venda/criaRomaneio/' . $vendasC[0]['id_venda_consignado']."/1");
 			} else {
-				$this -> usuario_model -> logs($this -> session -> userdata('id'), 9, $cliente[0]['id_cliente'], $total,$idVenda);
+				$this -> usuario_model -> logs($this -> session -> userdata('id'), 9, $cliente[0]['id_cliente'], $total, $idVenda);
 				redirect('venda');
 			}
 		} else {

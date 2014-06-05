@@ -82,7 +82,6 @@ class Produtos extends MY_Controller {
 						$modelos = $this -> usuario_model -> getQProduto($tipo);
 						$aux = 0;
 						$verifica = -1;
-						print_r($modelos);
 						for ($i = 0; $i <= count($modelos); $i++) {
 							$aux++;
 							if ($modelos[$i]['modelo_produto'] != $aux) {
@@ -305,7 +304,6 @@ class Produtos extends MY_Controller {
 					$modelos = $this -> usuario_model -> getQProduto($tipo);
 					$aux = 0;
 					$verifica = -1;
-					print_r($modelos);
 					for ($i = 0; $i <= count($modelos); $i++) {
 						$aux++;
 						if ($modelos[$i]['modelo_produto'] != $aux) {
