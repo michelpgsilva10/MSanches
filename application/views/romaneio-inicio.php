@@ -84,7 +84,7 @@ if ($vendas) {
 
 	$pdf -> SetFont('Arial', 'B', 11);
 
-	$pdf -> Cell(10, 0.8, '', 1, 0, 'C');
+	$pdf -> Cell(10, 0.8, '', 0, 0, 'C');
 	$pdf -> Cell(3, 0.8, 'Total', 1, 0, 'C');
 	$pdf -> Cell(4, 0.8, 'R$ ' . number_format($total, 2, ',', '.'), 1, 1, 'C');
 
