@@ -320,14 +320,8 @@ class Produtos extends MY_Controller {
 				$data = array('mensagem' => $this -> upload -> display_errors());
 				$this -> my_load_view('selFoto', $data);
 			} else {
-				$todos = $this -> usuario_model -> logs($this->session->userdata('id'),2);
-				if(chmod ("D:\Dropbox\Dropbox\Projetos Trabalho\MSanches\css\img\img_produto\defu.jpg", 777)){
-					$todos = $this -> usuario_model -> logs($this->session->userdata('id'),2);
-					redirect('produtos/alterar2/' . $tipo = $this -> input -> post('id', TRUE));
-				}else{
-					$data = array('mensagem' => "Erro ao modifivcar Permissao do Arquivo");
-					$this -> my_load_view('selFoto', $data);
-				}
+				$this -> usuario_model -> logs($this->session->userdata('id'),2);
+				redirect('produtos/alterar2/' . $tipo = $this -> input -> post('id', TRUE));
 			}
 		} else {
 			redirect('login');

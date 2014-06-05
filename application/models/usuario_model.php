@@ -81,7 +81,7 @@ Class Usuario_model  extends CI_Model {
 		} else if ($tipo == 7) {
 			$data = array('logs' => "Efetuou um venda Comum para o cliente: " . $produto." com o valor de ".$valor, 'id_user_logs' => $id);
 		} else if ($tipo == 8) {
-			$data = array('logs' => "Efetuou um venda Consignado para o cliente: " . $produto." com o valor de ".$valor, 'id_user_logs' => $id);
+			$data = array('logs' => "Efetuou um venda Consignado para o cliente: " . $produto." com o valor de ".$valor." referente a venda de numero ".$idVenda, 'id_user_logs' => $id);
 		} else if ($tipo == 9) {
 			$data = array('logs' => "Efetuou o retorno do Consignado do cliente: " . $produto." com o valor de ".$valor." referente a venda de numero ".$idVenda, 'id_user_logs' => $id);
 		}
