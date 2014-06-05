@@ -32,10 +32,10 @@ class Pdf extends FPDF {
 
 if ($vendas) {
 
-	$total = 0;
+	$subtotal = 0;
 
 	for ($i = 0; $i < count($vendas); $i++) {
-		$total += $vendas[$i]["quantidade_produto"] * $vendas[$i]["valor_produto"];
+		$subtotal += $vendas[$i]["quantidade_produto"] * $vendas[$i]["valor_produto"];
 	}
 
 	$pdf = new PDF('P', 'cm', 'A4');
@@ -76,8 +76,8 @@ if ($vendas) {
 	$pdf -> SetFont('Arial', '', 11);
 
 	for ($i = 0; $i < count($vendas); $i++) {
-		$pdf -> Cell(4, 0.8, $vendas[$i]["venda2.cod_barra_produto"], 1, 0, 'C');
-		$pdf -> Cell(3, 0.8, $vendas[$i]["venda2.quantidade_produto"], 1, 0, 'C');
+		$pdf -> Cell(4, 0.8, $vendas[$i]["cod_barra_produto"], 1, 0, 'C');
+		$pdf -> Cell(3, 0.8, $vendas[$i]["quantidade_produto"], 1, 0, 'C');
 		$pdf -> Cell(4, 0.8, 'R$ ' . number_format($vendas[$i]["valor_produto"], 2, ',', '.'), 1, 0, 'C');
 		$pdf -> Cell(5, 0.8, 'R$ ' . number_format($vendas[$i]["valor_produto"] * $vendas[$i]["quantidade_produto"], 2, ',', '.'), 1, 1, 'C');
 	}

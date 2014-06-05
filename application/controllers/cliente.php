@@ -99,6 +99,8 @@ class Cliente extends MY_Controller {
 	function gerarPDFVolta($id_venda_consig) {
 		$venda_inicio = $this -> usuario_model -> getVendasConsig($id_venda_consig) -> id_venda_inicio;
 		$venda_retorno = $this -> usuario_model -> getVendasConsig($id_venda_consig) -> id_venda_retorno;
+		
+		
 	}
 	
 	function teste() {
