@@ -27,6 +27,19 @@ Class Usuario_model  extends CI_Model {
 			return FALSE;
 		}
 	}
+	function getQProduto($tipo) {
+		$this -> db -> select('modelo_produto');
+		$this -> db -> from('produto');
+		$this -> db -> where('del_produto !=', '1');
+		$this -> db -> where('tipo_produto', $tipo);
+		$this -> db -> order_by("modelo_produto", "ASC");
+		$query = $this -> db -> get();
+		if ($query -> num_rows() > 0) {
+			return $query -> result_array();
+		} else {
+			return FALSE;
+		}
+	}
 
 	function getQantidade($tipo) {
 		$this -> db -> select('COUNT(\'id_produto\') AS id');
@@ -34,6 +47,7 @@ Class Usuario_model  extends CI_Model {
 		if ($tipo != 0) {
 			$this -> db -> where('tipo_produto', $tipo);
 		}
+		$this -> db -> where('del_produto !=', '1');
 		$query = $this -> db -> get();
 		if ($query -> num_rows() > 0) {
 			return $query -> row();
@@ -45,6 +59,7 @@ Class Usuario_model  extends CI_Model {
 	function getQantidadeItem($tipo) {
 		$this -> db -> select('SUM(estoque_produto) AS total');
 		$this -> db -> from('produto');
+		$this -> db -> where('del_produto !=', '1');
 		$this -> db -> where('estoque_produto !=',0);
 		$this -> db -> where('tipo_produto', $tipo);
 		$query = $this -> db -> get();
@@ -57,8 +72,9 @@ Class Usuario_model  extends CI_Model {
 
 	function deletarProduto($id) {
 
+		$data = array('del_produto' => 1);
 		$this -> db -> where('id_produto', $id);
-		$this -> db -> delete('produto');
+		$this -> db -> update('produto', $data);
 
 	}
 
@@ -69,7 +85,7 @@ Class Usuario_model  extends CI_Model {
 		} else if ($tipo == 1) {
 			$data = array('logs' => "Criou um novo produto com o codigo: " . $produto, 'id_user_logs' => $id);
 		} else if ($tipo == 2) {
-			$data = array('logs' => "Adcionou a foto defu", 'id_user_logs' => $id);
+			$data = array('logs' => "Adcionou a foto", 'id_user_logs' => $id);
 		} else if ($tipo == 3) {
 			$data = array('logs' => "Alterou o pruduto com o codigo: " . $produto, 'id_user_logs' => $id);
 		} else if ($tipo == 4) {
@@ -107,6 +123,7 @@ Class Usuario_model  extends CI_Model {
 		if ($tipo != 0) {
 			$this -> db -> where('tipo_produto', $tipo);
 		}
+		$this -> db -> order_by("cod_barra_produto", "ASC");
 		$this -> db -> limit(12, $inicio);
 		$query = $this -> db -> get();
 		if ($query -> num_rows() > 0) {
@@ -124,6 +141,7 @@ Class Usuario_model  extends CI_Model {
 		} else {
 			$this -> db -> where('cod_barra_produto', $code);
 		}
+		$this -> db -> where('del_produto !=', '1');
 		$query = $this -> db -> get();
 		if ($query -> num_rows() > 0) {
 			return $query -> row();

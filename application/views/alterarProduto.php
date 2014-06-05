@@ -10,6 +10,7 @@ function SomenteNumero(e){
 function Finalizar(){
 	document.forms['formAl'].submit();
 }
+
 </script>
 <div class="panel panel-default">
 	<div class="panel-body">
@@ -25,8 +26,7 @@ function Finalizar(){
 									<?php	echo $mensagem; ?>
 								</div>
 								<?php } ?>
-						<form id="formAl" class="form-horizontal" role="form" method="post" <?php if(isset($foto)){echo "action=\"".site_url("produtos/alterar2/".$produto->id_produto)."\""; }
-							else{echo "action=\"".site_url("produtos/alterar/".$produto->id_produto)."\"";}?>>
+						<form id="formAl" class="form-horizontal" role="form" method="post" <?php echo "action=\"".site_url("produtos/alterar/".$produto->id_produto)."\"";?>>
 							<div class="row" style="margin-left: 3%">
 								<div style="margin-left: 30%;" >
 									<h3><b> Código: <?php echo $produto->cod_barra_produto?> </b></h3>
@@ -66,7 +66,7 @@ function Finalizar(){
 								<div class="col-xs-5">
 									<div class="thumbnail">
 										<div id="img">
-											<img src="<?php if(isset($foto)){ echo $this->config->item('base_url')."css/img/img_produto/defu.jpg\""; }else{echo $this->config->item('base_url')."css/img/img_produto/".$produto->foto_produto."\"";}?> data-src="holder.js/100%x180" class="img-responsive" alt="Responsive image">
+											<img src="<?php echo $this->config->item('base_url')."css/img/img_produto/".$produto->foto_produto."\"";?> data-src="holder.js/100%x180" class="img-responsive" alt="Responsive image">
 										</div>
 										<div id="trocaImg" class="caption" align="center">
 											<ul class="pager" >

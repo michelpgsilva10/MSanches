@@ -708,6 +708,8 @@ class Venda extends MY_Controller {
 				$this -> usuario_model -> updateVendaProduto($produto -> id_produto, $produto -> estoque_produto);
 				if ($produtos[$i] -> modelo_produto != $produtos[$i] -> estoque_produto) {
 					$this -> usuario_model -> setCompra($idCliente, $produtos[$i] -> estoque_produto - $produtos[$i] -> modelo_produto, $produto -> id_produto, $vendaRtorno);
+				}else{
+					$this -> usuario_model -> setCompra($idCliente,0, $produto -> id_produto, $vendaRtorno);
 				}
 			}
 			$vendasC = $this -> usuario_model -> getVendaC($idVenda);

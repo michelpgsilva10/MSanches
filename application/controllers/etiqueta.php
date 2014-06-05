@@ -6,7 +6,6 @@ class Etiqueta extends MY_Controller {
 		$this->load->library('session');
 		$this->load->helper('download');
 	}
-
 	public function index() {
 		$datestring = "%m%d";
 		$time = time();
@@ -57,15 +56,30 @@ class Etiqueta extends MY_Controller {
 			"A745,86,2,3,1,1,N,\"".$code."\"".PHP_EOL.
 			"P".$quantidade.PHP_EOL; 
 			}
-			$todos = $this -> usuario_model -> logs($this->session->userdata('id'),6,$code);
-			$data = array('produto'=>$produto,'etiquetas'=>$data1);
-			force_download("teste.php", $data);
-			$this -> my_load_view('resultBusca.php', $data);
-		
+			if (file_exists("D:/Dropbox/Dropbox/Projetos Trabalho/MSanches/css/arquivo/etiquetas.prn")) {
+				unlink("D:/Dropbox/Dropbox/Projetos Trabalho/MSanches/css/arquivo/etiquetas.prn");
+			}
+			$arquivo = fopen("D:/Dropbox/Dropbox/Projetos Trabalho/MSanches/css/arquivo/etiquetas.prn", 'w');
+			fwrite($arquivo,$data1);
+			fclose($arquivo);
 			
+			$filename = "D:/Dropbox/Dropbox/Projetos Trabalho/MSanches/css/arquivo/etiquetas.prn";
+			header("Pragma: public");
+			header("Expires: 0");
+			header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+			header("Cache-Control: private",false); 
+			header("Content-Type: text");
+			header("Content-Disposition: attachment; filename=\"".basename($filename)."\";" );
+			header("Content-Transfer-Encoding: binary");
+			header("Content-Length: ".filesize($filename));
+			readfile("$filename");
+			exit;			
 		} else {
 			redirect('login');
 		}
 	}
+
+	
+
 }
 ?>

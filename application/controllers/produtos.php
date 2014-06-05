@@ -7,81 +7,58 @@ class Produtos extends MY_Controller {
 	}
 
 	public function index() {
-		$this->load->library('pagination');
+		$this -> load -> library('pagination');
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
-			$todos = $this -> usuario_model -> getProdutos(0,0);
-			$QItens = $this -> usuario_model -> getQantidade(0)->id;
-			$ultima = $QItens%12;
-			if($ultima==0){
-				$ultima = $QItens/12;
-			}else{
-				$ultima = (int)(($QItens/12));
+			$todos = $this -> usuario_model -> getProdutos(0, 0);
+			$QItens = $this -> usuario_model -> getQantidade(0) -> id;
+			$ultima = $QItens % 12;
+			if ($ultima == 0) {
+				$ultima = $QItens / 12;
+			} else {
+				$ultima = (int)(($QItens / 12));
 			}
-			$data = array('todos' => $todos,
-						  'pagina'=> 0,
-						  'tipo'=>0,
-						  'QItens'=>$QItens,
-						  'proximo'=>1,
-						  'caminho'=>"produtos/pagina/0",
-						  'anterior'=>-1,
-						  'ultima'=> $ultima
-						  );
+			$data = array('todos' => $todos, 'pagina' => 0, 'tipo' => 0, 'QItens' => $QItens, 'proximo' => 1, 'caminho' => "produtos/pagina/0", 'anterior' => -1, 'ultima' => $ultima);
 			$this -> my_load_view('produtos', $data);
 		} else {
 			redirect('login');
 
 		}
 	}
-	public function pagina($inicio=0,$tipo=0) {
+
+	public function pagina($inicio = 0, $tipo = 0) {
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
-			$QItens = $this -> usuario_model -> getQantidade($tipo)->id;
-			$todos = $this -> usuario_model -> getProdutos($inicio*12,$tipo);
-			$ultima = $QItens%12;
-			if($ultima==0){
-				$ultima = $QItens/12;
-			}else{
-				$ultima = (int)(($QItens/12));
+			$QItens = $this -> usuario_model -> getQantidade($tipo) -> id;
+			$todos = $this -> usuario_model -> getProdutos($inicio * 12, $tipo);
+			$ultima = $QItens % 12;
+			if ($ultima == 0) {
+				$ultima = $QItens / 12;
+			} else {
+				$ultima = (int)(($QItens / 12));
 			}
-			if($inicio>0){
-				$data = array('todos' => $todos,
-						      'anterior'=>1,
-						      'proximo'=>$inicio+1,
-						      'QItens'=>$QItens,
-						      'tipo'=>$tipo,
-						      'caminho'=>"produtos/pagina/0",
-						      'anterior'=>$inicio-1,
-						  	  'ultima'=> $ultima
-							 );
-			}else{
-				$data = array('todos' => $todos,
-							  'tipo'=>$tipo,
-							  'proximo'=>$inicio+1,
-							  'QItens'=>$QItens,
-							  'caminho'=>"produtos/pagina/0",
-							  'anterior'=>$inicio-1,
-						 	  'ultima'=> $ultima
-						     );
+			if ($inicio > 0) {
+				$data = array('todos' => $todos, 'anterior' => 1, 'proximo' => $inicio + 1, 'QItens' => $QItens, 'tipo' => $tipo, 'caminho' => "produtos/pagina/0", 'anterior' => $inicio - 1, 'ultima' => $ultima);
+			} else {
+				$data = array('todos' => $todos, 'tipo' => $tipo, 'proximo' => $inicio + 1, 'QItens' => $QItens, 'caminho' => "produtos/pagina/0", 'anterior' => $inicio - 1, 'ultima' => $ultima);
 			}
 			$this -> my_load_view('produtos', $data);
 		} else {
 			redirect('login');
 		}
 	}
-	
-	public function Deletar($foto, $id,$code) {
+
+	public function Deletar($foto, $id, $code) {
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
-			$todos = $this -> usuario_model -> logs($this->session->userdata('id'),4,$code);
+			$todos = $this -> usuario_model -> logs($this -> session -> userdata('id'), 4, $code);
 			$this -> usuario_model -> deletarProduto($id);
-			unlink("D:/Dropbox/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto/" . $foto);
 			redirect('produtos');
 		} else {
 			redirect('login');
@@ -102,7 +79,21 @@ class Produtos extends MY_Controller {
 					$this -> my_load_view('alterarProduto.php', $data);
 				} else {
 					if ($tipo != $produto -> tipo_produto) {
-						$model = $this -> usuario_model -> getQantidade($tipo) -> id + 1;
+						$modelos = $this -> usuario_model -> getQProduto($tipo);
+						$aux = 0;
+						$verifica = -1;
+						print_r($modelos);
+						for ($i = 0; $i <= count($modelos); $i++) {
+							$aux++;
+							if ($modelos[$i]['modelo_produto'] != $aux) {
+								$model = $aux;
+								$verifica = 0;
+								break;
+							}
+						}
+						if ($verifica == -1) {
+							$model = $aux;
+						}
 						if ($model < 10) {
 							$model = "000" . $model;
 						} else if ($model < 100) {
@@ -140,7 +131,7 @@ class Produtos extends MY_Controller {
 					$code = $tipo . $model . $valor;
 					$nome = $produto -> foto_produto;
 					$quantidade = $this -> input -> post('quant', TRUE);
-					$todos = $this -> usuario_model -> logs($this->session->userdata('id'),3,$code);
+					$todos = $this -> usuario_model -> logs($this -> session -> userdata('id'), 3, $code);
 					$this -> usuario_model -> updateProduto($id, $tipo, $valor, $quantidade, $model, $nome, $code);
 					redirect('produtos/perEtiqueta/' . $code);
 				}
@@ -157,79 +148,16 @@ class Produtos extends MY_Controller {
 
 	}
 
-	public function alterar2($id) {
+	public function busca2($code,$tipo=0) {
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
-			if ($this -> input -> post('valor', TRUE)) {
-				$tipo = $this -> input -> post('tipo', TRUE);
-				$produto = $this -> usuario_model -> getProduto(trim($id), 0);
-				if ($tipo == "") {
-					$data = array('produto' => $produto, 'foto' => TRUE);
-					$this -> my_load_view('alterarProduto.php', $data);
-				} else {
-					if ($tipo != $produto -> tipo_produto) {
-						$model = $this -> usuario_model -> getQantidade($tipo) -> id + 1;
-						if ($model < 10) {
-							$model = "000" . $model;
-						} else if ($model < 100) {
-							$model = "00" . $model;
-						} else if ($id < 1000) {
-							$model = "0" . $model;
-						} else if ($model > 10000) {
-							$data = array('foto' => TRUE, '$mensagem' => "Estouro de Tipo - Fale com o Tecnico");
-							$this -> my_load_view('alterarProduto', $data);
-						}
-					} else {
-						$model = $produto -> modelo_produto;
-						if ($model < 10) {
-							$model = "000" . $model;
-						} else if ($model < 100) {
-							$model = "00" . $model;
-						} else if ($id < 1000) {
-							$model = "0" . $model;
-						} else if ($model > 10000) {
-							$data = array('foto' => TRUE, '$mensagem' => "Estouro de Tipo - Fale com o Tecnico");
-							$this -> my_load_view('alterarProduto', $data);
-						}
-					}
-					$valor = $this -> input -> post('valor', TRUE);
-					if ($valor < 10) {
-						$valor = "000" . $valor;
-					} else if ($valor < 100) {
-						$valor = "00" . $valor;
-					} else if ($valor < 1000) {
-						$valor = "0" . $valor;
-					} else if ($valor > 10000) {
-						$data = array('foto' => TRUE, '$mensagem' => "Valor Superior que 10.000");
-						$this -> my_load_view('novoProduto', $data);
-					}
-					$code = $tipo . $model . $valor;
-					$nome = $produto -> foto_produto;
-					$quantidade = $this -> input -> post('quant', TRUE);
-					$todos = $this -> usuario_model -> logs($this->session->userdata('id'),3,$code);
-					rename("D:/Dropbox\Dropbox\Projetos Trabalho\MSanches\css\img\img_produto\defu.jpg", "D:/Dropbox/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto/" . $nome);
-					$this -> usuario_model -> updateProduto($id, $tipo, $valor, $quantidade, $model, $nome, $code);
-					redirect('produtos/perEtiqueta/' . $code);
-				}
-			} else {
-				$produto = $this -> usuario_model -> getProduto(trim($id), 0);
-				$data = array('produto' => $produto, 'foto' => TRUE);
-				$this -> my_load_view('alterarProduto.php', $data);
+			if($tipo==0){
+				$produto = $this -> usuario_model -> getProduto(trim($code), 0);
+			}else{
+				$produto = $this -> usuario_model -> getProduto(0,trim($code));
 			}
-		} else {
-			redirect('login');
-
-		}
-	}
-
-	public function busca2($code) {
-		$datestring = "%m%d";
-		$time = time();
-		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
-		if ($this -> session -> userdata('load') == $load) {
-			$produto = $this -> usuario_model -> getProduto(trim($code), 0);
 			$data = array('produto' => $produto);
 			$this -> my_load_view('resultBusca.php', $data);
 
@@ -307,21 +235,21 @@ class Produtos extends MY_Controller {
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
+			$produto = $this -> usuario_model -> getProduto($tipo = $this -> input -> post('id', TRUE), 0);
 			$config['upload_path'] = "D:\Dropbox\Dropbox\Projetos Trabalho\MSanches\css\img\img_produto";
-			$config['file_name'] = 'defu.jpg';
+			$config['file_name'] = $produto -> foto_produto;
 			$config['allowed_types'] = 'jpg';
 			$config['max_size'] = '2048';
-
 			$this -> load -> library('upload', $config);
-			if (file_exists("D:\Dropbox\Dropbox\Projetos Trabalho\MSanches\css\img\img_produto\defu.jpg")) {
-				unlink("D:\Dropbox\Dropbox\Projetos Trabalho\MSanches\css\img\img_produto\defu.jpg");
+			if (file_exists("D:/Dropbox/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto/" . $produto -> foto_produto)) {
+				unlink("D:/Dropbox/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto/" . $produto -> foto_produto);
 			}
 			if (!$this -> upload -> do_upload("fileF")) {
 				$data = array('mensagem' => $this -> upload -> display_errors());
 				$this -> my_load_view('selFoto', $data);
 			} else {
-				$this -> usuario_model -> logs($this->session->userdata('id'),2);
-				redirect('produtos/alterar2/' . $tipo = $this -> input -> post('id', TRUE));
+				$this -> usuario_model -> logs($this -> session -> userdata('id'), 2);
+				redirect('produtos/alterar/' . $tipo = $this -> input -> post('id', TRUE));
 			}
 		} else {
 			redirect('login');
@@ -363,7 +291,7 @@ class Produtos extends MY_Controller {
 		}
 	}
 
-	public function novo2() {
+	public function novo2($nome) {
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
@@ -374,21 +302,21 @@ class Produtos extends MY_Controller {
 					$data = array('foto' => TRUE, '$mensagem' => "Tipo não Selecionado");
 					$this -> my_load_view('novoProduto', $data);
 				} else {
-					$code = $this -> usuario_model -> getID();
-					if ($code == FALSE) {
-						$id = 1;
-					} else {
-						$id = $code -> id_produto + 1;
+					$modelos = $this -> usuario_model -> getQProduto($tipo);
+					$aux = 0;
+					$verifica = -1;
+					print_r($modelos);
+					for ($i = 0; $i <= count($modelos); $i++) {
+						$aux++;
+						if ($modelos[$i]['modelo_produto'] != $aux) {
+							$id = $aux;
+							$verifica = 0;
+							break;
+						}
 					}
-					if ($id < 10) {
-						$id = "000" . $id;
-					} else if ($id < 100) {
-						$id = "00" . $id;
-					} else if ($id < 1000) {
-						$id = "0" . $id;
+					if ($verifica == -1) {
+						$id = $aux;
 					}
-					$nome = $tipo . $id . ".jpg";
-					$id = $this -> usuario_model -> getQantidade($tipo) -> id + 1;
 					$valor = $this -> input -> post('valor', TRUE);
 					$quantidade = $this -> input -> post('quant', TRUE);
 					if ($id < 10) {
@@ -413,14 +341,13 @@ class Produtos extends MY_Controller {
 					}
 
 					$code = $tipo . $id . $valor;
-					$todos = $this -> usuario_model -> logs($this->session->userdata('id'),1,$code);
-					rename("D:\Dropbox\Dropbox\Projetos Trabalho\MSanches\css\img\img_produto\defu.jpg", "D:/Dropbox/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto/" . $nome);
+					$this -> usuario_model -> logs($this -> session -> userdata('id'), 1, $code);
 					$this -> usuario_model -> setProduto($tipo, $valor, $quantidade, $id, $nome, $code);
 					redirect('produtos/perEtiqueta/' . $code);
 				}
 			} else {
 
-				$data = array('foto' => TRUE);
+				$data = array('foto' => TRUE, 'nome' => $nome);
 				$this -> my_load_view('novoProduto', $data);
 			}
 		} else {
@@ -433,27 +360,35 @@ class Produtos extends MY_Controller {
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
+			$code = $this -> usuario_model -> getID();
+			if ($code == FALSE) {
+				$id = 1;
+			} else {
+				$id = $code -> id_produto + 1;
+			}
+			if ($id < 10) {
+				$id = "000" . $id;
+			} else if ($id < 100) {
+				$id = "00" . $id;
+			} else if ($id < 1000) {
+				$id = "0" . $id;
+			}
+			$nome = $id . ".jpg";
 			$config['upload_path'] = "D:\Dropbox\Dropbox\Projetos Trabalho\MSanches\css\img\img_produto";
-			$config['file_name'] = 'defu.jpg';
+			$config['file_name'] = $nome;
 			$config['allowed_types'] = 'jpg';
 			$config['max_size'] = '2048';
 
 			$this -> load -> library('upload', $config);
-			if (file_exists("D:\Dropbox\Dropbox\Projetos Trabalho\MSanches\css\img\img_produto\defu.jpg")) {
-				unlink("D:\Dropbox\Dropbox\Projetos Trabalho\MSanches\css\img\img_produto\defu.jpg");
+			if (file_exists("D:/Dropbox/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto/" . $nome)) {
+				unlink("D:/Dropbox/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto/" . $nome);
 			}
 			if (!$this -> upload -> do_upload("fileF")) {
 				$data = array('mensagem' => $this -> upload -> display_errors());
 				$this -> my_load_view('selFoto', $data);
 			} else {
-				if(chmod ("D:\Dropbox\Dropbox\Projetos Trabalho\MSanches\css\img\img_produto\defu.jpg", 777)){
-					$todos = $this -> usuario_model -> logs($this->session->userdata('id'),2);
-					redirect('produtos/novo2');
-				}else{
-					$data = array('mensagem' => "Erro ao modifivcar Permissao do Arquivo");
-					$this -> my_load_view('selFoto', $data);
-				}
-				
+				$this -> usuario_model -> logs($this -> session -> userdata('id'), 2);
+				redirect('produtos/novo2/' . $nome);
 			}
 		} else {
 			redirect('login');

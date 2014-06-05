@@ -17,12 +17,13 @@ function SomenteNumero(e){
 							<?php if (isset($mensagem))
 {
 								?>
+								<br />
 								<div class="alert alert-danger alert-dismissable">
 									<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 									<?php	echo $mensagem; ?>
 								</div>
 								<?php } ?>
-						<form class="form-horizontal" role="form"  method="post" <?php if(isset($foto)){ ?> action="<?php echo site_url("produtos/novo2")?>" <?php }else{ ?>action="<?php echo site_url("produtos/novo")?>"<?php } ?>>
+						<form class="form-horizontal" role="form"  method="post" <?php if(isset($foto)){ ?> action="<?php echo site_url("produtos/novo2/".$nome)?>" <?php }else{ ?>action="<?php echo site_url("produtos/novo")?>"<?php } ?>>
 							<div class="row" style="margin-top: 40px; margin-left: 3%">
 								<div class="col-xs-6">
 									<br />
@@ -59,7 +60,7 @@ function SomenteNumero(e){
 								<div class="col-xs-5">
 									<div class="thumbnail">
 										<div id="img">
-											<img src="<?php echo $this->config->item('base_url') ?>css/img/<?php if(isset($foto)){ echo "img_produto/defu.jpg\""; ?>
+											<img src="<?php echo $this->config->item('base_url') ?>css/img/<?php if(isset($foto)){ echo "img_produto/".$nome."\""; ?>
 												<?php }else { ?>img_sistema/cinza.jpg" <?php } ?>data-src="holder.js/100%x180" class="img-responsive" alt="Responsive image">
 										</div>
 										<div class="caption" align="center">

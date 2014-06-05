@@ -15,7 +15,8 @@ function nao(){
 location.href="<?php echo site_url("produtos")?>";
 }
 function Setiquetas(){
-	document.forms['formE'].submit();	
+	document.forms['formE'].submit();
+	location.href="<?php echo site_url("produtos/busca2/".$code."/1")?>";
 }
 </script>
 <div class="panel panel-default">
@@ -39,7 +40,7 @@ function Setiquetas(){
 										</button>
 									</div>
 								</div>
-								<form name="formE" id="formE"  role="form"  method="post" action="<?php echo site_url("etiqueta")?>" >
+								<form name="formE" id="formE"  role="form"  method="post" action="<?php echo site_url("etiqueta")?>" target="_blank">
 									<div id="seSim" style="margin-top: 50px; margin-left: 15%; display: none;">
 										<div class="form-group">
 											<label for="inputEmail3" class="col-sm-4 control-label">Quantidade</label>
@@ -66,7 +67,7 @@ function Setiquetas(){
 										<button type="button" style="margin-top: 5%;"  class="btn btn-primary" onclick="Sim();">
 											Voltar
 										</button>
-										<button type="button" style="margin-top: 5%;" class="btn btn-primary" onclick="Setiquetas()">
+										<button type="button" style="margin-top: 5%;"  class="btn btn-primary" onclick="Setiquetas();">
 											Criar
 										</button>
 									</div>
