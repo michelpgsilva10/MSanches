@@ -26,7 +26,7 @@
 										<label class="control-label">Telefone</label>
 									</div>
 								</div>
-								<div class="form-input-position">
+								<div class="form-input-position" align="left">
 									<div class="form-spacing-input">
 										<input type="text" class="form-control" name="nome_cliente" value="<?php echo set_value('nome_cliente'); ?>" style="width: 475px;" autofocus/>
 									</div>
@@ -67,7 +67,7 @@
 										<label class="control-label">Estado</label>
 									</div>
 								</div>
-								<div class="form-input-position">
+								<div class="form-input-position" align="left">
 									<div class="form-spacing-input">
 										<input type="text" class="form-control" name="rua_cliente" value="<?php echo set_value('rua_cliente'); ?>" style="width: 475px;"/>
 									</div>
