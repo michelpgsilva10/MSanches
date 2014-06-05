@@ -430,7 +430,7 @@ class Venda extends MY_Controller {
 						} else {
 							session_destroy();
 							session_write_close();
-							$this -> usuario_model -> logs($this -> session -> userdata('id'), 8, $cliente[0]['id_cliente'], $total);
+							$this -> usuario_model -> logs($this -> session -> userdata('id'), 8, $cliente[0]['id_cliente'], $total,$idVenda);
 							redirect('venda/criaRomaneio/' . $idVenda);
 						}
 					} else {
