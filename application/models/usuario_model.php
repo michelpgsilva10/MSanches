@@ -224,6 +224,38 @@ Class Usuario_model  extends CI_Model {
 			return false;
 		}
 	}
+	function getVendasConsig($id_venda_consig) {
+		$this -> db -> select('*');
+		$this -> db -> from('venda_consignado');
+		$this -> db -> where('id_venda_consignado', $id_venda_consig);
+		
+		$query = $this -> db -> get();
+		
+		if ($query -> num_rows() > 0) {
+			return $query -> row();
+		} else {
+			return false;
+		}
+	}
+	
+	function getVendaConsigRetorno($idVendaConsig) {
+		$this -> db -> select('*');
+		$this -> db -> from('venda_consignado');
+		$this -> db -> join('venda', 'venda_consignado.id_venda_inicio = venda.id_venda');
+		$this -> db -> join('compra', 'venda.id_venda = compra.venda_fk');
+		$this -> db -> join('produto', 'compra.produto_fk = produto.id_produto');
+		$this -> db -> join('cliente', 'compra.cliente_fk = cliente.id_cliente');
+		$this -> db -> join('endereco', 'cliente.endereco_fk = endereco.id_endereco');
+		$this -> db -> orderby('produto.cod_barra_produto', 'asc');
+		
+		$query = $this -> db -> get();
+		
+		if ($query -> num_rows() > 0) {
+			return $query -> result_array();
+		} else {
+			return false;
+		}
+	}
 
 	
 	function getVendaConsig($idVenda) {
