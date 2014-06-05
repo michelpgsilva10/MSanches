@@ -43,7 +43,7 @@
 	<label> Deseja imprimir o Romaneio?</label>
 	<br />
 	<br />
-	<a type="button" id="confirma" class="btn btn-success"  href="<?php echo site_url("cliente/gerarPDF/".$romaneio) ?>" target="_blank"> Confirmar </a>
+	<a type="button" id="confirma" class="btn btn-success"  href="<?php if(isset($consig)){echo site_url("cliente/gerarPDFVolta/".$romaneio);}else{echo site_url("cliente/gerarPDF/".$romaneio);} ?>" target="_blank"> Confirmar </a>
 </div>
 <?php } ?>
 <div class="row" style=" text-align: center">
