@@ -61,7 +61,7 @@
 								</div>							
 							</div>	
 							<div style="padding: 10px;" align="center">
-								<input type="button" class="btn btn-primary" value="Editar" />
+								<a class="btn btn-primary" href="<?php echo site_url("cliente/editarCliente/" . $cliente[0]["id_cliente"]); ?>">Editar</a>
 								<input type="button" class="btn btn-default" value="Compras do Cliente" />
 								<input type="button" class="btn btn-default" value="Excluir Cliente" />
 							</div>						
