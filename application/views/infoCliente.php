@@ -4,6 +4,13 @@
 			<div class="col-md-9 col-md-push-3">
 				<div class="container-fluid">
 					<div  class="panel panel-default">
+						<?php
+							if ($atualizar_cliente) {
+								echo '<div id="cliente_success" class="alert alert-success" onload="hideAlertSuccess()" align="center">';
+								echo '	Dados atualizados com sucesso!';
+								echo '</div>';
+							}					
+						?>
 						
 						<div class="row" style="margin-top: 20px; width: 100%; padding-left: 7%">
 							

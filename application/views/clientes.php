@@ -6,10 +6,10 @@
 					<div  class="panel panel-default">
 						<?php
 						if ($cadastro_cliente) {
-							echo '<div id="cliente_success" class="alert alert-success" onload="hideAlertSuccess()">';
+							echo '<div id="cliente_success" class="alert alert-success" onload="hideAlertSuccess()" align="center">';
 							echo '	Cadastro realizado com sucesso!';
 							echo '</div>';
-						}
+						} 
 						
 						echo validation_errors();
 						?>
@@ -49,7 +49,7 @@
 										for ($i = 0; $i < count($clientes); $i++) {
 								?>
 								<div class="list-group teste">
-	  								<a href="<?php echo site_url("cliente/infoCliente/" . $clientes[$i]["id_cliente"]); ?>" class="list-group-item">
+	  								<a href="<?php echo site_url("cliente/infoCliente/" . $clientes[$i]["id_cliente"]) . "/0"; ?>" class="list-group-item">
 	  									<div style="display: table; width: 100%; padding-left: 5px;">
 	  										<div style="float: left; width: 45%;">
 	  											<h5 class="list-group-item-text"><span class="glyphicon glyphicon-user"></span> <?php echo $clientes[$i]["nome_cliente"]; ?></h5>

@@ -97,9 +97,10 @@
 							
 							<div>
 								<input type="submit" name="editar_cliente" value="Concluído"  class="btn btn-primary" />
-								<a class="btn btn-default" href="<?php echo site_url('cliente/infoCliente/' . $cliente[0]['id_cliente']) ?>">Voltar</a>
+								<a class="btn btn-default" href="<?php echo site_url('cliente/infoCliente/' . $cliente[0]['id_cliente'] . '/0') ?>">Voltar</a>
 							</div>
-
+							<input type="hidden" name="id_cliente" value="<?php echo $cliente[0]["id_cliente"]; ?>" />
+							<input type="hidden" name="id_endereco" value="<?php echo $cliente[0]["id_endereco"]; ?>" />
 						</form>
 					</div>
 				</div>

@@ -155,6 +155,7 @@ Class Usuario_model  extends CI_Model {
 		$this -> db -> from('cliente');
 		$this -> db -> join('endereco', 'cliente.endereco_fk = endereco.id_endereco');
 		$this -> db -> where('del_cliente', 0);
+		$this -> db -> order_by('nome_cliente', 'asc');
 
 		//$this -> db -> limit($inicio, 15);
 

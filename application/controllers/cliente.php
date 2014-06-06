@@ -91,6 +91,57 @@ class Cliente extends MY_Controller {
 
 	}
 
+	function editar() {
+		$this -> form_validation -> set_rules('nome_cliente', 'Nome', 'required');
+		$this -> form_validation -> set_rules('cpf_cliente', 'CPF', 'callback_validaCPF');
+		$this -> form_validation -> set_rules('tel_cliente', 'Telefone', 'required');
+		$this -> form_validation -> set_rules('ref_comercial_cliente', 'Ref. Comercial', '');
+
+		#Validação para tabela Endereço
+		$this -> form_validation -> set_rules('rua_cliente', 'Rua', 'required');
+		$this -> form_validation -> set_rules('num_endereco_cliente', 'Número', 'required');
+		$this -> form_validation -> set_rules('bairro_cliente', 'Bairro', 'required');
+		$this -> form_validation -> set_rules('cidade_cliente', 'Cidade', 'required');
+		$this -> form_validation -> set_rules('complemento_cliente', 'Complemento', '');
+		$this -> form_validation -> set_rules('uf_cliente', 'Estado', '');	
+				
+		$this->form_validation->set_message('required', 'O campo %s é obrigatório.');
+		$this->form_validation->set_message('validaCPF', 'O %s digitado não é válido!');
+		$this->form_validation->set_message('cpfExistente', 'O %s digitado já foi cadastrado!');;
+				
+		$this->form_validation->set_error_delimiters('<div class="alert-danger alert-dismissable alert-space">', '</div>');
+		
+		if ($this->input->post('editar_cliente')) {
+			if ($this->form_validation->run() == FALSE) {
+				$this -> my_load_view('editarCliente', NULL);				
+			} else {
+				$endereco_update = array (
+					'rua_endereco' => $this -> input -> post('rua_cliente'),
+					'cidade_endereco' => $this -> input -> post('cidade_cliente'),
+					'uf_endereco' => $this -> input -> post('uf_cliente'),
+					'bairro_endereco' => $this -> input -> post('bairro_cliente'),
+					'numero_endereco' => $this -> input -> post('num_endereco_cliente'),
+					'complemento_endereco' => $this -> input -> post('complemento_cliente')
+				);
+				
+				$this -> db -> where('id_endereco', $this -> input -> post('id_endereco'));
+				$this -> db -> update('endereco', $endereco_update);
+				
+				$cliente_update = array(
+					'nome_cliente' => $this -> input -> post('nome_cliente'),
+					'cpf_cliente' => $this -> input -> post('cpf_cliente'),
+					'ref_comercial' => $this -> input -> post('ref_comercial_cliente'),
+					'tel_cliente' => $this -> input -> post('tel_cliente')
+				);
+				
+				$this -> db -> where('id_cliente', $this -> input -> post('id_cliente'));
+				$this -> db -> update('cliente', $cliente_update);
+				
+				redirect('cliente/infoCliente/' . $this -> input -> post('id_cliente') . '/1');
+			}				
+		}
+	}
+
 	function gerarPDF($id_venda) {
 		$data["vendas"] = $this -> usuario_model -> getVendaConsig($id_venda);
 		$this -> load -> view('romaneio', $data);
@@ -110,10 +161,6 @@ class Cliente extends MY_Controller {
 		$this -> load -> view('romaneio-volta', $data);
 	}
 	
-	function teste() {
-		$this -> my_load_view('teste-romaneio', NULL);
-	}
-
 	function buscarCliente() {		
 		
 		$opt = $this -> input -> post('opcao_pesquisa_cliente');
@@ -147,8 +194,14 @@ class Cliente extends MY_Controller {
 		$this -> my_load_view('editarCliente', $data);
 	}
 
-	function infoCliente($id_cliente) {
+	function infoCliente($id_cliente, $edicao_cliente) {
 		$data["cliente"] = $this -> usuario_model -> getCliente($id_cliente, 0);
+		
+		if ($edicao_cliente == 1)
+			$data["atualizar_cliente"] = true;
+		else
+			$data["atualizar_cliente"] = false;
+		
 		$this -> my_load_view('infoCliente', $data);	
 	}
 
