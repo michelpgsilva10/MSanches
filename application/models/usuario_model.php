@@ -139,9 +139,9 @@ Class Usuario_model  extends CI_Model {
 		if (strcmp($code, "0") == 0) {
 			$this -> db -> where('id_produto', $id);
 		} else {
+			$this -> db -> where('del_produto !=', '1');
 			$this -> db -> where('cod_barra_produto', $code);
 		}
-		$this -> db -> where('del_produto !=', '1');
 		$query = $this -> db -> get();
 		if ($query -> num_rows() > 0) {
 			return $query -> row();

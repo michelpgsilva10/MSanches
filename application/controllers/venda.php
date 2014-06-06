@@ -26,7 +26,7 @@ class Venda extends MY_Controller {
 			if ($tipo == 1) {
 				$data = array('romaneio' => $idvenda,'consig'=>TRUE);	
 			} else {
-				$data = array('romaneio' => $idvenda);
+				$data = array('romaneio' => $idvenda,'tipo'=>$tipo);
 			}
 			$this -> my_load_view('venda', $data);
 		} else {
@@ -435,7 +435,7 @@ class Venda extends MY_Controller {
 							session_destroy();
 							session_write_close();
 							$this -> usuario_model -> logs($this -> session -> userdata('id'), 8, $cliente[0]['id_cliente'], $total, $idVenda);
-							redirect('venda/criaRomaneio/' . $idVenda);
+							redirect('venda/criaRomaneio/' . $idVenda.'/2');
 						}
 					} else {
 						session_write_close();

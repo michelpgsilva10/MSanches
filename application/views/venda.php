@@ -1,10 +1,10 @@
 <script>
 	$(function() {
 		$("#dialog").dialog();
-		$( "#confirma" ).click(function() {
-			$( "#dialog" ).dialog( "close" );
+		$("#confirma").click(function() {
+			$("#dialog").dialog("close");
 		});
-	});
+	}); 
 </script>
 <style>
 	a.button {
@@ -43,7 +43,17 @@
 	<label> Deseja imprimir o Romaneio?</label>
 	<br />
 	<br />
-	<a type="button" id="confirma" class="btn btn-success"  href="<?php if(isset($consig)){echo site_url("cliente/gerarPDFVolta/".$romaneio);}else{echo site_url("cliente/gerarPDF/".$romaneio);} ?>" target="_blank"> Confirmar </a>
+	<a type="button" id="confirma" class="btn btn-success"  href="<?php
+		if (isset($consig)) {
+			echo site_url("cliente/gerarPDFVolta/" . $romaneio);
+		} else {
+			if ($tipo == 2) {
+				echo site_url("cliente/gerarPDFInicio/" . $romaneio);
+			} else {
+				echo site_url("cliente/gerarPDF/" . $romaneio);
+			}
+		}
+ ?>" target="_blank"> Confirmar </a>
 </div>
 <?php } ?>
 <div class="row" style=" text-align: center">
