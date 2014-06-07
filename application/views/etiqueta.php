@@ -12,7 +12,7 @@ cont=1;
 }
 }
 function nao(){
-location.href="<?php echo site_url("produtos")?>";
+location.href="<?php echo site_url("produtos/busca2/".$code."/1")?>";
 }
 function Setiquetas(){
 	document.forms['formE'].submit();

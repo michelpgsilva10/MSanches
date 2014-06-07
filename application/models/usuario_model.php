@@ -16,7 +16,7 @@ Class Usuario_model  extends CI_Model {
 	}
 
 	function getID() {
-		$this -> db -> select('*');
+		$this -> db -> select_max('id_produto');
 		$this -> db -> from('produto');
 		$this -> db -> order_by("id_produto", "desc");
 		$this -> db -> limit(1);

@@ -304,7 +304,7 @@ class Produtos extends MY_Controller {
 					$modelos = $this -> usuario_model -> getQProduto($tipo);
 					$aux = 0;
 					$verifica = -1;
-					for ($i = 0; $i <= count($modelos); $i++) {
+					for ($i = 0; $i < count($modelos); $i++) {
 						$aux++;
 						if ($modelos[$i]['modelo_produto'] != $aux) {
 							$id = $aux;
