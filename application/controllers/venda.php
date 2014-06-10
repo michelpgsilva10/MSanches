@@ -24,9 +24,9 @@ class Venda extends MY_Controller {
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
 			if ($tipo == 1) {
-				$data = array('romaneio' => $idvenda,'consig'=>TRUE);	
+				$data = array('romaneio' => $idvenda, 'consig' => TRUE);
 			} else {
-				$data = array('romaneio' => $idvenda,'tipo'=>$tipo);
+				$data = array('romaneio' => $idvenda, 'tipo' => $tipo);
 			}
 			$this -> my_load_view('venda', $data);
 		} else {
@@ -49,6 +49,7 @@ class Venda extends MY_Controller {
 				session_write_close();
 				$data = array('total' => $total, 'produtos' => $produtos);
 			} else {
+				session_write_close();
 				$data = array('total' => 0);
 			}
 			$this -> my_load_view('vendaComum', $data);
@@ -435,7 +436,7 @@ class Venda extends MY_Controller {
 							session_destroy();
 							session_write_close();
 							$this -> usuario_model -> logs($this -> session -> userdata('id'), 8, $cliente[0]['id_cliente'], $total, $idVenda);
-							redirect('venda/criaRomaneio/' . $idVenda.'/2');
+							redirect('venda/criaRomaneio/' . $idVenda . '/2');
 						}
 					} else {
 						session_write_close();
@@ -722,7 +723,7 @@ class Venda extends MY_Controller {
 			session_write_close();
 			if ($total != 0) {
 				$this -> usuario_model -> logs($this -> session -> userdata('id'), 9, $cliente[0]['id_cliente'], $total, $idVenda);
-				redirect('venda/criaRomaneio/' . $vendasC[0]['id_venda_consignado']."/1");
+				redirect('venda/criaRomaneio/' . $vendasC[0]['id_venda_consignado'] . "/1");
 			} else {
 				$this -> usuario_model -> logs($this -> session -> userdata('id'), 9, $cliente[0]['id_cliente'], $total, $idVenda);
 				redirect('venda');
@@ -732,7 +733,7 @@ class Venda extends MY_Controller {
 		}
 	}
 
-	public function visualizaI($idProduto, $total, $tipo = 0, $idCliente, $id, $valorMim) {
+	public function visualizaI($idProduto, $total, $tipo = 0, $idCliente = 0, $id = 0, $valorMim = 0) {
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
@@ -741,11 +742,31 @@ class Venda extends MY_Controller {
 				session_start();
 				$produtos = $_SESSION['produtos'];
 				session_write_close();
-				$cliente = $this -> usuario_model -> getCliente($idCliente, 0);
-				$data = array('cliente' => $cliente, 'total' => $total, 'produtos' => $produtos, 'id' => $id, 'valorMim' => $valorMim);
-				$this -> my_load_view('vendaRetorno', $data);
+				if ($tipo == 0) {
+					$cliente = $this -> usuario_model -> getCliente($idCliente, 0);
+					$data = array('cliente' => $cliente, 'total' => $total, 'produtos' => $produtos, 'id' => $id, 'valorMim' => $valorMim);
+					$this -> my_load_view('vendaRetorno', $data);
+				} else if ($tipo == 1) {
+					if ($idCliente != 0) {
+						$cliente = $this -> usuario_model -> getCliente($idCliente, 0);
+						$data = array('cliente' => $cliente, 'total' => $total, 'produtos' => $produtos);
+						$this -> my_load_view('vendaComum', $data);
+					} else {
+						$data = array('total' => $total, 'produtos' => $produtos);
+						$this -> my_load_view('vendaComum', $data);
+					}
+				}else if ($tipo == 2) {
+					if ($idCliente != 0) {
+						$cliente = $this -> usuario_model -> getCliente($idCliente, 0);
+						$data = array('cliente' => $cliente, 'total' => $total, 'produtos' => $produtos);
+						$this -> my_load_view('vendaConsig', $data);
+					} else {
+						$data = array('total' => $total, 'produtos' => $produtos);
+						$this -> my_load_view('vendaConsig', $data);
+					}
+				}
 			} else {
-				$produto = $this -> usuario_model -> getProduto(trim($idProduto), 0);
+				$produto = $this -> usuario_model -> getFoto(trim($idProduto));
 				$data = array('idCliente' => $idCliente, 'tipo' => $tipo, 'total' => $total, 'produto' => $produto, 'id' => $id, 'valorMim' => $valorMim);
 				$this -> my_load_view('vendaVerProduto', $data);
 			}

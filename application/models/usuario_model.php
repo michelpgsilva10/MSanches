@@ -19,7 +19,6 @@ Class Usuario_model  extends CI_Model {
 		$this -> db -> select_max('id_produto');
 		$this -> db -> from('produto');
 		$this -> db -> order_by("id_produto", "desc");
-		$this -> db -> limit(1);
 		$query = $this -> db -> get();
 		if ($query -> num_rows() > 0) {
 			return $query -> row();
@@ -132,9 +131,22 @@ Class Usuario_model  extends CI_Model {
 			return FALSE;
 		}
 	}
+	
+	function getFoto($idProduto) {
+		$this -> db -> select('foto_produto,cod_barra_produto');
+		$this -> db -> from('produto');
+		$this -> db -> where('id_produto', $idProduto);
+		$this -> db -> where('del_produto !=', '1');
+		$query = $this -> db -> get();
+		if ($query -> num_rows() > 0) {
+			return $query -> row();
+		} else {
+			return FALSE;
+		}
+	}
 
 	function getProduto($id, $code) {
-		$this -> db -> select('*');
+		$this -> db -> select('id_produto,valor_produto,estoque_produto,cod_barra_produto,modelo_produto');
 		$this -> db -> from('produto');
 		if (strcmp($code, "0") == 0) {
 			$this -> db -> where('id_produto', $id);

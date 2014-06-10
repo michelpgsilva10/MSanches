@@ -36,82 +36,102 @@
 				</div>
 				<?php } ?>
 				<br />
-				<form class="form-horizontal" name="formV" method="post" role="form" action="<?php if(isset($cliente)){echo site_url("venda/novoitem/".$total."/0/".$cliente[0]['id_cliente']);}else{ echo site_url("venda/novoitem/".$total );}?>">
+				<form class="form-horizontal" name="formV" method="post" role="form" action="<?php
+				if (isset($cliente)) {echo site_url("venda/novoitem/" . $total . "/0/" . $cliente[0]['id_cliente']);
+				} else { echo site_url("venda/novoitem/" . $total);
+				}
+				?>">
 					<div class="row">
 						<div class="col-md-7 col-md-offset-3" align="center">
 							<div class="form-group">
-								<label for="inputEmail3" control-label" >Cliente: <?php	if (isset($cliente)) { echo $cliente[0]['nome_cliente'];} else { echo "Não Selecionado";} ?></label>								
-									<a class="btn btn-default btn-xs" href="<?php session_write_close (); echo site_url("venda/selCliente/-1/".$total."/0")?>" style="margin-left: 6%;" role="button">Selecionar</a>	
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-6 col-md-offset-3" align="center" >
-							<div class="form-inline" align="center">
+								<label for="inputEmail3" control-label" >Cliente: <?php
+								if (isset($cliente)) { echo $cliente[0]['nome_cliente'];
+								} else { echo "Não Selecionado";
+								}
+ ?></label>
+								<a class="btn btn-default btn-xs" href="<?php session_write_close (); echo site_url("venda/selCliente/-1/".$total."/0")?>" style="margin-left: 6%;" role="button">Selecionar</a>
+								</div>
+								</div>
+								</div>
+								<div class="row">
+								<div class="col-md-6 col-md-offset-3" align="center" >
+								<div class="form-inline" align="center">
 								<div class="form-group">
-									<label for="inputEmail3" class="col-sm-5 control-label">Quantidade:</label>
-									<div class="col-sm-7">
-										<input type="text" class="form-control" name="quantP"  id="quantP" value="1" style="text-align: center;" onkeypress="return SomenteNumero(event);" maxlength="4" required>
-									</div>
+								<label for="inputEmail3" class="col-sm-5 control-label">Quantidade:</label>
+								<div class="col-sm-7">
+								<input type="text" class="form-control" name="quantP"  id="quantP" value="1" style="text-align: center;" onkeypress="return SomenteNumero(event);" maxlength="4" required>
+								</div>
 								</div>
 								<div class="form-group" style="margin-left: 10px;">
-									<div class="col-sm-7">
-										<input type="text" class="form-control" name="codigoP" id="codigoP" placeholder="Código do Produto" onkeypress="Enter(event)" autofocus required>
-									</div>
+								<div class="col-sm-7">
+								<input type="text" class="form-control" name="codigoP" id="codigoP" placeholder="Código do Produto" onkeypress="Enter(event)" autofocus required>
 								</div>
+								</div>
+								</div>
+								</div>
+								</div>
+								</form>
+								<br />
+								<div class="row">
+								<div class="col-md-9 ">
+								<table class="table table-bordered table-hover"  style="margin-left: 18%">
+								<thead>
+								<tr class="info">
+								<th style="text-align: center">#</th>
+								<th style="text-align: center" >Código do Poroduto</th>
+								<th style="text-align: center">Quantidade</th>
+								<th style="text-align: center" colspan="2">Unidade  |  Total </th>
+								<th style="text-align: center"></th>
+								</tr>
+								</thead>
+								<tbody id="tabelaV">
+								<?php if($total!=0){
+								for($i=0;$i<count($produtos);$i++){?>
+								<tr>
+								<td style="text-align: center;"> <?php echo $i + 1; ?></td>
+								<td style="text-align: center;"> <?php echo $produtos[$i]->	cod_barra_produto ?></td>
+								<td style="text-align: center;"> <?php echo $produtos[$i]->	estoque_produto ?></td>
+								<td style="text-align: center;"> <?php echo $produtos[$i]->	valor_produto ?></td>
+								<td style="text-align: center;"> <?php echo $produtos[$i]->valor_produto*$produtos[$i]->estoque_produto ?></td>
+								<td style="text-align: center;"><a type="button" class="btn btn-info btn-sm" href="<?php session_write_close();
+									if (isset($cliente)) {echo site_url("venda/deletaItem/" . $i . "/" . $total . "/0/" . $cliente[0]['id_cliente']);
+									} else { echo site_url("venda/deletaItem/" . $i . "/" . $total);
+									}
+								?>">Deletar</a><a style="margin-left: 3%;" type="button" class="btn btn-info btn-sm" href="<?php
+								if (isset($cliente)) {echo site_url("venda/visualizaI/" . $produtos[$i] -> id_produto . "/" . $total . "/1/" . $cliente[0]['id_cliente']);
+								} else {
+									echo site_url("venda/visualizaI/" . $produtos[$i] -> id_produto . "/" . $total . "/1");
+								}
+								?>">Ver Produto</a> </td> </tr>
+								<?php } } ?>
+								</tbody>
+								<tfoot>
+									<tr class="info">
+										<td style="text-align: center;" ><strong> Total </strong></td>
+										<td colspan = 5 style="text-align: center;"><label> <b> <?php echo $total; ?>
+											</b></label></td>
+									</tr>
+								</tfoot> </table>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6 col-md-offset-3" align="center">
+								<ul class="pager">
+									<li>
+										<a type="button" href="<?php echo site_url("venda/sair")?>">Sair</a>
+									</li>
+									<li>
+										<a type="button" href="<?php
+										if (isset($cliente)) {echo site_url("venda/finalizarCompra/" . $total . "/" . $cliente[0]['id_cliente']);
+										} else { echo site_url("venda/finalizarCompra/" . $total);
+										}
+									?>">Finalizar</a>
+									</li>
+								</ul>
 							</div>
 						</div>
 					</div>
-				</form>
-				<br />
-				<div class="row">
-					<div class="col-md-9 ">
-						<table class="table table-bordered table-hover"  style="margin-left: 18%">
-							<thead>
-								<tr class="info">
-									<th style="text-align: center">#</th>
-									<th style="text-align: center" >Código do Poroduto</th>
-									<th style="text-align: center">Quantidade</th>
-									<th style="text-align: center" colspan="2">Unidade  |  Total </th>
-									<th style="text-align: center"></th>
-								</tr>
-							</thead>
-							<tbody id="tabelaV">
-								<?php if($total!=0){
-									for($i=0;$i<count($produtos);$i++){?>
-								<tr>
-									<td style="text-align: center;"> <?php echo $i+1; ?></td>	
-									<td style="text-align: center;"> <?php echo $produtos[$i]->	cod_barra_produto ?></td>
-									<td style="text-align: center;"> <?php echo $produtos[$i]->	estoque_produto ?></td>
-									<td style="text-align: center;"> <?php echo $produtos[$i]->	valor_produto ?></td>
-									<td style="text-align: center;"> <?php echo $produtos[$i]->valor_produto*$produtos[$i]->estoque_produto ?></td>
-									<td style="text-align: center;"> <a type="button" class="btn btn-info" href="<?php session_write_close (); if(isset($cliente)){echo site_url("venda/deletaItem/".$i."/".$total."/0/".$cliente[0]['id_cliente']);}else{ echo site_url("venda/deletaItem/".$i."/".$total); }?>">Deletar</a>
-								</tr>
-								<?php } } ?>
-							</tbody>
-							<tfoot>
-								<tr class="info">
-									<td style="text-align: center;" ><strong> Total </strong></td>
-									<td colspan = 5 style="text-align: center;"><label> <b> <?php echo $total; ?> </b></label></td>
-								</tr>
-							</tfoot>
-						</table>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6 col-md-offset-3" align="center">
-						<ul class="pager">
-							<li>
-								<a type="button" href="<?php echo site_url("venda/sair")?>">Sair</a>
-							</li>
-							<li>
-								<a type="button" href="<?php if(isset($cliente)){echo site_url("venda/finalizarCompra/".$total."/".$cliente[0]['id_cliente']);}else{ echo site_url("venda/finalizarCompra/".$total);}?>">Finalizar</a>
-							</li>
-						</ul>
-					</div>
-				</div>
 			</div>
 		</div>
 	</div>
-</div>
 </div>
