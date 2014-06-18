@@ -356,5 +356,20 @@ Class Usuario_model  extends CI_Model {
 		$this -> db -> where('id_venda_consignado', $id);
 		$this -> db -> update('venda_consignado', $data);
 	}
+	
+	function getComprasCliente($id_cliente) {
+		$this -> db -> select("CASE WHEN (SELECT COUNT(1) FROM venda_consignado WHERE id_venda_inicio = id_venda OR id_venda_retorno = id_venda) <> 0 THEN 'Venda Consignada' ELSE 'Venda Comum' END AS tipo_venda, data_venda, data_retorno_venda, valor_venda, nome_cliente", FALSE);
+		$this -> db -> from("venda");
+		$this -> db -> join("cliente", "cliente.id_cliente = venda.cliente_fk");
+		$this -> db -> where("cliente_fk", $id_cliente);
+		$this -> db -> order_by("data_venda", "desc");
+							
+		$query = $this -> db -> get();
+		
+		if ($query -> num_rows() > 0)
+			return $query -> result_array();
+		else
+			return false;
+	}
 }
 ?>
