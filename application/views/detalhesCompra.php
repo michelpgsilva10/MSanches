@@ -9,9 +9,14 @@
 								<div class="form-separator">
 									<?php 
 										if($detalhes_compra) {
-											echo 'Compra de ' . $detalhes_compra[0]["nome_cliente"]; ?>
+											echo 'Compra de ' . $detalhes_compra[0]["nome_cliente"];										
+									?>											
 								</div>
 								
+								<?php
+									if ($detalhes_compra[0]["tipo_venda"] == 0) {
+										
+								?>								
 								
 								<div style="display: table; width: 100%; padding-left: 5px;" class="list-group-item">
 									<div style="float: left; width: 25%" align="center">
@@ -29,7 +34,7 @@
 								</div>
 								
 								<?php
-									if ($detalhes_compra[0]["tipo_venda"] == 0) {
+									
 										for ($i = 0; $i < count($detalhes_compra); $i++) {
 																					
 									
@@ -58,8 +63,61 @@
 								
 								<?php
 										 }
-									}									
+									} else {									
 								?>
+																
+								<div style="display: table; width: 100%; padding-left: 5px;" class="list-group-item">
+									<div style="float: left; width: 20%" align="center">
+										<h4 class="text-primary">Produto</h4>
+									</div>
+									<div style="float: left; width: 20%;" align="center">
+										<h4 class="text-primary">Qtde Pegou</h4>
+									</div>
+									<div style="float: left; width: 20%" align="center">
+										<h4 class="text-primary">Qtde Devolvida</h4>
+									</div>	
+									<div style="float: left; width: 20%" align="center">
+										<h4 class="text-primary">Valor Unitário</h4>
+									</div>									
+									<div style="float: left; width: 20%" align="center">
+										<h4 class="text-primary">Subtotal</h4>
+									</div>
+								</div>
+								
+								<?php
+									for ($i = 0; $i < count($detalhes_compra); $i++) {
+										
+								?>
+								
+								<div style="display: table; width: 100%; padding-left: 5px;" class="list-group-item">
+									<div style="float: left; width: 20%;" align="center">
+										<h5 class="text-center"><?php echo $detalhes_compra[$i]["cod_barra_produto"] ?></h>
+									</div>
+									<div style="float: left; width: 20%;" align="center">
+										<h5 class="text-center"><?php echo $detalhes_compra[$i]["quant_pegou"] ?></h5>
+									</div>
+									<div style="float: left; width: 20%;" align="center">
+										<h5 class="text-center"><?php echo $detalhes_compra[$i]["quant_dev"] ?></h5>
+									</div>
+									<div style="float: left; width: 20%;" align="center">
+										<h5 class="text-center"><?php echo 'R$ ' . number_format($detalhes_compra[$i]["valor_produto"], 2, ',', '.'); ?></h5>
+									</div>
+									<div style="float: left; width: 20%" align="center">
+										<h5 class="text-center">
+											<?php 
+												$quantidade = $detalhes_compra[$i]["quant_dev"];
+												$valor_produto = $detalhes_compra[$i]["valor_produto"];
+												echo 'R$ ' . number_format($quantidade * $valor_produto, 2, ',', '.');
+											?>
+										</h5>
+									</div>
+									
+								</div>
+								<?php
+										}
+									}
+								?>
+								
 								<div style="display: table; width: 100%; padding-left: 5px;" class="list-group-item">
 									<div style="float: left; width: 75%;" align="right">
 										<h4><b>Total</b></h4>
