@@ -189,8 +189,15 @@ class Cliente extends MY_Controller {
 		}
 	}
 
+	function detalhesCompra($id_venda, $tipo_compra) {
+		$data["detalhes_compra"] = $this -> usuario_model -> getCompraDetalhes($id_venda, $tipo_compra);
+		$this -> my_load_view('detalhesCompra', $data);
+	}
+
 	function comprasCliente($id_cliente) {
 		$data["compras"] = $this -> usuario_model -> getComprasCliente($id_cliente);
+		$data["cliente"] = $this -> usuario_model -> getCliente($id_cliente, 0);
+		
 		$this -> my_load_view('comprasCliente', $data);
 	}
 

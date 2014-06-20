@@ -40,6 +40,7 @@ if ($vendas) {
 
 	$pdf = new PDF('P', 'cm', 'A4');
 	$pdf -> SetMargins(2, 2);
+	$pdf ->SetTitle("MSanches - Venda Comum");
 	$pdf -> Open();	
 	$pdf -> AddPage();
 	$pdf -> SetFont('Arial', '', 11);

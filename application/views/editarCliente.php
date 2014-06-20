@@ -115,7 +115,7 @@
 					</li>
 					
 					<li>
-						<a href="<?php echo site_url('home')?>">Voltar</a>
+						<a href="<?php echo site_url('cliente/infoCliente/' . $cliente[0]["id_cliente"] . "/0")?>">Voltar</a>
 					</li>
 				</ul>
 
