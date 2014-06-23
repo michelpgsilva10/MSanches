@@ -5,13 +5,14 @@
 				<div class="container-fluid">
 					<div  class="panel panel-default">
 						<div class="row" style="margin-top: 20px; width: 100%; padding-left: 7%">
-							<div class="list-group teste">
-								<div class="form-separator">
-									<?php 
-										if($detalhes_compra) {
-											echo 'Compra de ' . $detalhes_compra[0]["nome_cliente"];										
-									?>											
-								</div>
+							<div class="list-group teste">								
+								<?php 
+									if($detalhes_compra) {
+										echo '<div class="form-separator">';
+										echo '	Compra de ' . $detalhes_compra[0]["nome_cliente"];
+										echo '</div>';										
+								?>											
+								
 								
 								<?php
 									if ($detalhes_compra[0]["tipo_venda"] == 0) {
@@ -97,7 +98,14 @@
 										<h5 class="text-center"><?php echo $detalhes_compra[$i]["quant_pegou"] ?></h5>
 									</div>
 									<div style="float: left; width: 20%;" align="center">
-										<h5 class="text-center"><?php echo $detalhes_compra[$i]["quant_dev"] ?></h5>
+										<h5 class="text-center">
+											<?php
+												if($detalhes_compra[$i] != NULL) 
+													echo $detalhes_compra[$i]["quant_dev"];
+												else
+													echo '-'; 
+											?>
+										</h5>
 									</div>
 									<div style="float: left; width: 20%;" align="center">
 										<h5 class="text-center"><?php echo 'R$ ' . number_format($detalhes_compra[$i]["valor_produto"], 2, ',', '.'); ?></h5>
@@ -105,7 +113,11 @@
 									<div style="float: left; width: 20%" align="center">
 										<h5 class="text-center">
 											<?php 
-												$quantidade = $detalhes_compra[$i]["quant_dev"];
+												if ($detalhes_compra[$i]["quant_dev"] != NULL) 
+													$quantidade = $detalhes_compra[$i]["quant_dev"];
+												else
+													$quantidade = $detalhes_compra[$i]["quant_pegou"];
+												
 												$valor_produto = $detalhes_compra[$i]["valor_produto"];
 												echo 'R$ ' . number_format($quantidade * $valor_produto, 2, ',', '.');
 											?>
