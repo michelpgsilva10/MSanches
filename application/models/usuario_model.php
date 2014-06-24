@@ -363,7 +363,7 @@ Class Usuario_model  extends CI_Model {
 		$this -> db -> join("cliente", "cliente.id_cliente = venda.cliente_fk");
 		//$this -> db -> join("venda_consignado", "venda.id_venda <> venda_consignado.id_venda_retorno");
 		$this -> db -> where("cliente_fk", $id_cliente);
-		$this -> db -> where("id_venda NOT IN (SELECT id_venda_retorno FROM venda_consignado)");
+		$this -> db -> where("id_venda NOT IN (SELECT id_venda_retorno FROM venda_consignado WHERE id_venda_retorno IS NOT NULL)");
 		$this -> db -> order_by("data_venda", "desc");
 							
 		$query = $this -> db -> get();
@@ -376,12 +376,12 @@ Class Usuario_model  extends CI_Model {
 	
 	function getCompraDetalhes($id_venda, $tipo_venda) {
 		if (trim($tipo_venda) == 1) {
-			$this -> db -> select('b.id_venda, c.quantidade_produto quant_pegou, e.quantidade_produto quant_dev, f.cod_barra_produto, f.valor_produto, b.valor_venda, h.nome_cliente, h.id_cliente, 1 tipo_venda', FALSE);
+			$this -> db -> select('b.id_venda, c.quantidade_produto quant_pegou, e.quantidade_produto quant_dev, f.cod_barra_produto, f.valor_produto, b.valor_venda, h.nome_cliente, h.id_cliente, a.id_venda_consignado, 1 tipo_venda', FALSE);
 			$this -> db -> from('venda_consignado a');
 			$this -> db -> join('venda b', 'a.id_venda_inicio = b.id_venda');
 			$this -> db -> join('compra c', 'b.id_venda = c.venda_fk');
 			$this -> db -> join('venda d', 'a.id_venda_retorno = d.id_venda', 'left');
-			$this -> db -> join('compra e', 'd.id_venda = e.venda_fk');
+			$this -> db -> join('compra e', 'd.id_venda = e.venda_fk', 'left');
 			$this -> db -> join('produto f', 'c.produto_fk = f.id_produto');
 			$this -> db -> join('cliente h', 'b.cliente_fk = h.id_cliente');
 			$this -> db -> where('a.id_venda_inicio', $id_venda);			

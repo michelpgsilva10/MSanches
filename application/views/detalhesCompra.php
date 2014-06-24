@@ -75,7 +75,7 @@
 										<h4 class="text-primary">Qtde Pegou</h4>
 									</div>
 									<div style="float: left; width: 20%" align="center">
-										<h4 class="text-primary">Qtde Devolvida</h4>
+										<h4 class="text-primary">Qtde Vendida</h4>
 									</div>	
 									<div style="float: left; width: 20%" align="center">
 										<h4 class="text-primary">Valor Unitário</h4>
@@ -100,7 +100,7 @@
 									<div style="float: left; width: 20%;" align="center">
 										<h5 class="text-center">
 											<?php
-												if($detalhes_compra[$i] != NULL) 
+												if($detalhes_compra[$i]["quant_dev"] != NULL) 
 													echo $detalhes_compra[$i]["quant_dev"];
 												else
 													echo '-'; 
@@ -113,8 +113,8 @@
 									<div style="float: left; width: 20%" align="center">
 										<h5 class="text-center">
 											<?php 
-												if ($detalhes_compra[$i]["quant_dev"] != NULL) 
-													$quantidade = $detalhes_compra[$i]["quant_dev"];
+												if ($detalhes_compra[$i]["quant_dev"] != NULL ) 
+													$quantidade = $detalhes_compra[$i]["quant_dev"];												
 												else
 													$quantidade = $detalhes_compra[$i]["quant_pegou"];
 												
@@ -145,7 +145,16 @@
 							</div>										
 						</div>
 						<div style="width: 100%; padding: 10px;" align="center">
-							<a href="<?php echo site_url("cliente/gerarPDF/" . $detalhes_compra[0]["id_venda"]); ?>" class="btn btn-primary" target="_blank">Imprimir Registro de Compra</a>
+							<a href="<?php
+										 if ($detalhes_compra[0]["tipo_venda"] == 0) {
+										 	echo site_url("cliente/gerarPDF/" . $detalhes_compra[0]["id_venda"]);
+										 } else if ($detalhes_compra[0]["tipo_venda"] == 1 && $detalhes_compra[0]["quant_dev"] == NULL) {
+										 	echo site_url("cliente/gerarPDFInicio/" . $detalhes_compra[0]["id_venda"]);
+										 } else {
+										 	echo site_url("cliente/gerarPDFVolta/" . $detalhes_compra[0]["id_venda_consignado"]);
+										 }
+										  
+									 ?>" class="btn btn-primary" target="_blank">Imprimir Registro de Compra</a>
 						</div>
 					</div>					
 				</div>
