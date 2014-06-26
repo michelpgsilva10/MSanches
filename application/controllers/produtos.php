@@ -37,7 +37,7 @@ class Produtos extends MY_Controller {
 			$todos = $this -> usuario_model -> getProdutos($inicio * 12, $tipo);
 			$ultima = $QItens % 12;
 			if ($ultima == 0) {
-				$ultima = $QItens / 12;
+				$ultima = ($QItens / 12)-1;
 			} else {
 				$ultima = (int)(($QItens / 12));
 			}
@@ -73,7 +73,7 @@ class Produtos extends MY_Controller {
 		if ($this -> session -> userdata('load') == $load) {
 			if ($this -> input -> post('valor', TRUE)) {
 				$tipo = $this -> input -> post('tipo', TRUE);
-				$produto = $this -> usuario_model -> getProduto(trim($id), 0);
+				$produto = $this -> usuario_model -> getBusca(trim($id), 0);
 				if ($tipo == "") {
 					$data = array('produto' => $produto);
 					$this -> my_load_view('alterarProduto.php', $data);
@@ -82,7 +82,7 @@ class Produtos extends MY_Controller {
 						$modelos = $this -> usuario_model -> getQProduto($tipo);
 						$aux = 0;
 						$verifica = -1;
-						for ($i = 0; $i <= count($modelos); $i++) {
+						for ($i = 0; $i < count($modelos); $i++) {
 							$aux++;
 							if ($modelos[$i]['modelo_produto'] != $aux) {
 								$model = $aux;
@@ -91,13 +91,13 @@ class Produtos extends MY_Controller {
 							}
 						}
 						if ($verifica == -1) {
-							$model = $aux;
+							$model = $aux+1;
 						}
 						if ($model < 10) {
 							$model = "000" . $model;
 						} else if ($model < 100) {
 							$model = "00" . $model;
-						} else if ($id < 1000) {
+						} else if ($model < 1000) {
 							$model = "0" . $model;
 						} else if ($model > 10000) {
 							$data = array('foto' => TRUE, '$mensagem' => "Estouro de Tipo - Fale com o Tecnico");
@@ -109,7 +109,7 @@ class Produtos extends MY_Controller {
 							$model = "000" . $model;
 						} else if ($model < 100) {
 							$model = "00" . $model;
-						} else if ($id < 1000) {
+						} else if ($model < 1000) {
 							$model = "0" . $model;
 						} else if ($model > 10000) {
 							$data = array('foto' => TRUE, '$mensagem' => "Estouro de Tipo - Fale com o Tecnico");
@@ -135,7 +135,7 @@ class Produtos extends MY_Controller {
 					redirect('produtos/perEtiqueta/' . $code);
 				}
 			} else {
-				$produto = $this -> usuario_model -> getProduto(trim($id), 0);
+				$produto = $this -> usuario_model -> getBusca(trim($id), 0);
 				$data = array('produto' => $produto);
 				$this -> my_load_view('alterarProduto.php', $data);
 			}
@@ -153,9 +153,9 @@ class Produtos extends MY_Controller {
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
 			if($tipo==0){
-				$produto = $this -> usuario_model -> getProduto(trim($code), 0);
+				$produto = $this -> usuario_model -> getBusca(trim($code), 0);
 			}else{
-				$produto = $this -> usuario_model -> getProduto(0,trim($code));
+				$produto = $this -> usuario_model -> getBusca(0,trim($code));
 			}
 			$data = array('produto' => $produto);
 			$this -> my_load_view('resultBusca.php', $data);
@@ -173,7 +173,7 @@ class Produtos extends MY_Controller {
 		if ($this -> session -> userdata('load') == $load) {
 			if ($this -> input -> post('codigo', TRUE) != "") {
 				$cod = $this -> input -> post('codigo', TRUE);
-				$produto = $this -> usuario_model -> getProduto(0, trim($cod));
+				$produto = $this -> usuario_model -> getBusca(0, trim($cod));
 				if ($produto != FALSE) {
 					$data = array('produto' => $produto);
 					$this -> my_load_view('resultBusca.php', $data);
@@ -234,14 +234,14 @@ class Produtos extends MY_Controller {
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
-			$produto = $this -> usuario_model -> getProduto($tipo = $this -> input -> post('id', TRUE), 0);
-			$config['upload_path'] = "D:\Dropbox\Dropbox\Projetos Trabalho\MSanches\css\img\img_produto";
+			$produto = $this -> usuario_model -> getBusca($tipo = $this -> input -> post('id', TRUE), 0);
+			$config['upload_path'] = "/home/mmsan532/public_html/sistema/css/img/img_produto";
 			$config['file_name'] = $produto -> foto_produto;
 			$config['allowed_types'] = 'jpg';
 			$config['max_size'] = '2048';
 			$this -> load -> library('upload', $config);
-			if (file_exists("D:/Dropbox/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto/" . $produto -> foto_produto)) {
-				unlink("D:/Dropbox/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto/" . $produto -> foto_produto);
+			if (file_exists("C:/Users/kaue/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto/" . $produto -> foto_produto)) {
+				unlink("C:/Users/kaue/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto/" . $produto -> foto_produto);
 			}
 			if (!$this -> upload -> do_upload("fileF")) {
 				$data = array('mensagem' => $this -> upload -> display_errors());
@@ -313,7 +313,7 @@ class Produtos extends MY_Controller {
 						}
 					}
 					if ($verifica == -1) {
-						$id = $aux;
+						$id = $aux+1;
 					}
 					$valor = $this -> input -> post('valor', TRUE);
 					$quantidade = $this -> input -> post('quant', TRUE);
@@ -372,14 +372,14 @@ class Produtos extends MY_Controller {
 				$id = "0" . $id;
 			}
 			$nome = $id . ".jpg";
-			$config['upload_path'] = "D:\Dropbox\Dropbox\Projetos Trabalho\MSanches\css\img\img_produto";
+			$config['upload_path'] = "C:/Users/kaue/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto";
 			$config['file_name'] = $nome;
 			$config['allowed_types'] = 'jpg';
 			$config['max_size'] = '2048';
 
 			$this -> load -> library('upload', $config);
-			if (file_exists("D:/Dropbox/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto/" . $nome)) {
-				unlink("D:/Dropbox/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto/" . $nome);
+			if (file_exists("C:/Users/kaue/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto/" . $nome)) {
+				unlink("C:/Users/kaue/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto/" . $nome);
 			}
 			if (!$this -> upload -> do_upload("fileF")) {
 				$data = array('mensagem' => $this -> upload -> display_errors());

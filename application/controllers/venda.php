@@ -103,18 +103,23 @@ class Venda extends MY_Controller {
 					$testeE = 0;
 					for ($i = 0; $i < count($produtos); $i++) {
 						if (strcmp($produtos[$i] -> cod_barra_produto, trim($this -> input -> post('codigoP', TRUE))) == 0) {
-							$testeE = 1;
-							break;
+							if (($this -> input -> post('quantP', TRUE)+$produtos[$i] -> estoque_produto) <= $produto -> estoque_produto) {
+								$produtos[$i] -> estoque_produto += $this -> input -> post('quantP', TRUE);
+								$total += $produto -> valor_produto * (int)trim($this -> input -> post('quantP', TRUE));
+								$testeE = 1;
+								break;
+							}else{
+								$testeE=2;
+								break;
+							}
 						}
 					}
 					if ($testeE == 0) {
 						if ($this -> input -> post('quantP', TRUE) <= $produto -> estoque_produto) {
 							$produto -> estoque_produto = $this -> input -> post('quantP', TRUE);
 							$produtos[] = $produto;
-							$produtos = array_values($produtos);
 							$total += $produto -> valor_produto * (int)trim($this -> input -> post('quantP', TRUE));
-							unset($_SESSION['produtos']);
-							$_SESSION['produtos'] = $produtos;
+							$_SESSION['produtos'][] = $produto;
 							session_write_close();
 							if ($tipo == 0) {
 								if ($id != -1) {
@@ -156,25 +161,47 @@ class Venda extends MY_Controller {
 								}
 							}
 						}
-					} else {
+					}else if($testeE==2){
+						if ($tipo == 0) {
+								if ($id != -1) {
+									session_write_close();
+									$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente, 'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
+									$this -> my_load_view('vendaComum', $data);
+								} else {
+									session_write_close();
+									$data = array('total' => $total, 'produtos' => $produtos, 'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
+									$this -> my_load_view('vendaComum', $data);
+								}
+							} else {
+								if ($id != -1) {
+									session_write_close();
+									$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente, 'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
+									$this -> my_load_view('vendaConsig', $data);
+								} else {
+									session_write_close();
+									$data = array('total' => $total, 'produtos' => $produtos, 'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
+									$this -> my_load_view('vendaConsig', $data);
+								}
+							}
+					}else {
 						if ($tipo == 0) {
 							if ($id != -1) {
 								session_write_close();
-								$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente, 'mensagem' => "Produto Já Inserido, Delete e Insira Novamente, Alterando a Quantidade");
+								$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente);
 								$this -> my_load_view('vendaComum', $data);
 							} else {
 								session_write_close();
-								$data = array('total' => $total, 'produtos' => $produtos, 'mensagem' => "Produto Já Inserido, Delete e Insira Novamente, Alterando a Quantidade");
+								$data = array('total' => $total, 'produtos' => $produtos);
 								$this -> my_load_view('vendaComum', $data);
 							}
 						} else {
 							if ($id != -1) {
 								session_write_close();
-								$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente, 'mensagem' => "Produto Já Inserido, Delete e Insira Novamente, Alterando a Quantidade");
+								$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente);
 								$this -> my_load_view('vendaConsig', $data);
 							} else {
 								session_write_close();
-								$data = array('total' => $total, 'produtos' => $produtos, 'mensagem' => "Produto Já Inserido, Delete e Insira Novamente, Alterando a Quantidade");
+								$data = array('total' => $total, 'produtos' => $produtos);
 								$this -> my_load_view('vendaConsig', $data);
 							}
 						}
@@ -416,23 +443,26 @@ class Venda extends MY_Controller {
 						$this -> usuario_model -> setVendaC($idVenda);
 						$sProduto = -1;
 						for ($i = 0; $i < count($produtos); $i++) {
-							$produto = $this -> usuario_model -> getProduto($produtos[$i] -> id_produto, 0);
-							if ($produtos[$i] -> estoque_produto <= $produto -> estoque_produto) {
+							$produto = $this -> usuario_model -> getProduto($produtos[$i] -> id_produto, 0);	
+							if ($produtos[$i] -> estoque_produto > $produto -> estoque_produto) {
+								$sProduto = $produtos[$i] -> cod_barra_produto;
+								break;
+							}
+						}	
+						if ($sProduto != -1) {
+							$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente, 'mensagem' => "O produto " . $sProduto . " não possui essa quantidade mias ou Já foi vendido todos os itens");
+							$this -> my_load_view('vendaComum', $data);
+						} else {
+							for ($i = 0; $i < count($produtos); $i++) {
+							$produto = $this -> usuario_model -> getProduto($produtos[$i] -> id_produto, 0);	
 								if ($produtos[$i] -> estoque_produto == $produto -> estoque_produto) {
 									$this -> usuario_model -> updateVendaProduto($produtos[$i] -> id_produto, 0);
 								} else {
 									$this -> usuario_model -> updateVendaProduto($produtos[$i] -> id_produto, $produto -> estoque_produto - $produtos[$i] -> estoque_produto);
 								}
 								$this -> usuario_model -> setCompra($cliente[0]['id_cliente'], $produtos[$i] -> estoque_produto, $produtos[$i] -> id_produto, $idVenda);
-							} else {
-								$sProduto = $produtos[$i] -> cod_barra_produto;
-								break;
-							}
+							
 						}
-						if ($sProduto != -1) {
-							$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente, 'mensagem' => "O produto " . $sProduto . " não possui essa quantidade mias ou Já foi vendido todos os itens");
-							$this -> my_load_view('vendaComum', $data);
-						} else {
 							session_destroy();
 							session_write_close();
 							$this -> usuario_model -> logs($this -> session -> userdata('id'), 8, $cliente[0]['id_cliente'], $total, $idVenda);
@@ -755,7 +785,7 @@ class Venda extends MY_Controller {
 						$data = array('total' => $total, 'produtos' => $produtos);
 						$this -> my_load_view('vendaComum', $data);
 					}
-				}else if ($tipo == 2) {
+				} else if ($tipo == 2) {
 					if ($idCliente != 0) {
 						$cliente = $this -> usuario_model -> getCliente($idCliente, 0);
 						$data = array('cliente' => $cliente, 'total' => $total, 'produtos' => $produtos);

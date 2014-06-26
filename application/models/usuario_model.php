@@ -145,6 +145,23 @@ Class Usuario_model  extends CI_Model {
 		}
 	}
 
+	function getBusca($id, $code) {
+		$this -> db -> select('*');
+		$this -> db -> from('produto');
+		if (strcmp($code, "0") == 0) {
+			$this -> db -> where('id_produto', $id);
+		} else {
+			$this -> db -> where('del_produto !=', '1');
+			$this -> db -> where('cod_barra_produto', $code);
+		}
+		$query = $this -> db -> get();
+		if ($query -> num_rows() > 0) {
+			return $query -> row();
+		} else {
+			return FALSE;
+		}
+	}
+
 	function getProduto($id, $code) {
 		$this -> db -> select('id_produto,valor_produto,estoque_produto,cod_barra_produto,modelo_produto');
 		$this -> db -> from('produto');
