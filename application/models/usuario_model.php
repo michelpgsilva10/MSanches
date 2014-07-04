@@ -133,7 +133,7 @@ Class Usuario_model  extends CI_Model {
 	}
 	
 	function getFoto($idProduto) {
-		$this -> db -> select('foto_produto,cod_barra_produto');
+		$this -> db -> select('foto_produto,cod_barra_produto,id_produto');
 		$this -> db -> from('produto');
 		$this -> db -> where('id_produto', $idProduto);
 		$this -> db -> where('del_produto !=', '1');
@@ -143,6 +143,12 @@ Class Usuario_model  extends CI_Model {
 		} else {
 			return FALSE;
 		}
+	}
+
+	function updatefoto($id, $fotoname) {
+		$data = array('foto_produto' => $fotoname);
+		$this -> db -> where('id_produto', $id);
+		$this -> db -> update('produto', $data);
 	}
 
 	function getBusca($id, $code) {

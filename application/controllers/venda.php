@@ -4,7 +4,6 @@ class Venda extends MY_Controller {
 	function __construct() {
 		parent::__construct();
 		$this -> load -> library('session');
-		$produto;
 	}
 
 	public function index() {
@@ -105,7 +104,14 @@ class Venda extends MY_Controller {
 						if (strcmp($produtos[$i] -> cod_barra_produto, trim($this -> input -> post('codigoP', TRUE))) == 0) {
 							if (($this -> input -> post('quantP', TRUE)+$produtos[$i] -> estoque_produto) <= $produto -> estoque_produto) {
 								$produtos[$i] -> estoque_produto += $this -> input -> post('quantP', TRUE);
-								$total += $produto -> valor_produto * (int)trim($this -> input -> post('quantP', TRUE));
+								if($this -> input -> post('desconto', TRUE)!=0){
+									$produto -> modelo_produto = $this -> input -> post('desconto', TRUE);
+									$desconto = $produto -> valor_produto*($this -> input -> post('desconto', TRUE)/100);
+									$total += ($produto -> valor_produto-$desconto) * (int)trim($this -> input -> post('quantP', TRUE));
+								}else{
+									$desconto = $produto -> valor_produto*($produto -> modelo_produto/100);
+									$total += ($produto -> valor_produto-$desconto) * (int)trim($this -> input -> post('quantP', TRUE));
+								}
 								$testeE = 1;
 								break;
 							}else{
@@ -117,24 +123,26 @@ class Venda extends MY_Controller {
 					if ($testeE == 0) {
 						if ($this -> input -> post('quantP', TRUE) <= $produto -> estoque_produto) {
 							$produto -> estoque_produto = $this -> input -> post('quantP', TRUE);
+							$produto -> modelo_produto = $this -> input -> post('desconto', TRUE);
+							$desconto = $produto -> valor_produto*($this -> input -> post('desconto', TRUE)/100);
 							$produtos[] = $produto;
-							$total += $produto -> valor_produto * (int)trim($this -> input -> post('quantP', TRUE));
+							$total += ($produto -> valor_produto-$desconto) * (int)trim($this -> input -> post('quantP', TRUE));
 							$_SESSION['produtos'][] = $produto;
 							session_write_close();
 							if ($tipo == 0) {
 								if ($id != -1) {
-									$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente);
+									$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente,'mensagemC' =>"Foi Adicionado o item: ".$produto -> cod_barra_produto);
 									$this -> my_load_view('vendaComum', $data);
 								} else {
-									$data = array('total' => $total, 'produtos' => $produtos);
+									$data = array('total' => $total, 'produtos' => $produtos ,'mensagemC' =>"Foi Adicionado o item: ".$produto -> cod_barra_produto);
 									$this -> my_load_view('vendaComum', $data);
 								}
 							} else {
 								if ($id != -1) {
-									$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente);
+									$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente,'mensagemC' =>"Foi Adicionado o item: ".$produto -> cod_barra_produto);
 									$this -> my_load_view('vendaConsig', $data);
 								} else {
-									$data = array('total' => $total, 'produtos' => $produtos);
+									$data = array('total' => $total, 'produtos' => $produtos,'mensagemC' =>"Foi Adicionado o item: ".$produto -> cod_barra_produto);
 									$this -> my_load_view('vendaConsig', $data);
 								}
 							}
@@ -187,21 +195,21 @@ class Venda extends MY_Controller {
 						if ($tipo == 0) {
 							if ($id != -1) {
 								session_write_close();
-								$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente);
+								$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente, 'mensagemC' =>"Foi Adicionado mais um na Quantidade do item: ".$produto -> cod_barra_produto );
 								$this -> my_load_view('vendaComum', $data);
 							} else {
 								session_write_close();
-								$data = array('total' => $total, 'produtos' => $produtos);
+								$data = array('total' => $total, 'produtos' => $produtos, 'mensagemC' =>"Foi Adicionado mais um na Quantidade do item: ".$produto -> cod_barra_produto );
 								$this -> my_load_view('vendaComum', $data);
 							}
 						} else {
 							if ($id != -1) {
 								session_write_close();
-								$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente);
+								$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente, 'mensagemC' =>"Foi Adicionado mais um na Quantidade do item: ".$produto -> cod_barra_produto );
 								$this -> my_load_view('vendaConsig', $data);
 							} else {
 								session_write_close();
-								$data = array('total' => $total, 'produtos' => $produtos);
+								$data = array('total' => $total, 'produtos' => $produtos, 'mensagemC' =>"Foi Adicionado mais um na Quantidade do item: ".$produto -> cod_barra_produto );
 								$this -> my_load_view('vendaConsig', $data);
 							}
 						}
@@ -234,24 +242,26 @@ class Venda extends MY_Controller {
 				if (($produto != FALSE) && (trim($this -> input -> post('quantP', TRUE)) != "")) {
 					if ($this -> input -> post('quantP', TRUE) <= $produto -> estoque_produto) {
 						$produto -> estoque_produto = $this -> input -> post('quantP', TRUE);
+						$produto -> modelo_produto = $this -> input -> post('desconto', TRUE);
+						$desconto = $produto -> valor_produto*($this -> input -> post('desconto', TRUE)/100);
 						$produtos[0] = $produto;
-						$total += $produto -> valor_produto * trim($this -> input -> post('quantP', TRUE));
+						$total += ($produto -> valor_produto-$desconto) * (int)trim($this -> input -> post('quantP', TRUE));
 						$_SESSION['produtos'] = $produtos;
 						session_write_close();
 						if ($tipo == 0) {
 							if ($id != -1) {
-								$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente);
+								$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente,'mensagemC' =>"Foi Adicionado o item: ".$produto -> cod_barra_produto);
 								$this -> my_load_view('vendaComum', $data);
 							} else {
-								$data = array('total' => $total, 'produtos' => $produtos);
+								$data = array('total' => $total, 'produtos' => $produtos,'mensagemC' =>"Foi Adicionado o item: ".$produto -> cod_barra_produto);
 								$this -> my_load_view('vendaComum', $data);
 							}
 						} else {
 							if ($id != -1) {
-								$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente);
+								$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente,'mensagemC' =>"Foi Adicionado o item: ".$produto -> cod_barra_produto);
 								$this -> my_load_view('vendaConsig', $data);
 							} else {
-								$data = array('total' => $total, 'produtos' => $produtos);
+								$data = array('total' => $total, 'produtos' => $produtos,'mensagemC' =>"Foi Adicionado o item: ".$produto -> cod_barra_produto);
 								$this -> my_load_view('vendaConsig', $data);
 							}
 						}
@@ -700,7 +710,7 @@ class Venda extends MY_Controller {
 			$_SESSION['produtos'] = $produtos;
 			session_write_close();
 			$total = $venda -> valor_venda;
-			$valorMim = $total * 0.3;
+			$valorMim = $total * 0.25;
 			$data = array('cliente' => $cliente, 'total' => $total, 'produtos' => $produtos, 'id' => $id, 'valorMim' => $valorMim);
 			$this -> my_load_view('vendaRetorno', $data);
 		} else {
