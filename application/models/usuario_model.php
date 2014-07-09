@@ -350,8 +350,8 @@ Class Usuario_model  extends CI_Model {
 		return $this -> db -> insert_id();
 	}
 
-	function setCompra($id_cliente, $quantidade, $idProduto, $idVenda) {
-		$data = array('cliente_fk' => $id_cliente, 'quantidade_produto' => $quantidade, 'produto_fk' => $idProduto, 'venda_fk' => $idVenda, );
+	function setCompra($id_cliente, $quantidade, $idProduto, $idVenda,$desconto) {
+		$data = array('cliente_fk' => $id_cliente, 'quantidade_produto' => $quantidade, 'produto_fk' => $idProduto, 'venda_fk' => $idVenda, 'desconto_compra'=> $desconto);
 		$this -> db -> insert('compra', $data);
 
 	}

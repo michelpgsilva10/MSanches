@@ -104,14 +104,8 @@ class Venda extends MY_Controller {
 						if (strcmp($produtos[$i] -> cod_barra_produto, trim($this -> input -> post('codigoP', TRUE))) == 0) {
 							if (($this -> input -> post('quantP', TRUE)+$produtos[$i] -> estoque_produto) <= $produto -> estoque_produto) {
 								$produtos[$i] -> estoque_produto += $this -> input -> post('quantP', TRUE);
-								if($this -> input -> post('desconto', TRUE)!=0){
-									$produto -> modelo_produto = $this -> input -> post('desconto', TRUE);
-									$desconto = $produto -> valor_produto*($this -> input -> post('desconto', TRUE)/100);
-									$total += ($produto -> valor_produto-$desconto) * (int)trim($this -> input -> post('quantP', TRUE));
-								}else{
-									$desconto = $produto -> valor_produto*($produto -> modelo_produto/100);
-									$total += ($produto -> valor_produto-$desconto) * (int)trim($this -> input -> post('quantP', TRUE));
-								}
+								$desconto = $produto -> valor_produto*($produto -> modelo_produto/100);
+								$total += ($produto -> valor_produto-$desconto) * (int)trim($this -> input -> post('quantP', TRUE));
 								$testeE = 1;
 								break;
 							}else{
@@ -123,8 +117,8 @@ class Venda extends MY_Controller {
 					if ($testeE == 0) {
 						if ($this -> input -> post('quantP', TRUE) <= $produto -> estoque_produto) {
 							$produto -> estoque_produto = $this -> input -> post('quantP', TRUE);
-							$produto -> modelo_produto = $this -> input -> post('desconto', TRUE);
-							$desconto = $produto -> valor_produto*($this -> input -> post('desconto', TRUE)/100);
+							$produto -> modelo_produto = (int)$this -> input -> post('desconto', TRUE);
+							$desconto = $produto -> valor_produto*((int)$this -> input -> post('desconto', TRUE)/100);
 							$produtos[] = $produto;
 							$total += ($produto -> valor_produto-$desconto) * (int)trim($this -> input -> post('quantP', TRUE));
 							$_SESSION['produtos'][] = $produto;
@@ -241,9 +235,9 @@ class Venda extends MY_Controller {
 				$produto = $this -> usuario_model -> getProduto(0, $this -> input -> post('codigoP', TRUE));
 				if (($produto != FALSE) && (trim($this -> input -> post('quantP', TRUE)) != "")) {
 					if ($this -> input -> post('quantP', TRUE) <= $produto -> estoque_produto) {
-						$produto -> estoque_produto = $this -> input -> post('quantP', TRUE);
-						$produto -> modelo_produto = $this -> input -> post('desconto', TRUE);
-						$desconto = $produto -> valor_produto*($this -> input -> post('desconto', TRUE)/100);
+						$produto -> estoque_produto = (int)$this -> input -> post('quantP', TRUE);
+						$produto -> modelo_produto = (int)$this -> input -> post('desconto', TRUE);
+						$desconto = $produto -> valor_produto*((int)$this -> input -> post('desconto', TRUE)/100);
 						$produtos[0] = $produto;
 						$total += ($produto -> valor_produto-$desconto) * (int)trim($this -> input -> post('quantP', TRUE));
 						$_SESSION['produtos'] = $produtos;
@@ -400,7 +394,7 @@ class Venda extends MY_Controller {
 							} else {
 								$this -> usuario_model -> updateVendaProduto($produtos[$i] -> id_produto, $produto -> estoque_produto - $produtos[$i] -> estoque_produto);
 							}
-							$this -> usuario_model -> setCompra($cliente[0]['id_cliente'], $produtos[$i] -> estoque_produto, $produtos[$i] -> id_produto, $idVenda);
+							$this -> usuario_model -> setCompra($cliente[0]['id_cliente'], $produtos[$i] -> estoque_produto, $produtos[$i] -> id_produto, $idVenda,$produto[$i]->modelo_produto);
 						} else {
 							$sProduto = $produtos[$i] -> cod_barra_produto;
 							break;
@@ -470,7 +464,7 @@ class Venda extends MY_Controller {
 								} else {
 									$this -> usuario_model -> updateVendaProduto($produtos[$i] -> id_produto, $produto -> estoque_produto - $produtos[$i] -> estoque_produto);
 								}
-								$this -> usuario_model -> setCompra($cliente[0]['id_cliente'], $produtos[$i] -> estoque_produto, $produtos[$i] -> id_produto, $idVenda);
+								$this -> usuario_model -> setCompra($cliente[0]['id_cliente'], $produtos[$i] -> estoque_produto, $produtos[$i] -> id_produto, $idVenda,$produto[$i]->modelo_produto);
 							
 						}
 							session_destroy();
