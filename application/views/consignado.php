@@ -39,10 +39,10 @@
 								  <tr>
 								  	<td style="text-align: center;"> <?php echo $vendas[$i]->id_venda ?> </td>
 								  	<td style="text-align: center;"> <?php echo $vendas[$i]->cliente_fk?> </td>
-								  	<td style="text-align: center;"> <?php echo $vendas[$i]->valor_venda ?> </td>
+								  	<td style="text-align: center;"> R$<?php echo number_format($vendas[$i]->valor_venda, 2, ',', '.'); ?> </td>
 								  	<td style="text-align: center;"> <?php echo $vendas[$i]->data_venda ?></td>
 								  	<td style="text-align: center;"> <?php echo $vendas[$i]->data_retorno_venda ?></td>
-								  	<td style="text-align: center;"> <a type="button" class="btn btn-info" href="<?php echo site_url("venda/retornoCom/".$vendas[$i]->id_venda)?>">Finalizar Fatura</a>
+								  	<td style="text-align: center;"> <a type="button" class="btn btn-info btn-sm btn-sm" href="<?php echo site_url("venda/retornoCom/".$vendas[$i]->id_venda)?>">Finalizar Fatura</a>
 								  </tr> 
 								<?php } ?>
 							</tbody>

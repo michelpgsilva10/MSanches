@@ -34,6 +34,16 @@
 					</button>
 					<?php	echo $mensagem; ?>
 				</div>
+				<?php }else if (isset($mensagemC))
+					{
+				?>
+				<br />
+				<div class="alert alert-success alert-dismissable">
+					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+						&times;
+					</button>
+					<?php	echo $mensagemC; ?>
+				</div>
 				<?php } ?>
 				<br />
 				<form class="form-inline" name="formV" method="post" role="form" action="<?php
@@ -71,7 +81,7 @@
 							<thead>
 								<tr class="info">
 									<th style="text-align: center">#</th>
-									<th style="text-align: center" >Código do Poroduto</th>
+									<th style="text-align: center" >Código do Produto</th>
 									<th style="text-align: center">Quantidade Levada</th>
 									<th style="text-align: center">Quantidade Devolvida</th>
 									<th style="text-align: center" colspan="2">Unidade  |  Total </th>
@@ -109,7 +119,7 @@ for($i=0;$i<count($produtos);$i++){
 							<tfoot>
 								<tr class="info">
 									<td colspan = 3 style="text-align: center;" ><strong> Total </strong></td>
-									<td colspan = 4 style="text-align: center;"><label> <b> <?php echo $total; ?> </b></label></td>
+									<td colspan = 4 style="text-align: center;"><label> <b> <?php echo number_format($total, 2, ',', '.'); ?> </b></label></td>
 								</tr>
 							</tfoot>
 						</table>

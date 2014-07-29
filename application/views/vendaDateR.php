@@ -5,7 +5,7 @@
 	 $(function() {
 		$( "#data" ).datepicker();
 		 $( "#data" ).datepicker( "option", "dateFormat",'dd-mm-yy');
-	 });F
+	 });
 </script>
 <div class="panel panel-default">
 	<div class="panel-body">
