@@ -46,10 +46,10 @@
 										<div style="float: left; width: 25%" align="center">
 											<h5 class="list-group-item-text">
 												<?php
-													if ($compras[$i]["data_retorno_venda"] == NULL)
+													if ($compras[$i]["data_venda2"] == NULL)
 														echo '-';
 													else
-														echo date('d/m/Y', strtotime($compras[$i]["data_retorno_venda"])); 
+														echo date('d/m/Y', strtotime($compras[$i]["data_venda2"])); 
 												
 												?>
 											</h5>

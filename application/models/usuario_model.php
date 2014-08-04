@@ -381,13 +381,15 @@ Class Usuario_model  extends CI_Model {
 	}
 	
 	function getComprasCliente($id_cliente) {
-		$this -> db -> select("CASE WHEN (SELECT COUNT(1) FROM venda_consignado WHERE id_venda_inicio = id_venda) <> 0 THEN 1 ELSE 0 END AS tipo_venda, data_venda, data_retorno_venda, valor_venda, nome_cliente, id_venda", FALSE);
-		$this -> db -> from("venda");
-		$this -> db -> join("cliente", "cliente.id_cliente = venda.cliente_fk");
+		$this -> db -> select("CASE WHEN (SELECT COUNT(1) FROM venda_consignado WHERE id_venda_inicio = v1.id_venda) <> 0 THEN 1 ELSE 0 END AS tipo_venda, v1.data_venda, v1.data_retorno_venda, v1.valor_venda, c.nome_cliente, v1.id_venda, v2.data_venda AS data_venda2", FALSE);
+		$this -> db -> from("venda_consignado vc");
+		$this -> db -> join("venda v1", 'vc.id_venda_inicio = v1.id_venda');
+		$this -> db -> join("venda v2", 'vc.id_venda_retorno = v2.id_venda', 'left');
+		$this -> db -> join("cliente c", "c.id_cliente = v1.cliente_fk");
 		//$this -> db -> join("venda_consignado", "venda.id_venda <> venda_consignado.id_venda_retorno");
-		$this -> db -> where("cliente_fk", $id_cliente);
-		$this -> db -> where("id_venda NOT IN (SELECT id_venda_retorno FROM venda_consignado WHERE id_venda_retorno IS NOT NULL)");
-		$this -> db -> order_by("data_venda", "desc");
+		$this -> db -> where("v1.cliente_fk", $id_cliente);
+		$this -> db -> where("v1.id_venda NOT IN (SELECT id_venda_retorno FROM venda_consignado WHERE id_venda_retorno IS NOT NULL)");
+		$this -> db -> order_by("v1.data_venda", "desc");
 							
 		$query = $this -> db -> get();
 		
@@ -403,9 +405,9 @@ Class Usuario_model  extends CI_Model {
 			$this -> db -> from('venda_consignado a');
 			$this -> db -> join('venda b', 'a.id_venda_inicio = b.id_venda');
 			$this -> db -> join('compra c', 'b.id_venda = c.venda_fk');
-			$this -> db -> join('venda d', 'a.id_venda_retorno = d.id_venda', 'left');
-			$this -> db -> join('compra e', 'd.id_venda = e.venda_fk', 'left');
 			$this -> db -> join('produto f', 'c.produto_fk = f.id_produto');
+			$this -> db -> join('venda d', 'a.id_venda_retorno = d.id_venda', 'left');
+			$this -> db -> join('compra e', 'd.id_venda = e.venda_fk AND e.produto_fk = f.id_produto', 'left');			
 			$this -> db -> join('cliente h', 'b.cliente_fk = h.id_cliente');
 			$this -> db -> where('a.id_venda_inicio', $id_venda);			
 		} else {
