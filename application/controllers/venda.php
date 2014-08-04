@@ -611,7 +611,7 @@ class Venda extends MY_Controller {
 						if ($produtos[$i] -> estoque_produto >= $produtos[$i] -> modelo_produto + 1) {
 							if ($this -> input -> post('quantP', TRUE) != 1) {
 								if ($produtos[$i] -> estoque_produto >= $produtos[$i] -> modelo_produto + $this -> input -> post('quantP', TRUE)) {
-									$aux += $this -> input -> post('quantP', TRUE) * $produtos[$i] -> valor_produto;
+									$aux -= $this -> input -> post('quantP', TRUE) * $produtos[$i] -> valor_produto;
 									if ($aux >= $valorMim) {
 										if ($produtos[$i] -> tipo_produto != 0) {
 											$verifica = -4;
@@ -631,7 +631,7 @@ class Venda extends MY_Controller {
 									break;
 								}
 							} else {
-								$aux += 1 * $produtos[$i] -> valor_produto;
+								$aux -= 1 * $produtos[$i] -> valor_produto;
 								if ($aux >= $valorMim) {
 									if ($produtos[$i] -> tipo_produto != 0) {
 										$verifica = -4;
@@ -718,7 +718,9 @@ class Venda extends MY_Controller {
 			$cliente = $this -> usuario_model -> getCliente($venda -> cliente_fk, 0);
 			for ($i = 0; $i < count($compras); $i++) {
 				$produto = $this -> usuario_model -> getProduto($compras[$i]['produto_fk'], 0);
+				$produto -> id_produto = $compras[$i]['desconto_compra'];
 				$produto -> estoque_produto = $compras[$i]['quantidade_produto'];
+				$produto -> valor_produto -= (($compras[$i]['desconto_compra']/100)*$produto -> valor_produto);
 				$produto -> modelo_produto = 0;
 				$produto -> tipo_produto = 0;
 				$produtos[$i] = $produto;
@@ -768,9 +770,9 @@ class Venda extends MY_Controller {
 				$produto -> estoque_produto += $produtos[$i] -> modelo_produto;
 				$this -> usuario_model -> updateVendaProduto($produto -> id_produto, $produto -> estoque_produto);
 				if ($produtos[$i] -> modelo_produto != $produtos[$i] -> estoque_produto) {
-					$this -> usuario_model -> setCompra($idCliente, $produtos[$i] -> estoque_produto - $produtos[$i] -> modelo_produto, $produto -> id_produto, $vendaRtorno, 0);
+					$this -> usuario_model -> setCompra($idCliente, $produtos[$i] -> estoque_produto - $produtos[$i] -> modelo_produto, $produto -> id_produto, $vendaRtorno, $produtos[$i] ->id_produto);
 				} else {
-					$this -> usuario_model -> setCompra($idCliente, 0, $produto -> id_produto, $vendaRtorno, 0);
+					$this -> usuario_model -> setCompra($idCliente, 0, $produto -> id_produto, $vendaRtorno, $produtos[$i] ->id_produto);
 				}
 			}
 			$vendasC = $this -> usuario_model -> getVendaC($idVenda);
