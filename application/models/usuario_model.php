@@ -403,9 +403,9 @@ Class Usuario_model  extends CI_Model {
 			$this -> db -> from('venda_consignado a');
 			$this -> db -> join('venda b', 'a.id_venda_inicio = b.id_venda');
 			$this -> db -> join('compra c', 'b.id_venda = c.venda_fk');
-			$this -> db -> join('venda d', 'a.id_venda_retorno = d.id_venda', 'left');
-			$this -> db -> join('compra e', 'd.id_venda = e.venda_fk', 'left');
 			$this -> db -> join('produto f', 'c.produto_fk = f.id_produto');
+			$this -> db -> join('venda d', 'a.id_venda_retorno = d.id_venda', 'left');
+			$this -> db -> join('compra e', 'd.id_venda = e.venda_fk AND e.produto_fk = f.id_produto', 'left');			
 			$this -> db -> join('cliente h', 'b.cliente_fk = h.id_cliente');
 			$this -> db -> where('a.id_venda_inicio', $id_venda);			
 		} else {
