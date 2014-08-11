@@ -26,6 +26,7 @@ Class Usuario_model  extends CI_Model {
 			return FALSE;
 		}
 	}
+
 	function getQProduto($tipo) {
 		$this -> db -> select('modelo_produto');
 		$this -> db -> from('produto');
@@ -59,7 +60,7 @@ Class Usuario_model  extends CI_Model {
 		$this -> db -> select('SUM(estoque_produto) AS total');
 		$this -> db -> from('produto');
 		$this -> db -> where('del_produto !=', '1');
-		$this -> db -> where('estoque_produto !=',0);
+		$this -> db -> where('estoque_produto !=', 0);
 		$this -> db -> where('tipo_produto', $tipo);
 		$query = $this -> db -> get();
 		if ($query -> num_rows() > 0) {
@@ -77,7 +78,7 @@ Class Usuario_model  extends CI_Model {
 
 	}
 
-	function logs($id, $tipo, $produto = 0,$valor=0,$idVenda=0) {
+	function logs($id, $tipo, $produto = 0, $valor = 0, $idVenda = 0) {
 
 		if ($tipo == 0) {
 			$data = array('logs' => "Logou no sistema", 'id_user_logs' => $id);
@@ -94,13 +95,13 @@ Class Usuario_model  extends CI_Model {
 		} else if ($tipo == 6) {
 			$data = array('logs' => "Imprimiu Etiqueta do produto com o codigo: " . $produto, 'id_user_logs' => $id);
 		} else if ($tipo == 7) {
-			$data = array('logs' => "Efetuou um venda Comum para o cliente: " . $produto." com o valor de ".$valor, 'id_user_logs' => $id);
+			$data = array('logs' => "Efetuou um venda Comum para o cliente: " . $produto . " com o valor de " . $valor, 'id_user_logs' => $id);
 		} else if ($tipo == 8) {
-			$data = array('logs' => "Efetuou um venda Consignado para o cliente: " . $produto." com o valor de ".$valor." referente a venda de numero ".$idVenda, 'id_user_logs' => $id);
+			$data = array('logs' => "Efetuou um venda Consignado para o cliente: " . $produto . " com o valor de " . $valor . " referente a venda de numero " . $idVenda, 'id_user_logs' => $id);
 		} else if ($tipo == 9) {
-			$data = array('logs' => "Efetuou o retorno do Consignado do cliente: " . $produto." com o valor de ".$valor." referente a venda de numero ".$idVenda, 'id_user_logs' => $id);
+			$data = array('logs' => "Efetuou o retorno do Consignado do cliente: " . $produto . " com o valor de " . $valor . " referente a venda de numero " . $idVenda, 'id_user_logs' => $id);
 		}
-		
+
 		$this -> db -> insert('logs', $data);
 	}
 
@@ -131,7 +132,7 @@ Class Usuario_model  extends CI_Model {
 			return FALSE;
 		}
 	}
-	
+
 	function getFoto($idProduto) {
 		$this -> db -> select('foto_produto,cod_barra_produto,id_produto');
 		$this -> db -> from('produto');
@@ -215,12 +216,12 @@ Class Usuario_model  extends CI_Model {
 		}
 	}
 
-	function getVendaC($id=-1) {
+	function getVendaC($id = -1) {
 		$this -> db -> select('*');
 		$this -> db -> from('venda_consignado');
-		if($id==-1){
+		if ($id == -1) {
 			$this -> db -> where("id_venda_retorno IS NULL");
-		}else{
+		} else {
 			$this -> db -> where('id_venda_inicio', $id);
 		}
 		$query = $this -> db -> get();
@@ -234,7 +235,7 @@ Class Usuario_model  extends CI_Model {
 	function getCompras($id) {
 		$this -> db -> select('*');
 		$this -> db -> from('compra');
-		$this -> db -> where("venda_fk",$id);
+		$this -> db -> where("venda_fk", $id);
 		$query = $this -> db -> get();
 		if ($query -> num_rows() > 0) {
 			return $query -> result_array();
@@ -278,21 +279,34 @@ Class Usuario_model  extends CI_Model {
 			return false;
 		}
 	}
-	
+
 	function getIdVendasConsig($id_venda_consig) {
 		$this -> db -> select('*');
 		$this -> db -> from('venda_consignado');
 		$this -> db -> where('id_venda_consignado', $id_venda_consig);
-		
+
 		$query = $this -> db -> get();
-		
+
 		if ($query -> num_rows() > 0) {
 			return $query -> row();
 		} else {
 			return false;
 		}
 	}
-	
+
+	function getDesconto($idVenda, $idProduto) {
+		$this -> db -> select('desconto_compra');
+		$this -> db -> from('compra');
+		$this -> db -> where('produto_fk', $idProduto);
+		$this -> db -> where('venda_fk', $idVenda);
+		$query = $this -> db -> get();
+		if ($query -> num_rows() > 0) {
+			return $query -> row();
+		} else {
+			return false;
+		}
+	}
+
 	function getVendaConsigTipo($id_venda, $tipo) {
 		$this -> db -> select('*');
 		$this -> db -> from('venda_consignado');
@@ -309,9 +323,9 @@ Class Usuario_model  extends CI_Model {
 		else
 			$this -> db -> where('venda_consignado.id_venda_retorno', $id_venda);
 		$this -> db -> order_by('produto.cod_barra_produto', 'asc');
-		
+
 		$query = $this -> db -> get();
-		
+
 		if ($query -> num_rows() > 0) {
 			return $query -> result_array();
 		} else {
@@ -319,7 +333,6 @@ Class Usuario_model  extends CI_Model {
 		}
 	}
 
-	
 	function getVendaConsig($idVenda) {
 		$this -> db -> select('*');
 		$this -> db -> from('venda');
@@ -328,15 +341,15 @@ Class Usuario_model  extends CI_Model {
 		$this -> db -> join('cliente', 'compra.cliente_fk = cliente.id_cliente');
 		$this -> db -> join('endereco', 'cliente.endereco_fk = endereco.id_endereco');
 		$this -> db -> where('id_venda', $idVenda);
-		
+
 		$query = $this -> db -> get();
-		
+
 		if ($query -> num_rows() > 0) {
 			return $query -> result_array();
 		} else {
 			return false;
 		}
-		
+
 	}
 
 	function setVenda($id_cliente, $valor, $data = 0) {
@@ -350,8 +363,8 @@ Class Usuario_model  extends CI_Model {
 		return $this -> db -> insert_id();
 	}
 
-	function setCompra($id_cliente, $quantidade, $idProduto, $idVenda,$desconto) {
-		$data = array('cliente_fk' => $id_cliente, 'quantidade_produto' => $quantidade, 'produto_fk' => $idProduto, 'venda_fk' => $idVenda, 'desconto_compra'=> $desconto);
+	function setCompra($id_cliente, $quantidade, $idProduto, $idVenda, $desconto) {
+		$data = array('cliente_fk' => $id_cliente, 'quantidade_produto' => $quantidade, 'produto_fk' => $idProduto, 'venda_fk' => $idVenda, 'desconto_compra' => $desconto);
 		$this -> db -> insert('compra', $data);
 
 	}
@@ -367,19 +380,20 @@ Class Usuario_model  extends CI_Model {
 		$this -> db -> where('id_produto', $id);
 		$this -> db -> update('produto', $data);
 	}
-	function updatePosRet($id,$idProduto, $quantidade) {
+
+	function updatePosRet($id, $idProduto, $quantidade) {
 		$data = array('quantidade_produto' => $quantidade);
 		$this -> db -> where('venda_fk', $id);
 		$this -> db -> where('produto_fk', $idProduto);
 		$this -> db -> update('compra', $data);
 	}
-	
+
 	function updateVendaCom($id, $idFinal) {
 		$data = array('id_venda_retorno' => $idFinal);
 		$this -> db -> where('id_venda_consignado', $id);
 		$this -> db -> update('venda_consignado', $data);
 	}
-	
+
 	function getComprasCliente($id_cliente) {
 		$this -> db -> select("CASE WHEN (SELECT COUNT(1) FROM venda_consignado WHERE id_venda_inicio = v1.id_venda) <> 0 THEN 1 ELSE 0 END AS tipo_venda, v1.data_venda, v1.data_retorno_venda, v1.valor_venda, c.nome_cliente, v1.id_venda, v2.data_venda AS data_venda2", FALSE);
 		$this -> db -> from("venda_consignado vc");
@@ -390,15 +404,15 @@ Class Usuario_model  extends CI_Model {
 		$this -> db -> where("v1.cliente_fk", $id_cliente);
 		$this -> db -> where("v1.id_venda NOT IN (SELECT id_venda_retorno FROM venda_consignado WHERE id_venda_retorno IS NOT NULL)");
 		$this -> db -> order_by("v1.data_venda", "desc");
-							
+
 		$query = $this -> db -> get();
-		
+
 		if ($query -> num_rows() > 0)
 			return $query -> result_array();
 		else
 			return false;
 	}
-	
+
 	function getCompraDetalhes($id_venda, $tipo_venda) {
 		if (trim($tipo_venda) == 1) {
 			$this -> db -> select('b.id_venda, c.quantidade_produto quant_pegou, e.quantidade_produto quant_dev, f.cod_barra_produto, f.valor_produto, b.valor_venda, h.nome_cliente, h.id_cliente, a.id_venda_consignado, 1 tipo_venda', FALSE);
@@ -407,24 +421,25 @@ Class Usuario_model  extends CI_Model {
 			$this -> db -> join('compra c', 'b.id_venda = c.venda_fk');
 			$this -> db -> join('produto f', 'c.produto_fk = f.id_produto');
 			$this -> db -> join('venda d', 'a.id_venda_retorno = d.id_venda', 'left');
-			$this -> db -> join('compra e', 'd.id_venda = e.venda_fk AND e.produto_fk = f.id_produto', 'left');			
+			$this -> db -> join('compra e', 'd.id_venda = e.venda_fk AND e.produto_fk = f.id_produto', 'left');
 			$this -> db -> join('cliente h', 'b.cliente_fk = h.id_cliente');
-			$this -> db -> where('a.id_venda_inicio', $id_venda);			
+			$this -> db -> where('a.id_venda_inicio', $id_venda);
 		} else {
 			$this -> db -> select("a.id_venda, a.valor_venda, b.quantidade_produto, c.cod_barra_produto, c.valor_produto, d.nome_cliente, d.id_cliente, 0 tipo_venda", FALSE);
 			$this -> db -> from('venda a');
 			$this -> db -> join('compra b', 'a.id_venda = b.venda_fk');
 			$this -> db -> join('produto c', 'b.produto_fk = c.id_produto');
 			$this -> db -> join('cliente d', 'a.cliente_fk = d.id_cliente');
-			$this -> db -> where('a.id_venda', $id_venda);			
+			$this -> db -> where('a.id_venda', $id_venda);
 		}
-		
+
 		$query = $this -> db -> get();
-		
-		if($query -> num_rows() > 0)
+
+		if ($query -> num_rows() > 0)
 			return $query -> result_array();
 		else
 			return false;
 	}
+
 }
 ?>

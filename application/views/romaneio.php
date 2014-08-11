@@ -35,7 +35,7 @@ if ($vendas) {
 	$total = 0;
 
 	for ($i = 0; $i < count($vendas); $i++) {
-		$total += $vendas[$i]["quantidade_produto"] * $vendas[$i]["valor_produto"];
+		$total += $vendas[$i]["quantidade_produto"] * ($vendas[$i]["valor_produto"]-($vendas[$i]["desconto_compra"]/100)*$vendas[$i]["valor_produto"]);
 	}
 
 	$pdf = new PDF('P', 'cm', 'A4');
@@ -69,16 +69,18 @@ if ($vendas) {
 	$pdf -> SetFont('Arial', 'B', 11);
 	$pdf -> Cell(5, 0.8, 'Item', 1, 0, 'C');
 	$pdf -> Cell(3, 0.8, 'Pegou', 1, 0, 'C');
-	$pdf -> Cell(4, 0.8, 'Valor Un.', 1, 0, 'C');
-	$pdf -> Cell(5, 0.8, 'Subtotal', 1, 1, 'C');
+	$pdf -> Cell(2, 0.8, 'Desc', 1, 0, 'C');
+	$pdf -> Cell(3, 0.8, 'Valor Un.', 1, 0, 'C');
+	$pdf -> Cell(4, 0.8, 'Subtotal', 1, 1, 'C');
 
 	$pdf -> SetFont('Arial', '', 11);
 
 	for ($i = 0; $i < count($vendas); $i++) {
 		$pdf -> Cell(5, 0.8, $vendas[$i]["cod_barra_produto"], 1, 0, 'C');
 		$pdf -> Cell(3, 0.8, $vendas[$i]["quantidade_produto"], 1, 0, 'C');
-		$pdf -> Cell(4, 0.8, 'R$ ' . number_format($vendas[$i]["valor_produto"], 2, ',', '.'), 1, 0, 'C');
-		$pdf -> Cell(5, 0.8, 'R$ ' . number_format($vendas[$i]["valor_produto"] * $vendas[$i]["quantidade_produto"], 2, ',', '.'), 1, 1, 'C');
+		$pdf -> Cell(2, 0.8,$vendas[$i]["desconto_compra"]."%", 1, 0, 'C');
+		$pdf -> Cell(3, 0.8, 'R$ ' . number_format($vendas[$i]["valor_produto"], 2, ',', '.'), 1, 0, 'C');
+		$pdf -> Cell(4, 0.8, 'R$ ' . number_format(($vendas[$i]["valor_produto"]-(($vendas[$i]["desconto_compra"]/100)*$vendas[$i]["valor_produto"])) * $vendas[$i]["quantidade_produto"], 2, ',', '.'), 1, 1, 'C');
 	}
 
 	$pdf -> SetFont('Arial', 'B', 11);

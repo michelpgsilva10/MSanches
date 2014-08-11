@@ -20,13 +20,13 @@
 					<?php } ?>						
 						<div class="panel-body">
 							<div class="row">
-					<div class="col-md-11 ">
+					<div class="col-md-12" style="margin-left: -5%;">
 						<?php if(isset($vendas)){ ?>
 						<table class="table table-bordered table-hover"  style="margin-left: 5%">
 							<thead>
 								<tr class="info">
-									<th style="text-align: center" >Código da Venda</th>
-									<th style="text-align: center">Nome do Cliente</th>
+									<th style="text-align: center;">Código da Venda</th>
+									<th style="text-align: center;">Nome do Cliente</th>
 									<th style="text-align: center">Valor Total </th>
 									<th style="text-align: center">Data de Venda</th>
 									<th style="text-align: center">Data de Devolução</th>
@@ -39,7 +39,7 @@
 								  <tr>
 								  	<td style="text-align: center;"> <?php echo $vendas[$i]->id_venda ?> </td>
 								  	<td style="text-align: center;"> <?php echo $vendas[$i]->cliente_fk?> </td>
-								  	<td style="text-align: center;"> R$<?php echo number_format($vendas[$i]->valor_venda, 2, ',', '.'); ?> </td>
+								  	<td style="text-align: center;"> R$:<?php echo number_format($vendas[$i]->valor_venda, 2, ',', '.'); ?> </td>
 								  	<td style="text-align: center;"> <?php echo $vendas[$i]->data_venda ?></td>
 								  	<td style="text-align: center;"> <?php echo $vendas[$i]->data_retorno_venda ?></td>
 								  	<td style="text-align: center;"> <a type="button" class="btn btn-info btn-sm btn-sm" href="<?php echo site_url("venda/retornoCom/".$vendas[$i]->id_venda)?>">Finalizar Fatura</a>

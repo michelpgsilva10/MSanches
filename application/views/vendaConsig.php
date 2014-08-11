@@ -82,8 +82,8 @@
 									<div class="col-sm-7">
 										<select name="desconto" class="form-control">
 											<option selected value="0">0</option>
-											<option value="0.4">40%</option>
-											<option value="0.5">50%</option>
+											<option value="40">40%</option>
+											<option value="50">50%</option>
 										</select>
 									</div>
 								</div>

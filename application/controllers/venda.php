@@ -104,7 +104,7 @@ class Venda extends MY_Controller {
 						if (strcmp($produtos[$i] -> cod_barra_produto, trim($this -> input -> post('codigoP', TRUE))) == 0) {
 							if (($this -> input -> post('quantP', TRUE) + $produtos[$i] -> estoque_produto) <= $produto -> estoque_produto) {
 								$produtos[$i] -> estoque_produto += $this -> input -> post('quantP', TRUE);
-								$desconto = $produto -> valor_produto * ($produto -> modelo_produto / 100);
+								$desconto = $produto -> valor_produto * ($produtos[$i] -> modelo_produto / 100);
 								$total += ($produto -> valor_produto - $desconto) * (int)trim($this -> input -> post('quantP', TRUE));
 								$testeE = 1;
 								break;
@@ -394,7 +394,7 @@ class Venda extends MY_Controller {
 							} else {
 								$this -> usuario_model -> updateVendaProduto($produtos[$i] -> id_produto, $produto -> estoque_produto - $produtos[$i] -> estoque_produto);
 							}
-							$this -> usuario_model -> setCompra($cliente[0]['id_cliente'], $produtos[$i] -> estoque_produto, $produtos[$i] -> id_produto, $idVenda, $produto[$i] -> modelo_produto);
+							$this -> usuario_model -> setCompra($cliente[0]['id_cliente'], $produtos[$i] -> estoque_produto, $produtos[$i] -> id_produto, $idVenda, $produtos[$i] -> modelo_produto);
 						} else {
 							$sProduto = $produtos[$i] -> cod_barra_produto;
 							break;
@@ -464,7 +464,7 @@ class Venda extends MY_Controller {
 								} else {
 									$this -> usuario_model -> updateVendaProduto($produtos[$i] -> id_produto, $produto -> estoque_produto - $produtos[$i] -> estoque_produto);
 								}
-								$this -> usuario_model -> setCompra($cliente[0]['id_cliente'], $produtos[$i] -> estoque_produto, $produtos[$i] -> id_produto, $idVenda, $produto[$i] -> modelo_produto);
+								$this -> usuario_model -> setCompra($cliente[0]['id_cliente'], $produtos[$i] -> estoque_produto, $produtos[$i] -> id_produto, $idVenda, $produtos[$i] -> modelo_produto);
 
 							}
 							session_destroy();
@@ -718,7 +718,6 @@ class Venda extends MY_Controller {
 			$cliente = $this -> usuario_model -> getCliente($venda -> cliente_fk, 0);
 			for ($i = 0; $i < count($compras); $i++) {
 				$produto = $this -> usuario_model -> getProduto($compras[$i]['produto_fk'], 0);
-				$produto -> id_produto = $compras[$i]['desconto_compra'];
 				$produto -> estoque_produto = $compras[$i]['quantidade_produto'];
 				$produto -> valor_produto -= (($compras[$i]['desconto_compra']/100)*$produto -> valor_produto);
 				$produto -> modelo_produto = 0;
@@ -770,9 +769,17 @@ class Venda extends MY_Controller {
 				$produto -> estoque_produto += $produtos[$i] -> modelo_produto;
 				$this -> usuario_model -> updateVendaProduto($produto -> id_produto, $produto -> estoque_produto);
 				if ($produtos[$i] -> modelo_produto != $produtos[$i] -> estoque_produto) {
-					$this -> usuario_model -> setCompra($idCliente, $produtos[$i] -> estoque_produto - $produtos[$i] -> modelo_produto, $produto -> id_produto, $vendaRtorno, $produtos[$i] ->id_produto);
+					$this -> usuario_model -> setCompra($idCliente,
+														$produtos[$i] -> estoque_produto - $produtos[$i] -> modelo_produto,
+														$produto -> id_produto,
+														$vendaRtorno,
+														$this -> usuario_model -> getDesconto($produto -> id_produto, $idVenda)->desconto_compra);
 				} else {
-					$this -> usuario_model -> setCompra($idCliente, 0, $produto -> id_produto, $vendaRtorno, $produtos[$i] ->id_produto);
+					$this -> usuario_model -> setCompra($idCliente,
+														0,
+														$produto -> id_produto,
+														$vendaRtorno,
+														$this -> usuario_model -> getDesconto($produto -> id_produto, $idVenda)->desconto_compra);
 				}
 			}
 			$vendasC = $this -> usuario_model -> getVendaC($idVenda);
