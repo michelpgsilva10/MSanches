@@ -55,7 +55,13 @@
 											</h5>
 										</div>
 										<div style="float: left; width: 25%;" align="center">
-											<h5 class="list-group-item-text"><?php echo 'R$ ' . number_format($compras[$i]["valor_venda"], 2, ',', '.') ?></h5>
+											<?php
+												if ($compras[$i]["valor_venda2"] == NULL)
+													echo '<h5 class="list-group-item-text">R$ ' . number_format($compras[$i]["valor_venda"], 2, ',', '.') . '</h5>';
+												else
+													echo '<h5 class="list-group-item-text">R$ ' . number_format($compras[$i]["valor_venda2"], 2, ',', '.') . '</h5>';
+											?>																					
+											
 										</div>
   									</div>  									
   								</a>

@@ -135,7 +135,12 @@
 										<h4><b>Total</b></h4>
 									</div>
 									<div style="float: left; width: 25%;" align="center">
-										<h4 class="text-primary"><?php echo 'R$ ' .  number_format($detalhes_compra[0]["valor_venda"], 2, ',', '.') ?></h4>
+										<?php
+											if ($detalhes_compra[0]["valor_venda2"] == NULL)
+												echo '<h4 class="text-primary">R$ ' .  number_format($detalhes_compra[0]["valor_venda"], 2, ',', '.') . '</h4>';
+											else
+												echo '<h4 class="text-primary">R$ ' .  number_format($detalhes_compra[0]["valor_venda2"], 2, ',', '.') . '</h4>';
+										?>
 									</div>									
 								</div>
 								
