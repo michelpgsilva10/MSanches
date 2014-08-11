@@ -88,7 +88,7 @@ if ($vendas) {
 		$pdf -> Cell(2, 0.8, $vendas[$i]["quantidade_produto"] - $vendas_retorno[$i]["quantidade_produto"], 1, 0, 'C');
 		$pdf -> Cell(2, 0.8, $vendas[$i]["desconto_compra"]."%", 1, 0, 'C');
 		$pdf -> Cell(3, 0.8, 'R$ ' . number_format($vendas[$i]["valor_produto"], 2, ',', '.'), 1, 0, 'C');
-		$pdf -> Cell(3, 0.8, 'R$ ' . number_format(((($vendas[$i]["desconto_compra"]/100)*$vendas[$i]["valor_produto"])*$vendas[$i]["valor_produto"]) * $vendas_retorno[$i]["quantidade_produto"], 2, ',', '.'), 1, 1, 'C');
+		$pdf -> Cell(3, 0.8, 'R$ ' . number_format(($vendas[$i]["valor_produto"]-(($vendas[$i]["desconto_compra"]/100)*$vendas[$i]["valor_produto"])) * $vendas_retorno[$i]["quantidade_produto"], 2, ',', '.'), 1, 1, 'C');
 	}
 
 	$pdf -> SetFont('Arial', 'B', 11);

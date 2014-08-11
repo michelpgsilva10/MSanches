@@ -119,7 +119,7 @@ for($i=0;$i<count($produtos);$i++){
 							<tfoot>
 								<tr class="info">
 									<td colspan = 3 style="text-align: center;" ><strong> Total </strong></td>
-									<td colspan = 4 style="text-align: center;"><label> <b> <?php echo number_format($total, 2, ',', '.'); ?> </b></label></td>
+									<td colspan = 4 style="text-align: center;"><label> <b> <?php echo "R$: ".number_format($total, 2, ',', '.'); ?> </b></label></td>
 								</tr>
 							</tfoot>
 						</table>

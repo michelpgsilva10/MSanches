@@ -768,18 +768,18 @@ class Venda extends MY_Controller {
 				$produto = $this -> usuario_model -> getProduto($produtos[$i] -> id_produto, 0);
 				$produto -> estoque_produto += $produtos[$i] -> modelo_produto;
 				$this -> usuario_model -> updateVendaProduto($produto -> id_produto, $produto -> estoque_produto);
-				if ($produtos[$i] -> modelo_produto != $produtos[$i] -> estoque_produto) {
+				if ($produtos[$i] -> modelo_produto != $produtos[$i] -> estoque_produto) {	
 					$this -> usuario_model -> setCompra($idCliente,
 														$produtos[$i] -> estoque_produto - $produtos[$i] -> modelo_produto,
 														$produto -> id_produto,
 														$vendaRtorno,
-														$this -> usuario_model -> getDesconto($produto -> id_produto, $idVenda)->desconto_compra);
+														$this -> usuario_model -> getDesconto($idVenda,$produto -> id_produto)->desconto_compra);
 				} else {
 					$this -> usuario_model -> setCompra($idCliente,
 														0,
 														$produto -> id_produto,
 														$vendaRtorno,
-														$this -> usuario_model -> getDesconto($produto -> id_produto, $idVenda)->desconto_compra);
+														$this -> usuario_model -> getDesconto($idVenda,$produto -> id_produto)->desconto_compra);
 				}
 			}
 			$vendasC = $this -> usuario_model -> getVendaC($idVenda);
