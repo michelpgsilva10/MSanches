@@ -395,14 +395,12 @@ Class Usuario_model  extends CI_Model {
 	}
 
 	function getComprasCliente($id_cliente) {
-		$this -> db -> select("CASE WHEN (SELECT COUNT(1) FROM venda_consignado WHERE id_venda_inicio = v1.id_venda) <> 0 THEN 1 ELSE 0 END AS tipo_venda, v1.data_venda, v1.data_retorno_venda, v1.valor_venda, c.nome_cliente, v1.id_venda, v2.data_venda AS data_venda2", FALSE);
-		$this -> db -> from("venda_consignado vc");
-		$this -> db -> join("venda v1", 'vc.id_venda_inicio = v1.id_venda');
-		$this -> db -> join("venda v2", 'vc.id_venda_retorno = v2.id_venda', 'left');
+		$this -> db -> select("CASE WHEN vc.id_venda_consignado IS NULL THEN 0 ELSE 1 END AS tipo_venda, v1.id_venda, v1.data_venda, v1.data_retorno_venda, v1.valor_venda, c.nome_cliente, v2.data_venda AS data_venda2", FALSE);
+		$this -> db -> from("venda v1");
+		$this -> db -> join("venda_consignado vc", "v1.id_venda = vc.id_venda_inicio", "left");
+		$this -> db -> join("venda v2", "vc.id_venda_retorno = v2.id_venda", "left");
 		$this -> db -> join("cliente c", "c.id_cliente = v1.cliente_fk");
-		//$this -> db -> join("venda_consignado", "venda.id_venda <> venda_consignado.id_venda_retorno");
-		$this -> db -> where("v1.cliente_fk", $id_cliente);
-		$this -> db -> where("v1.id_venda NOT IN (SELECT id_venda_retorno FROM venda_consignado WHERE id_venda_retorno IS NOT NULL)");
+		$this -> db -> where("v1.cliente_fk", $id_cliente);		
 		$this -> db -> order_by("v1.data_venda", "desc");
 
 		$query = $this -> db -> get();
