@@ -136,10 +136,14 @@
 									</div>
 									<div style="float: left; width: 25%;" align="center">
 										<?php
-											if ($detalhes_compra[0]["valor_venda2"] == NULL)
+											if ($detalhes_compra[0]["tipo_venda"] == 1) {
+												if ($detalhes_compra[0]["valor_venda2"] == NULL)
+													echo '<h4 class="text-primary">R$ ' .  number_format($detalhes_compra[0]["valor_venda"], 2, ',', '.') . '</h4>';
+												else
+													echo '<h4 class="text-primary">R$ ' .  number_format($detalhes_compra[0]["valor_venda2"], 2, ',', '.') . '</h4>';
+											} else 
 												echo '<h4 class="text-primary">R$ ' .  number_format($detalhes_compra[0]["valor_venda"], 2, ',', '.') . '</h4>';
-											else
-												echo '<h4 class="text-primary">R$ ' .  number_format($detalhes_compra[0]["valor_venda2"], 2, ',', '.') . '</h4>';
+											
 										?>
 									</div>									
 								</div>

@@ -400,7 +400,8 @@ Class Usuario_model  extends CI_Model {
 		$this -> db -> join("venda_consignado vc", "v1.id_venda = vc.id_venda_inicio", "left");
 		$this -> db -> join("venda v2", "vc.id_venda_retorno = v2.id_venda", "left");
 		$this -> db -> join("cliente c", "c.id_cliente = v1.cliente_fk");
-		$this -> db -> where("v1.cliente_fk", $id_cliente);		
+		$this -> db -> where("v1.cliente_fk", $id_cliente);	
+		$this -> db -> where("v1.id_venda NOT IN (SELECT id_venda_retorno FROM venda_consignado WHERE id_venda_retorno IS NOT NULL)");	
 		$this -> db -> order_by("v1.data_venda", "desc");
 
 		$query = $this -> db -> get();
