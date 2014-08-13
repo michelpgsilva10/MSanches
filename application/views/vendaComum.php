@@ -127,7 +127,7 @@
 								<tfoot>
 									<tr class="info">
 										<td style="text-align: center;" ><strong> Total </strong></td>
-										<td colspan = 6 style="text-align: center;"><label> <b> "R$: ".<?php echo number_format($total, 2, ',', '.'); ?>
+										<td colspan = 6 style="text-align: center;"><label> <b> <?php echo "R$: ".number_format($total, 2, ',', '.'); ?>
 											</b></label></td>
 									</tr>
 								</tfoot> 

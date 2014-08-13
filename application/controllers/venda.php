@@ -717,9 +717,10 @@ class Venda extends MY_Controller {
 			$venda = $this -> usuario_model -> getVenda($id);
 			$cliente = $this -> usuario_model -> getCliente($venda -> cliente_fk, 0);
 			for ($i = 0; $i < count($compras); $i++) {
-				$produto = $this -> usuario_model -> getProduto($compras[$i]['produto_fk'], 0);
+				$produto = $this -> usuario_model -> getProduto($compras[$i]['produto_fk'], 0,1);
 				$produto -> estoque_produto = $compras[$i]['quantidade_produto'];
 				$produto -> valor_produto -= (($compras[$i]['desconto_compra']/100)*$produto -> valor_produto);
+				$produto -> del_produto = $compras[$i]['desconto_compra'];
 				$produto -> modelo_produto = 0;
 				$produto -> tipo_produto = 0;
 				$produtos[$i] = $produto;

@@ -121,8 +121,8 @@ for($i=0;$i<count($produtos);$i++){
 								<td style="text-align: center;"> <?php echo $produtos[$i]->	cod_barra_produto?></td>
 								<td style="text-align: center;"> <?php echo $produtos[$i]->	estoque_produto?></td>
 								<td style="text-align: center;"> <?php echo $produtos[$i]->	modelo_produto."%" ?></td>
-								<td style="text-align: center;"> <?php echo $produtos[$i]->	valor_produto?></td>
-								<td style="text-align: center;"> <?php echo ($produtos[$i]->valor_produto-($produtos[$i]->valor_produto*($produtos[$i]->modelo_produto/100)))*$produtos[$i]->estoque_produto ?></td>
+								<td style="text-align: center;"> <?php echo "R$: ".$produtos[$i]->	valor_produto?></td>
+								<td style="text-align: center;"> <?php echo "R$: ".($produtos[$i]->valor_produto-($produtos[$i]->valor_produto*($produtos[$i]->modelo_produto/100)))*$produtos[$i]->estoque_produto ?></td>
 								<td style="text-align: center;"> <a type="button" class="btn btn-info btn-sm" href="<?php
 								if (isset($cliente)) {
 									echo site_url("venda/deletaItem/" . $i . "/" . $total . "/1/" . $cliente[0]['id_cliente']);
@@ -142,7 +142,7 @@ for($i=0;$i<count($produtos);$i++){
 							<tfoot>
 								<tr class="info">
 									<td style="text-align: center;" ><strong> Total </strong></td>
-									<td colspan = 6 style="text-align: center;"><label> <b> <?php echo number_format($total, 2, ',', '.'); ?>
+									<td colspan = 6 style="text-align: center;"><label> <b> <?php echo "R$: ".number_format($total, 2, ',', '.'); ?>
 										</b></label></td>
 								</tr>
 							</tfoot>

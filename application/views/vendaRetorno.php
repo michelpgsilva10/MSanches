@@ -84,6 +84,7 @@
 									<th style="text-align: center" >Código do Produto</th>
 									<th style="text-align: center">Quantidade Levada</th>
 									<th style="text-align: center">Quantidade Devolvida</th>
+									<th style="text-align: center">Desconto</th>
 									<th style="text-align: center" colspan="2">Unidade  |  Total </th>
 									<th style="text-align: center"></th>
 								</tr>
@@ -101,10 +102,11 @@ for($i=0;$i<count($produtos);$i++){
 								</td>
 								<td style="text-align: center;"> <?php echo $produtos[$i]->	estoque_produto ?>
 								</td>
-								</td>
 								<td style="text-align: center;"> <?php echo $produtos[$i]->	modelo_produto ?>
 								</td>
-								<td style="text-align: center;"> <?php echo $produtos[$i]->	valor_produto ?>
+								<td style="text-align: center;"> <?php echo $produtos[$i]->	del_produto ?>%
+								</td>
+								<td style="text-align: center;"> <?php echo ($produtos[$i]->valor_produto*100/(100-$produtos[$i]->	del_produto)) ?>
 								</td>
 								<td style="text-align: center;"> <?php echo $produtos[$i]->valor_produto*($produtos[$i]->estoque_produto-$produtos[$i]->modelo_produto) ?></td>
 								<td style="text-align: center;"> <a type="button" class="btn btn-info btn-sm" href="<?php
@@ -119,7 +121,7 @@ for($i=0;$i<count($produtos);$i++){
 							<tfoot>
 								<tr class="info">
 									<td colspan = 3 style="text-align: center;" ><strong> Total </strong></td>
-									<td colspan = 4 style="text-align: center;"><label> <b> <?php echo "R$: ".number_format($total, 2, ',', '.'); ?> </b></label></td>
+									<td colspan = 5 style="text-align: center;"><label> <b> <?php echo "R$: ".number_format($total, 2, ',', '.'); ?> </b></label></td>
 								</tr>
 							</tfoot>
 						</table>
