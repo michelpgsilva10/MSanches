@@ -444,5 +444,9 @@ Class Usuario_model  extends CI_Model {
 			return false;
 	}
 
+	function getComprasProduto($idVenda) {
+		
+	}
+
 }
 ?>
