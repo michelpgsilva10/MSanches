@@ -250,6 +250,10 @@ class Cliente extends MY_Controller {
 		
 		return true;
 	}
+	
+	function fotosProdutos() {
+		$this -> load -> view('fotosProdutos', NULL);
+	}
 
 }
 ?>
