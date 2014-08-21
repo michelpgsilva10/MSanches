@@ -20,16 +20,19 @@
 								?>								
 								
 								<div style="display: table; width: 100%; padding-left: 5px;" class="list-group-item">
-									<div style="float: left; width: 25%" align="center">
+									<div style="float: left; width: 20%" align="center">
 										<h4 class="text-primary">Produto</h4>
 									</div>
-									<div style="float: left; width: 25%;" align="center">
+									<div style="float: left; width: 20%;" align="center">
 										<h4 class="text-primary">Quantidade</h4>
 									</div>
-									<div style="float: left; width: 25%" align="center">
+									<div style="float: left; width: 20%" align="center">
+										<h4 class="text-primary">Desconto</h4>
+									</div>
+									<div style="float: left; width: 20%" align="center">
 										<h4 class="text-primary">Valor Unitário</h4>
 									</div>									
-									<div style="float: left; width: 25%" align="center">
+									<div style="float: left; width: 20%" align="center">
 										<h4 class="text-primary">Subtotal</h4>
 									</div>
 								</div>
@@ -41,21 +44,25 @@
 									
 								?>
 								<div style="display: table; width: 100%; padding-left: 5px;" class="list-group-item">
-									<div style="float: left; width: 25%" align="center">
+									<div style="float: left; width: 20%" align="center">
 										<h5 class="text-center"><?php echo $detalhes_compra[$i]["cod_barra_produto"]; ?></h5>
 									</div>
-									<div style="float: left; width: 25%" align="center">
+									<div style="float: left; width: 20%" align="center">
 										<h5 class="text-center"><?php echo $detalhes_compra[$i]["quantidade_produto"]; ?></h5>
 									</div>
-									<div style="float: left; width: 25%" align="center">
+									<div style="float: left; width: 20%" align="center">
+										<h5 class="text-center"><?php echo $detalhes_compra[$i]["desconto"]."%"; ?></h5>
+									</div>
+									<div style="float: left; width: 20%" align="center">
 										<h5 class="text-center"><?php echo 'R$ ' . number_format($detalhes_compra[$i]["valor_produto"], 2, ',', '.'); ?></h5>
 									</div>
-									<div style="float: left; width: 25%" align="center">
+									<div style="float: left; width: 20%" align="center">
 										<h5 class="text-center">
 											<?php 
 												$quantidade = $detalhes_compra[$i]["quantidade_produto"];
 												$valor_produto = $detalhes_compra[$i]["valor_produto"];
-												echo 'R$ ' . number_format($quantidade * $valor_produto, 2, ',', '.');
+												$desconto = ($detalhes_compra[$i]["valor_produto"]*($detalhes_compra[$i]["desconto"]/100));
+												echo 'R$ ' . number_format($quantidade * ($valor_produto-$desconto), 2, ',', '.');
 											?>
 										</h5>
 									</div>
@@ -68,19 +75,22 @@
 								?>
 																
 								<div style="display: table; width: 100%; padding-left: 5px;" class="list-group-item">
-									<div style="float: left; width: 20%" align="center">
+									<div style="float: left; width: 16%" align="center">
 										<h4 class="text-primary">Produto</h4>
 									</div>
-									<div style="float: left; width: 20%;" align="center">
+									<div style="float: left; width: 16%;" align="center">
 										<h4 class="text-primary">Qtde Pegou</h4>
 									</div>
-									<div style="float: left; width: 20%" align="center">
+									<div style="float: left; width: 16%" align="center">
 										<h4 class="text-primary">Qtde Vendida</h4>
+									</div>
+									<div style="float: left; width: 16%" align="center">
+										<h4 class="text-primary">Desconto</h4>
 									</div>	
-									<div style="float: left; width: 20%" align="center">
+									<div style="float: left; width: 16%" align="center">
 										<h4 class="text-primary">Valor Unitário</h4>
 									</div>									
-									<div style="float: left; width: 20%" align="center">
+									<div style="float: left; width: 16%" align="center">
 										<h4 class="text-primary">Subtotal</h4>
 									</div>
 								</div>
@@ -91,13 +101,13 @@
 								?>
 								
 								<div style="display: table; width: 100%; padding-left: 5px;" class="list-group-item">
-									<div style="float: left; width: 20%;" align="center">
+									<div style="float: left; width: 16%;" align="center">
 										<h5 class="text-center"><?php echo $detalhes_compra[$i]["cod_barra_produto"] ?></h>
 									</div>
-									<div style="float: left; width: 20%;" align="center">
+									<div style="float: left; width: 16%;" align="center">
 										<h5 class="text-center"><?php echo $detalhes_compra[$i]["quant_pegou"] ?></h5>
 									</div>
-									<div style="float: left; width: 20%;" align="center">
+									<div style="float: left; width: 16%;" align="center">
 										<h5 class="text-center">
 											<?php
 												if($detalhes_compra[$i]["quant_dev"] != NULL) 
@@ -107,19 +117,26 @@
 											?>
 										</h5>
 									</div>
-									<div style="float: left; width: 20%;" align="center">
+									<div style="float: left; width: 16%;" align="center">
+										<h5 class="text-center">
+											<?php 
+													echo $detalhes_compra[$i]["desconto"]."%";
+											?>
+										</h5>
+									</div>
+									<div style="float: left; width: 16%;" align="center">
 										<h5 class="text-center"><?php echo 'R$ ' . number_format($detalhes_compra[$i]["valor_produto"], 2, ',', '.'); ?></h5>
 									</div>
-									<div style="float: left; width: 20%" align="center">
+									<div style="float: left; width: 16%" align="center">
 										<h5 class="text-center">
 											<?php 
 												if ($detalhes_compra[$i]["quant_dev"] != NULL ) 
 													$quantidade = $detalhes_compra[$i]["quant_dev"];												
 												else
 													$quantidade = $detalhes_compra[$i]["quant_pegou"];
-												
+												$desconto = ($detalhes_compra[$i]["valor_produto"]*($detalhes_compra[$i]["desconto"]/100));
 												$valor_produto = $detalhes_compra[$i]["valor_produto"];
-												echo 'R$ ' . number_format($quantidade * $valor_produto, 2, ',', '.');
+												echo 'R$ ' . number_format($quantidade * ($valor_produto-$desconto), 2, ',', '.');
 											?>
 										</h5>
 									</div>

@@ -76,8 +76,8 @@
 				</form>
 				<br />
 				<div class="row">
-					<div class="col-md-10 ">
-						<table class="table table-bordered table-hover"  style="margin-left: 10%">
+					<div class="col-md-11">
+						<table class="table table-bordered table-hover"  style="margin-left: 5%">
 							<thead>
 								<tr class="info">
 									<th style="text-align: center">#</th>

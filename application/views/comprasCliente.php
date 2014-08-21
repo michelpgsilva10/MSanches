@@ -11,17 +11,20 @@
 								</div>
   								
 								<div style="display: table; width: 100%; padding-left: 5px; background-color: #EEEEEE;" class="list-group-item">
-									<div style="float: left; width: 25%" align="center">
+									<div style="float: left; width: 20%" align="center">
 										<h4 class="text-primary">Tipo de Venda</h4>
 									</div>
-									<div style="float: left; width: 25%;" align="center">
+									<div style="float: left; width: 20%;" align="center">
 										<h4 class="text-primary">Data da Venda</h4>
 									</div>
-									<div style="float: left; width: 25%" align="center">
+									<div style="float: left; width: 20%" align="center">
 										<h4 class="text-primary">Data de Retorno</h4>
 									</div>									
-									<div style="float: left; width: 25%" align="center">
-										<h4 class="text-primary">Valor da Compra</h4>
+									<div style="float: left; width: 20%" align="center">
+										<h4 class="text-primary">Valor Inicial</h4>
+									</div>									
+									<div style="float: left; width: 20%" align="center">
+										<h4 class="text-primary">Valor Final</h4>
 									</div>
 								</div>
 								<?php
@@ -30,7 +33,7 @@
   								?>
   								<a href="<?php echo site_url('cliente/detalhesCompra/' . $compras[$i]["id_venda"] . '/' . $compras[$i]["tipo_venda"]); ?>" class="list-group-item">
   									<div style="display: table; width: 100%; padding-left: 5px;">
-  										<div style="float: left; width: 25%;" align="center">
+  										<div style="float: left; width: 20%;" align="center">
   											<h5 class="list-group-item-text">
   												<?php 
   													if ($compras[$i]["tipo_venda"] == 0)
@@ -40,10 +43,10 @@
   												?>
   											</h5>
   										</div>
-										<div style="float: left; width: 25%" align="center">
+										<div style="float: left; width: 20%" align="center">
 											<h5 class="list-group-item-text"><?php echo date('d/m/Y', strtotime($compras[$i]["data_venda"])); ?></h5>
 										</div>
-										<div style="float: left; width: 25%" align="center">
+										<div style="float: left; width: 20%" align="center">
 											<h5 class="list-group-item-text">
 												<?php
 													if ($compras[$i]["data_venda2"] == NULL)
@@ -54,7 +57,16 @@
 												?>
 											</h5>
 										</div>
-										<div style="float: left; width: 25%;" align="center">
+										<div style="float: left; width: 20%;" align="center">
+											<?php
+												if ($compras[$i]["valor_venda2"] == NULL)
+													echo '<h5 class="list-group-item-text">-</h5>';
+												else
+													echo '<h5 class="list-group-item-text">R$ ' . number_format($compras[$i]["valor_venda"], 2, ',', '.') . '</h5>';
+											?>																					
+											
+										</div>
+										<div style="float: left; width: 20%;" align="center">
 											<?php
 												if ($compras[$i]["valor_venda2"] == NULL)
 													echo '<h5 class="list-group-item-text">R$ ' . number_format($compras[$i]["valor_venda"], 2, ',', '.') . '</h5>';

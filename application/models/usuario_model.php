@@ -418,7 +418,7 @@ Class Usuario_model  extends CI_Model {
 
 	function getCompraDetalhes($id_venda, $tipo_venda) {
 		if (trim($tipo_venda) == 1) {
-			$this -> db -> select('b.id_venda, c.quantidade_produto quant_pegou, e.quantidade_produto quant_dev, f.cod_barra_produto, f.valor_produto, b.valor_venda, h.nome_cliente, h.id_cliente, a.id_venda_consignado, 1 tipo_venda, d.valor_venda AS valor_venda2', FALSE);
+			$this -> db -> select('b.id_venda, c.quantidade_produto quant_pegou, e.quantidade_produto quant_dev,c.desconto_compra as desconto , f.cod_barra_produto, f.valor_produto, b.valor_venda, h.nome_cliente, h.id_cliente, a.id_venda_consignado, 1 tipo_venda, d.valor_venda AS valor_venda2', FALSE);
 			$this -> db -> from('venda_consignado a');
 			$this -> db -> join('venda b', 'a.id_venda_inicio = b.id_venda');
 			$this -> db -> join('compra c', 'b.id_venda = c.venda_fk');
@@ -428,7 +428,7 @@ Class Usuario_model  extends CI_Model {
 			$this -> db -> join('cliente h', 'b.cliente_fk = h.id_cliente');
 			$this -> db -> where('a.id_venda_inicio', $id_venda);
 		} else {
-			$this -> db -> select("a.id_venda, a.valor_venda, b.quantidade_produto, c.cod_barra_produto, c.valor_produto, d.nome_cliente, d.id_cliente, 0 tipo_venda", FALSE);
+			$this -> db -> select("a.id_venda, a.valor_venda, b.quantidade_produto, c.cod_barra_produto,b.desconto_compra as desconto, c.valor_produto, d.nome_cliente, d.id_cliente, 0 tipo_venda", FALSE);
 			$this -> db -> from('venda a');
 			$this -> db -> join('compra b', 'a.id_venda = b.venda_fk');
 			$this -> db -> join('produto c', 'b.produto_fk = c.id_produto');
