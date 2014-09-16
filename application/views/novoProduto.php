@@ -29,15 +29,15 @@ function SomenteNumero(e){
 									<br />
 									<br />
 									<div class="form-group">
-										<label for="inputEmail3" class="col-sm-3 control-label">Valor</label>
+										<label for="inputEmail3" class="col-sm-3 control-label">Valor:</label>
 										<div class="col-sm-7">
 											<input type="text" class="form-control" id="valor" name="valor" style="text-align: center" required maxlength="4" onkeypress="return SomenteNumero(event);">
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="inputEmail3" class="col-sm-3 control-label">Tipo</label>
+										<label for="inputEmail3" class="col-sm-3 control-label">Tipo:</label>
 										<div class="col-sm-7">
-											<select class="form-control" name="tipo" id="tipo" required >
+											<select class="form-control" name="tipo" id="tipo" style="text-align: center;" required >
 												<option value=""></option>
 												<option value="3">Brinco</option>
 												<option value="1">Anel</option>
@@ -46,6 +46,21 @@ function SomenteNumero(e){
 												<option value="2">Bracelete</option>
 												<option value="7">Tornozeleira</option>
 												<option value="5">Conjunto</option>
+											</select>
+										</div> 
+									</div>
+									<div class="form-group">
+										<label for="inputEmail3" class="col-sm-3 control-label">Qualidade:</label>
+										<div class="col-sm-7">
+											<select class="form-control" name="detalhe" id="detalhe" style="text-align: center;" required>
+												<option value=""></option>
+												<option value="1">Só Dourado</option>
+												<option value="2">Dourado c/ Pedra Natural</option>
+												<option value="3">Dourado c/ Pedra Sintético</option>
+												<option value="4">Dourado c/ Zirconia G</option>
+												<option value="5">Dourado c/ Zirconia Cravejado</option>
+												<option value="6">Só Proata</option>
+												<option value="7">Prata c/ Pedra</option>
 											</select>
 										</div> 
 									</div>

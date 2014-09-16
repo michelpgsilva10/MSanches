@@ -56,6 +56,21 @@ function Finalizar(){
 										</div> 
 									</div>
 									<div class="form-group">
+										<label for="inputEmail3" class="col-sm-3 control-label">Qualidade:</label>
+										<div class="col-sm-7">
+											<select class="form-control" name="detalhe" id="detalhe" style="text-align: center;" required>
+		  										<option value="0" <?php if($produto->quali_produto==0){echo "selected"; } ?>></option>
+												<option value="1" <?php if($produto->quali_produto==1){echo "selected"; } ?>>Só Dourado</option>
+												<option value="2" <?php if($produto->quali_produto==2){echo "selected"; } ?>>Dourado c/ Pedra Natural</option>
+												<option value="3" <?php if($produto->quali_produto==3){echo "selected"; } ?>>Dourado c/ Pedra Sintético</option>
+												<option value="4" <?php if($produto->quali_produto==4){echo "selected"; } ?>>Dourado c/ Zirconia G</option>
+												<option value="5" <?php if($produto->quali_produto==5){echo "selected"; } ?>>Dourado c/ Zirconia Cravejado</option>
+												<option value="6" <?php if($produto->quali_produto==6){echo "selected"; } ?>>Só Proata</option>
+												<option value="7" <?php if($produto->quali_produto==7){echo "selected"; } ?>>Prata c/ Pedra</option>
+											</select>
+										</div> 
+									</div>
+									<div class="form-group">
 										<label for="inputEmail3" class="col-sm-3 control-label">Quantidade</label>
 										<div class="col-sm-3">
 											<input type="text" class="form-control" id="quant" name="quant" value="<?php echo $produto->estoque_produto; ?>" style="text-align: center" onkeypress="return SomenteNumero(event);" required>

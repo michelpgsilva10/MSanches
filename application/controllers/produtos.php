@@ -14,13 +14,23 @@ class Produtos extends MY_Controller {
 		if ($this -> session -> userdata('load') == $load) {
 			$todos = $this -> usuario_model -> getProdutos(0, 0);
 			$QItens = $this -> usuario_model -> getQantidade(0) -> id;
-			$ultima = $QItens % 12;
+			$ultima = $QItens % 42;
 			if ($ultima == 0) {
-				$ultima = $QItens / 12;
+				$ultima = $QItens / 42;
 			} else {
-				$ultima = (int)(($QItens / 12));
+				$ultima = (int)(($QItens / 42));
 			}
-			$data = array('todos' => $todos, 'pagina' => 0, 'tipo' => 0, 'QItens' => $QItens, 'proximo' => 1, 'caminho' => "produtos/pagina/0", 'anterior' => -1, 'ultima' => $ultima);
+			$data = array('todos' => $todos,
+						  'pagina' => 0,
+						  'tipo' => 0,
+						  'QItens' => $QItens,
+						  'proximo' => 1,
+						  'caminho' => "produtos/pagina/0",
+						  'anterior' => -1,
+						  'ultima' => $ultima,
+						  'detalhe' =>0,
+						  'vmaior' => 0,
+						  'vmenor' => 0);
 			$this -> my_load_view('produtos', $data);
 		} else {
 			redirect('login');
@@ -28,23 +38,42 @@ class Produtos extends MY_Controller {
 		}
 	}
 
-	public function pagina($inicio = 0, $tipo = 0) {
+	public function pagina($inicio = 0, $tipo = 0,$maior = 0, $menor = 0,$quali = 0) {
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
-			$QItens = $this -> usuario_model -> getQantidade($tipo) -> id;
-			$todos = $this -> usuario_model -> getProdutos($inicio * 12, $tipo);
-			$ultima = $QItens % 12;
+			$QItens = $this -> usuario_model -> getQantidade($tipo,$menor,$maior,$quali) -> id;
+			$todos = $this -> usuario_model -> getProdutos($inicio * 42, $tipo,$quali,$menor,$maior);
+			$ultima = $QItens % 42;
 			if ($ultima == 0) {
-				$ultima = ($QItens / 12)-1;
+				$ultima = ($QItens / 42)-1;
 			} else {
-				$ultima = (int)(($QItens / 12));
+				$ultima = (int)(($QItens / 42));
 			}
 			if ($inicio > 0) {
-				$data = array('todos' => $todos, 'anterior' => 1, 'proximo' => $inicio + 1, 'QItens' => $QItens, 'tipo' => $tipo, 'caminho' => "produtos/pagina/0", 'anterior' => $inicio - 1, 'ultima' => $ultima);
+				$data = array('todos' => $todos,
+							  'anterior' => 1,
+							  'proximo' => $inicio + 1,
+							  'QItens' => $QItens,
+							  'tipo' => $tipo,
+							  'caminho' => "produtos/pagina/0",
+							  'anterior' => $inicio - 1,
+							  'ultima' => $ultima,
+							  'detalhe' =>$quali,
+							  'vmaior' => $maior,
+							  'vmenor' => $menor);
 			} else {
-				$data = array('todos' => $todos, 'tipo' => $tipo, 'proximo' => $inicio + 1, 'QItens' => $QItens, 'caminho' => "produtos/pagina/0", 'anterior' => $inicio - 1, 'ultima' => $ultima);
+				$data = array('todos' => $todos,
+							  'tipo' => $tipo,
+							  'proximo' => $inicio + 1,
+							  'QItens' => $QItens,
+							  'caminho' => "produtos/pagina/0",
+							  'anterior' => $inicio - 1,
+							  'ultima' => $ultima,
+							  'detalhe' =>$quali,
+							  'vmaior' => $maior,
+							  'vmenor' => $menor);
 			}
 			$this -> my_load_view('produtos', $data);
 		} else {
@@ -129,9 +158,10 @@ class Produtos extends MY_Controller {
 					}
 					$code = $tipo . $model . $valor;
 					$nome = $produto -> foto_produto;
+					$detalhe = $this -> input -> post('detalhe', TRUE);
 					$quantidade = $this -> input -> post('quant', TRUE);
 					$todos = $this -> usuario_model -> logs($this -> session -> userdata('id'), 3, $code);
-					$this -> usuario_model -> updateProduto($id, $tipo, $valor, $quantidade, $model, $nome, $code);
+					$this -> usuario_model -> updateProduto($id, $tipo, $valor, $quantidade, $model, $nome, $code,$detalhe);
 					redirect('produtos/perEtiqueta/' . $code);
 				}
 			} else {
@@ -337,10 +367,10 @@ class Produtos extends MY_Controller {
 						$data = array('foto' => TRUE, '$mensagem' => "Valor Superior que 10.000");
 						$this -> my_load_view('novoProduto', $data);
 					}
-
 					$code = $tipo . $id . $valor;
+					$detalhe = $this -> input -> post('detalhe', TRUE);
 					$this -> usuario_model -> logs($this -> session -> userdata('id'), 1, $code);
-					$this -> usuario_model -> setProduto($tipo, $valor, $quantidade, $id, $nome, $code);
+					$this -> usuario_model -> setProduto($tipo, $valor, $quantidade, $id, $nome, $code,$detalhe);
 					redirect('produtos/perEtiqueta/' . $code);
 				}
 			} else {
