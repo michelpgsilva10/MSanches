@@ -115,7 +115,10 @@ if ($vendas) {
 	
 	for ($i = 1; $i <= count($vendas); $i++) {
 		
-		$pdf -> Image($cliente -> config -> item('base_url') . 'css/img/img_produto/' . $vendas[$i - 1]['foto_produto'], 2 + ($largura * 5.6), 4.5 + ($altura * 5.4), 5.5);
+		if (file_exists('css/img/img_produto/' . trim($vendas[$i - 1]['foto_produto']))) 
+			$pdf -> Image($cliente -> config -> item('base_url') . 'css/img/img_produto/' . $vendas[$i - 1]['foto_produto'], 2 + ($largura * 5.6), 4.5 + ($altura * 5.4), 5.5, 4.1);
+		else
+			$pdf -> Image($cliente -> config -> item('base_url') . 'css/img/img_sistema/cinza.jpg', 2 + ($largura * 5.6), 4.5 + ($altura * 5.4), 5.5, 4.1);
 		
 		$largura++;
 		
