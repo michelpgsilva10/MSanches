@@ -102,6 +102,74 @@ if ($vendas) {
 	$pdf -> Cell(7, 0.8, 'Assinatura do Vendedor', 0, 0, 'C');
 	$pdf -> Cell(3, 0, '', 0, 0, 'L');
 	$pdf -> Cell(7, 0.8, 'Assinatura do Cliente', 0, 0, 'C');
+	
+	$pdf -> AddPage();
+	$pdf -> SetMargins(2, 2);
+	$pdf -> SetFont('Arial', '', 11);
+	
+	$cliente = new Cliente();
+	
+	$altura = 0;
+	$largura = 0;
+	$fotos_fim = 0;
+	
+	for ($i = 1; $i <= count($vendas); $i++) {
+		
+		$pdf -> Image($cliente -> config -> item('base_url') . 'css/img/img_produto/' . $vendas[$i - 1]['foto_produto'], 2 + ($largura * 5.6), 4.5 + ($altura * 5.4), 5.5);
+		
+		$largura++;
+		
+		if ($i % 3 == 0) {
+			$largura = 0;
+			$altura++;
+			
+			$pdf -> Cell(5.55, 0.5, '', 0, 0, 'L');
+			$pdf -> Cell(5.6, 0.5, '', 0, 0, 'L');
+			$pdf -> Cell(5.55, 0.5, '', 0, 1, 'L');
+			
+			$pdf -> Cell(5.55, 4.1, '', 1, 0, 'L');
+			$pdf -> Cell(5.6, 4.1, '', 1, 0, 'L');
+			$pdf -> Cell(5.55, 4.1, '', 1, 1, 'L');
+			
+			$pdf -> Cell(5.55, 0.8, $vendas[$i - 3]['cod_barra_produto'], 1, 0, 'C');
+			$pdf -> Cell(5.6, 0.8, $vendas[$i - 2]['cod_barra_produto'], 1, 0, 'C');
+			$pdf -> Cell(5.55, 0.8, $vendas[$i - 1]['cod_barra_produto'], 1, 1, 'C');
+		} else if(count($vendas) - $i < 3){
+			if ($fotos_fim < count($vendas) - $i)
+				$fotos_fim = count($vendas) - $i;
+		}
+		
+		if ($i % 12 == 0) {
+			$pdf -> AddPage();
+			$altura = 0;
+		}	
+	}	
+	
+	if ($fotos_fim == 1) {
+		$pdf -> Cell(5.55, 0.5, '', 0, 0, 'L');
+		$pdf -> Cell(5.6, 0.5, '', 0, 0, 'L');
+		$pdf -> Cell(5.55, 0.5, '', 0, 1, 'L');
+		
+		$pdf -> Cell(5.55, 4.1, '', 1, 0, 'L');
+		$pdf -> Cell(5.6, 4.1, '', 1, 0, 'L');
+		$pdf -> Cell(5.55, 4.1, '', 0, 1, 'L');
+		
+		$pdf -> Cell(5.55, 0.8, $vendas[count($vendas) - 2]['cod_barra_produto'], 1, 0, 'C');
+		$pdf -> Cell(5.55, 0.8, $vendas[count($vendas) - 1]['cod_barra_produto'], 1, 0, 'C');
+		$pdf -> Cell(5.55, 0.8, '', 1, 1, 'C');
+	} else if ($fotos_fim == 2) {
+		$pdf -> Cell(5.55, 0.5, '', 0, 0, 'L');
+		$pdf -> Cell(5.6, 0.5, '', 0, 0, 'L');
+		$pdf -> Cell(5.55, 0.5, '', 0, 1, 'L');
+		
+		$pdf -> Cell(5.55, 4.1, '', 1, 0, 'L');
+		$pdf -> Cell(5.6, 4.1, '', 0, 0, 'L');
+		$pdf -> Cell(5.55, 4.1, '', 0, 1, 'L');
+		
+		$pdf -> Cell(5.55, 0.8, $vendas[count($vendas) - 1]['cod_barra_produto'], 1, 0, 'C');
+		$pdf -> Cell(5.6, 0.8, '', 0, 0, 'C');
+		$pdf -> Cell(5.55, 0.8, '', 0, 1, 'C');
+	}
 
 	$pdf -> Output('romaneio.pdf', 'I');
 	$pdf -> Output('romaneio.pdf', 'D');
