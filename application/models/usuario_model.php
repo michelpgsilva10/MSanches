@@ -347,10 +347,12 @@ Class Usuario_model  extends CI_Model {
 	function getVendaConsigTipo($id_venda, $tipo) {
 		$this -> db -> select('*');
 		$this -> db -> from('venda_consignado');
+		
 		if ($tipo == 1)
 			$this -> db -> join('venda', 'venda_consignado.id_venda_inicio = venda.id_venda');
 		else
 			$this -> db -> join('venda', 'venda_consignado.id_venda_retorno = venda.id_venda');
+		
 		$this -> db -> join('compra', 'venda.id_venda = compra.venda_fk');
 		$this -> db -> join('produto', 'compra.produto_fk = produto.id_produto');
 		$this -> db -> join('cliente', 'compra.cliente_fk = cliente.id_cliente');
