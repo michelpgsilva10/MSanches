@@ -7,6 +7,9 @@ function SomenteNumero(e){
  else  return false;
  }
 }
+function Desabilitar(){
+	document.getElementById('enviar').disabled = disabled;
+}
 </script>
 <div class="panel panel-default">
 	<div class="panel-body">
@@ -23,7 +26,7 @@ function SomenteNumero(e){
 									<?php	echo $mensagem; ?>
 								</div>
 								<?php } ?>
-						<form class="form-horizontal" role="form"  method="post" <?php if(isset($foto)){ ?> action="<?php echo site_url("produtos/novo2/".$nome)?>" <?php }else{ ?>action="<?php echo site_url("produtos/novo")?>"<?php } ?>>
+						<form class="form-horizontal" role="form"  method="post" <?php if(isset($foto)){ ?> action="<?php echo site_url("produtos/novo2/".$nome)?>" <?php }else{ ?>action="<?php echo site_url("produtos/novo")?>"<?php }?> target="_blank">
 							<div class="row" style="margin-top: 40px; margin-left: 3%">
 								<div class="col-xs-6">
 									<br />
@@ -91,7 +94,7 @@ function SomenteNumero(e){
 							</div>
 							<div class="row">
 								<div class="form-group" align="center">
-									<button type="submit" class="btn btn-primary " style="width: 100px;">
+									<button type="submit" name="enviar" onclick="Desabilitar();" class="btn btn-primary " style="width: 100px;" >
 										Criar
 									</button>
 								</div>

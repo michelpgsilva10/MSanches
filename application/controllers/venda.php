@@ -612,27 +612,21 @@ class Venda extends MY_Controller {
 							if ($this -> input -> post('quantP', TRUE) != 1) {
 								if ($produtos[$i] -> estoque_produto >= $produtos[$i] -> modelo_produto + $this -> input -> post('quantP', TRUE)) {
 									$aux -= $this -> input -> post('quantP', TRUE) * $produtos[$i] -> valor_produto;
-									if ($aux >= $valorMim) {
-										if ($produtos[$i] -> tipo_produto != 0) {
+									if ($produtos[$i] -> tipo_produto != 0) {
 											$verifica = -4;
-										} else {
-											$produtos[$i] -> tipo_produto = 1;
-										}
-										$produtos[$i] -> modelo_produto += $this -> input -> post('quantP', TRUE);
-										$total = $aux;
-										$verifica = 0;
-										break;
 									} else {
-										$verifica = -3;
-										break;
+										$produtos[$i] -> tipo_produto = 1;
 									}
+									$produtos[$i] -> modelo_produto += $this -> input -> post('quantP', TRUE);
+									$total = $aux;
+									$verifica = 0;
+									break;
 								} else {
 									$verifica = -2;
 									break;
 								}
 							} else {
 								$aux -= 1 * $produtos[$i] -> valor_produto;
-								if ($aux >= $valorMim) {
 									if ($produtos[$i] -> tipo_produto != 0) {
 										$verifica = -4;
 									} else {
@@ -642,10 +636,6 @@ class Venda extends MY_Controller {
 									$total = $aux;
 									$verifica = 0;
 									break;
-								} else {
-									$verifica = -3;
-									break;
-								}
 							}
 						} else {
 							$verifica = -2;
@@ -792,7 +782,7 @@ class Venda extends MY_Controller {
 				redirect('venda/criaRomaneio/' . $vendasC[0]['id_venda_consignado'] . "/1");
 			} else {
 				$this -> usuario_model -> logs($this -> session -> userdata('id'), 9, $cliente[0]['id_cliente'], $total, $idVenda);
-				redirect('venda');
+				redirect('venda/criaRomaneio/' . $vendasC[0]['id_venda_consignado'] . "/1");
 			}
 		} else {
 			redirect('login');

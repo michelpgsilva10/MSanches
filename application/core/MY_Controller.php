@@ -17,7 +17,6 @@ class MY_Controller extends CI_Controller {
 			$this -> load -> view($page, $data);
 			$this -> load -> view('footer');
 		} else {
-			$this -> load -> view('head');
 			$this -> load -> view($page, $data);
 			$this -> load -> view('footer');
 

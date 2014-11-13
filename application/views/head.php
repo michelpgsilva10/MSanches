@@ -19,6 +19,13 @@
 	<body onload="hideAlertSuccess()">
 		<div class="container">
 			<div>
-				<img src="<?php echo $this->config->item('base_url') ?>css/img/img_sistema/MSanches-logo.png" class="img-responsive" alt="Responsive image">
+				<a href="<?php $datestring = "%m%d";
+							   $time = time();
+						       $load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
+		                      if ($this -> session -> userdata('load') == $load) {
+		                      	 echo site_url("Validador");
+							  }else {
+							  	echo '#';
+							  }?>"><img  src="<?php echo $this->config->item('base_url') ?>css/img/img_sistema/MSanches-logo.png" class="img-responsive" alt="Responsive image"></a>
 			</div>
 			<br />

@@ -6,7 +6,7 @@ function hideAlertSuccess() {
 
 $(document).ready(function() {
 	$('#cpf_cliente').mask('999.999.999-99');
-	$('#tel_cliente').mask('(99) 9999-9999');
+	$('#tel_cliente').mask('(99) 99999-9999');
 
 	if ($('#tipo').val() == 1)
 		$("#nome").mask('999.999.999-99');

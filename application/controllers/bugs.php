@@ -6,7 +6,7 @@ class Bugs extends MY_Controller {
 		$this -> load -> library('session');
 	}
 
-	function fotoErro() {
+	function fotoErro($proxima = 0) {
 		$maxId = $this -> usuario_model -> getID();
 		$aux = $this -> usuario_model -> getFoto(1);
 		$cont = 0;
@@ -50,6 +50,7 @@ class Bugs extends MY_Controller {
 		} else {
 			$data = array('posicao' => 0);
 		}
+		
 		$this -> my_load_view('bugsFoto', $data);
 	}
 
