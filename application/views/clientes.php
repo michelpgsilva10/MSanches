@@ -42,7 +42,7 @@
 							
 							</form>					
 
-							<div class="panel panel-default">
+							<div class="panel panel-default scroll-tabela">
 								<?php
 									if ($clientes) {
 								
