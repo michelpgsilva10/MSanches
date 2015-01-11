@@ -94,23 +94,34 @@ Class Usuario_model  extends CI_Model {
 		if ($tipo == 0) {
 			$data = array('logs' => "Logou no sistema", 'id_user_logs' => $id);
 		} else if ($tipo == 1) {
-			$data = array('logs' => "Criou um novo produto com o codigo: " . $produto, 'id_user_logs' => $id);
+			$data = array('logs' => "Criou um novo produto com o codigo: " . $produto, 'id_user_logs' => $id,'codBarra_produto'=>$produto);
 		} else if ($tipo == 2) {
 			$data = array('logs' => "Adcionou a foto", 'id_user_logs' => $id);
 		} else if ($tipo == 3) {
-			$data = array('logs' => "Alterou o pruduto com o codigo: " . $produto, 'id_user_logs' => $id);
+			$data = array('logs' => "Alterou o pruduto com o codigo: " . $produto, 'id_user_logs' => $id,'codBarra_produto'=>$produto);
 		} else if ($tipo == 4) {
-			$data = array('logs' => "Deletou o pruduto com o codigo: " . $produto, 'id_user_logs' => $id);
+			$data = array('logs' => "Deletou o pruduto com o codigo: " . $produto, 'id_user_logs' => $id,'codBarra_produto'=>$produto);
 		} else if ($tipo == 5) {
 			$data = array('logs' => "Saiu do sistema", 'id_user_logs' => $id);
 		} else if ($tipo == 6) {
-			$data = array('logs' => "Imprimiu Etiqueta do produto com o codigo: " . $produto, 'id_user_logs' => $id);
+			$data = array('logs' => "Imprimiu Etiqueta do produto com o codigo: " . $produto, 'id_user_logs' => $id,'codBarra_produto'=>$produto);
 		} else if ($tipo == 7) {
-			$data = array('logs' => "Efetuou um venda Comum para o cliente: " . $produto . " com o valor de " . $valor, 'id_user_logs' => $id);
+			$data = array('logs' => "Efetuou um venda Comum para o cliente: " . $produto . " com o valor de " . $valor, 
+					      'id_user_logs' => $id,
+					      'venda_tipo'=>'Comum',
+					      'id_cliente'=>$produto);
 		} else if ($tipo == 8) {
-			$data = array('logs' => "Efetuou um venda Consignado para o cliente: " . $produto . " com o valor de " . $valor . " referente a venda de numero " . $idVenda, 'id_user_logs' => $id);
+			$data = array('logs' => "Efetuou um venda Consignado para o cliente: " . $produto . " com o valor de " . $valor . " referente a venda de numero " . $idVenda,
+						  'id_user_logs' => $id,
+						  'id_venda'=>$idVenda,
+						  'venda_tipo'=>'Consignado',
+						  'id_cliente'=>$produto);
 		} else if ($tipo == 9) {
-			$data = array('logs' => "Efetuou o retorno do Consignado do cliente: " . $produto . " com o valor de " . $valor . " referente a venda de numero " . $idVenda, 'id_user_logs' => $id);
+			$data = array('logs' => "Efetuou o retorno do Consignado do cliente: " . $produto . " com o valor de " . $valor . " referente a venda de numero " . $idVenda, 
+						  'id_user_logs' => $id,
+						  'id_venda'=>$idVenda,
+						  'venda_tipo'=>'Consignado',
+						  'id_cliente'=>$produto);
 		}
 
 		$this -> db -> insert('logs', $data);
