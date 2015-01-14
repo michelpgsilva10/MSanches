@@ -13,7 +13,7 @@
 			<div class="container-fluid">
 				<div class="row">
 					<br />
-					<form class="form-horizontal" method="post" role="form" name="formD" action="<?php echo site_url("venda/finalizarCompraC/" . $total . "/" . $cliente)?>">
+					<form class="form-horizontal" method="post" role="form" name="formD" action="<?php echo site_url("venda/finalizarCompraC/" . $total . "/" . $cliente."/".$idlista)?>">
 						<div class="col-md-6 col-md-offset-3">
 							<div class="form-group">
 								<label for="inputEmail3" class="col-sm-5 control-label">Data de Retorno:</label>
@@ -28,7 +28,7 @@
 					<div class="col-md-6 col-md-offset-3" align="center">
 						<ul class="pager">
 							<li>
-								<a type="button" href="<?php echo site_url("venda/sair/1")?>">Sair</a>
+								<a type="button" href="<?php if(isset($idlista)){ echo site_url("venda/sair/1/".$idlista);}else{echo site_url("venda/sair/1");}?>">Sair</a>
 							</li>
 							<li>
 								<a type="button" href="#" onclick="submit();">Finalizar</a>

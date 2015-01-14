@@ -22,7 +22,7 @@
 				</div>
 				<?php } ?>
 				<br />
-				<form class="form-inline" name="formV" method="post" role="form" action="<?php echo site_url("venda/buscaCliente/".$total."/".$tipo)?>">
+				<form class="form-inline" name="formV" method="post" role="form" action="<?php echo site_url("venda/buscaCliente/".$total."/".$tipo."/".$idlista)?>">
 					<div class="row">
 						<div class="col-md-6 col-md-offset-3" align="center">
 							<div class="form-group">
@@ -56,7 +56,7 @@
 										<tr>
 											<td style="text-align: center;"> <?php echo $cliente[$i]['nome_cliente']; ?></td>
 											<td style="text-align: center;"> <?php echo $cliente[$i]['tel_cliente']; ?></td>
-											<td style="text-align: center;"> <a type="button" class="btn btn-info" href="<?php echo site_url("venda/selCliente/".$cliente[$i]['id_cliente']."/".$total."/".$tipo)?>">Selecionar</a>
+											<td style="text-align: center;"> <a type="button" class="btn btn-info" href="<?php echo site_url("venda/selCliente/".$cliente[$i]['id_cliente']."/".$total."/".$tipo."/".$idlista)?>">Selecionar</a>
 										</tr>
 								<?php } } ?>
 							</tbody>
