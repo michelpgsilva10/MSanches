@@ -34,7 +34,7 @@ class Venda extends MY_Controller {
 		}
 	}
 
-	public function comum() {
+	public function comum($desconto=0) {
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
@@ -43,9 +43,9 @@ class Venda extends MY_Controller {
 			if ($idLista !=null) {
 				$produtos =  $this -> venda_model ->getLista($idLista,$this -> session -> userdata('id'));
 				$total = $this -> venda_model ->getValor($idLista,$this -> session -> userdata('id'))->valor_pago;
-				$data = array('total' => $total, 'produtos' => $produtos,'idlista'=>$idLista);
+				$data = array('total' => $total, 'produtos' => $produtos,'idlista'=>$idLista,'desconto'=>$desconto);
 			} else {
-				$data = array('total' => 0);
+				$data = array('total' => 0,'desconto'=>0);
 			}
 			//print_r($data);
 			$this -> my_load_view('vendaComum', $data);
@@ -92,6 +92,7 @@ class Venda extends MY_Controller {
 				$cliente = $this -> usuario_model -> getCliente($id, 0);
 			}
 			if ($idlista != -1 ) {//->Verifica se possui lista
+				$desc=(int)$this -> input -> post('desconto', TRUE);
 				$produtos = $this -> venda_model ->getLista($idlista,$this -> session -> userdata('id'));// -> Pega todos os Itens da Lista
 				$produto = $this -> usuario_model -> getProduto(0, trim($this -> input -> post('codigoP', TRUE)));// -> Pega o Produto
 				if (($produto != FALSE) && (trim($this -> input -> post('quantP', TRUE)) != "")) {//Verifica se o produto Existe
@@ -138,28 +139,28 @@ class Venda extends MY_Controller {
 								//print_r($produtos);
 								if ($tipo == 0) {
 									if ($id != -1) {
-										$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente, 'idlista'=>$idlista,'mensagemC' => "Foi Adicionado o item: " . $produto -> cod_barra_produto);
+										$data = array('total' => $total,'desconto'=>$desc, 'produtos' => $produtos, 'cliente' => $cliente, 'idlista'=>$idlista,'mensagemC' => "Foi Adicionado o item: " . $produto -> cod_barra_produto);
 										$this -> my_load_view('vendaComum', $data);
 									} else {
-										$data = array('total' => $total, 'produtos' => $produtos,'idlista'=>$idlista, 'mensagemC' => "Foi Adicionado o item: " . $produto -> cod_barra_produto);
+										$data = array('total' => $total, 'desconto'=>$desc,'produtos' => $produtos,'idlista'=>$idlista, 'mensagemC' => "Foi Adicionado o item: " . $produto -> cod_barra_produto);
 										$this -> my_load_view('vendaComum', $data);
 									}
 								} else {
 									if ($id != -1) {
-										$data = array('total' => $total, 'produtos' => $produtos,'idlista'=>$idlista, 'cliente' => $cliente, 'mensagemC' => "Foi Adicionado o item: " . $produto -> cod_barra_produto);
+										$data = array('total' => $total,'produtos' => $produtos,'idlista'=>$idlista, 'cliente' => $cliente, 'mensagemC' => "Foi Adicionado o item: " . $produto -> cod_barra_produto);
 										$this -> my_load_view('vendaConsig', $data);
 									} else {
-										$data = array('total' => $total, 'produtos' => $produtos,'idlista'=>$idlista, 'mensagemC' => "Foi Adicionado o item: " . $produto -> cod_barra_produto);
+										$data = array('total' => $total,'produtos' => $produtos,'idlista'=>$idlista, 'mensagemC' => "Foi Adicionado o item: " . $produto -> cod_barra_produto);
 										$this -> my_load_view('vendaConsig', $data);
 									}
 								 }
 							} else{
 								if ($tipo == 0) {
 									if ($id != -1) {
-										$data = array('total' => $total, 'cliente' => $cliente,'idlista'=>$idlista, 'mensagem' => "Erro ao Inserir Produto na Lista");
+										$data = array('total' => $total,'desconto'=>$desc, 'cliente' => $cliente,'idlista'=>$idlista, 'mensagem' => "Erro ao Inserir Produto na Lista");
 										$this -> my_load_view('vendaComum', $data);
 									} else {
-										$data = array('total' => $total,'idlista'=>$idlista, 'mensagem' => "Erro ao Inserir Produto na Lista");
+										$data = array('total' => $total,'desconto'=>$desc,'idlista'=>$idlista, 'mensagem' => "Erro ao Inserir Produto na Lista");
 										$this -> my_load_view('vendaComum', $data);
 									}
 								} else {
@@ -176,10 +177,10 @@ class Venda extends MY_Controller {
 						} else {//Quando a quantidade pedida passa a quantidade existente
 							if ($tipo == 0) {
 								if ($id != -1) {
-									$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente,'idlista'=>$idlista, 'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
+									$data = array('total' => $total, 'desconto'=>$desc, 'produtos' => $produtos, 'cliente' => $cliente,'idlista'=>$idlista, 'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
 									$this -> my_load_view('vendaComum', $data);
 								} else {
-									$data = array('total' => $total, 'produtos' => $produtos,'idlista'=>$idlista, 'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
+									$data = array('total' => $total,'desconto'=>$desc, 'produtos' => $produtos,'idlista'=>$idlista, 'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
 									$this -> my_load_view('vendaComum', $data);
 								}
 							} else {
@@ -195,15 +196,15 @@ class Venda extends MY_Controller {
 					} else if ($testeE == 2) {// -> Verifica se deu Erro na quantidade Existente do Produto
 						if ($tipo == 0) {
 							if ($id != -1) {
-								$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente, 'idlista'=>$idlista,'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
+								$data = array('total' => $total,'desconto'=>$desc,'produtos' => $produtos, 'cliente' => $cliente, 'idlista'=>$idlista,'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
 								$this -> my_load_view('vendaComum', $data);
 							} else {
-								$data = array('total' => $total, 'produtos' => $produtos, 'idlista'=>$idlista,'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
+								$data = array('total' => $total,'desconto'=>$desc, 'produtos' => $produtos, 'idlista'=>$idlista,'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
 								$this -> my_load_view('vendaComum', $data);
 							}
 						} else {
 							if ($id != -1) {
-								$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente, 'idlista'=>$idlista,'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
+								$data = array('total' => $total,'produtos' => $produtos, 'cliente' => $cliente, 'idlista'=>$idlista,'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
 								$this -> my_load_view('vendaConsig', $data);
 							} else {
 								$data = array('total' => $total, 'produtos' => $produtos, 'idlista'=>$idlista,'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
@@ -213,10 +214,10 @@ class Venda extends MY_Controller {
 					} else if($testeE==3){// -> Verifica se deu Erro no Update da lista
 						if ($tipo == 0) {
 									if ($id != -1) {
-										$data = array('total' => $total, 'cliente' => $cliente, 'idlista'=>$idlista,'mensagem' => "Erro ao Dar Update no Produto da Lista");
+										$data = array('total' => $total,'desconto'=>$desc, 'cliente' => $cliente, 'idlista'=>$idlista,'mensagem' => "Erro ao Dar Update no Produto da Lista");
 										$this -> my_load_view('vendaComum', $data);
 									} else {
-										$data = array('total' => $total, 'idlista'=>$idlista,'mensagem' => "Erro ao Dar Update no Produto da Lista");
+										$data = array('total' => $total,'desconto'=>$desc, 'idlista'=>$idlista,'mensagem' => "Erro ao Dar Update no Produto da Lista");
 										$this -> my_load_view('vendaComum', $data);
 									}
 								} else {
@@ -231,15 +232,15 @@ class Venda extends MY_Controller {
 					}else{// Quando deu Certo ao dar Update na Lista
 						if ($tipo == 0) {
 							if ($id != -1) {
-								$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente, 'idlista'=>$idlista,'mensagemC' => "Foi Adicionado mais um na Quantidade do item: " . $produto -> cod_barra_produto);
+								$data = array('total' => $total,'desconto'=>$desc, 'produtos' => $produtos, 'cliente' => $cliente, 'idlista'=>$idlista,'mensagemC' => "Foi Adicionado mais um na Quantidade do item: " . $produto -> cod_barra_produto);
 								$this -> my_load_view('vendaComum', $data);
 							} else {
-								$data = array('total' => $total, 'produtos' => $produtos, 'idlista'=>$idlista,'mensagemC' => "Foi Adicionado mais um na Quantidade do item: " . $produto -> cod_barra_produto);
+								$data = array('total' => $total,'desconto'=>$desc, 'produtos' => $produtos, 'idlista'=>$idlista,'mensagemC' => "Foi Adicionado mais um na Quantidade do item: " . $produto -> cod_barra_produto);
 								$this -> my_load_view('vendaComum', $data);
 							}
 						} else {
 							if ($id != -1) {
-								$data = array('total' => $total, 'produtos' => $produtos, 'idlista'=>$idlista,'cliente' => $cliente, 'mensagemC' => "Foi Adicionado mais um na Quantidade do item: " . $produto -> cod_barra_produto);
+								$data = array('total' => $total,'produtos' => $produtos, 'idlista'=>$idlista,'cliente' => $cliente, 'mensagemC' => "Foi Adicionado mais um na Quantidade do item: " . $produto -> cod_barra_produto);
 								$this -> my_load_view('vendaConsig', $data);
 							} else {
 								$data = array('total' => $total, 'produtos' => $produtos, 'idlista'=>$idlista,'mensagemC' => "Foi Adicionado mais um na Quantidade do item: " . $produto -> cod_barra_produto);
@@ -250,10 +251,10 @@ class Venda extends MY_Controller {
 				} else {//Quando o Produto nao é encontrado ou a quantidade solicitada é =0
 					if ($tipo == 0) {
 						if ($id != -1) {
-							$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente, 'idlista'=>$idlista,'mensagem' => "Produto não Encontrado ou Quantidade Invalida");
+							$data = array('total' => $total,'desconto'=>$desc, 'produtos' => $produtos, 'cliente' => $cliente, 'idlista'=>$idlista,'mensagem' => "Produto não Encontrado ou Quantidade Invalida");
 							$this -> my_load_view('vendaComum', $data);
 						} else {
-							$data = array('total' => $total, 'produtos' => $produtos, 'idlista'=>$idlista,'mensagem' => "Produto não Encontrado ou Quantidade Invalida");
+							$data = array('total' => $total,'desconto'=>$desc, 'produtos' => $produtos, 'idlista'=>$idlista,'mensagem' => "Produto não Encontrado ou Quantidade Invalida");
 						    $this -> my_load_view('vendaComum', $data);
 						}
 					} else {
@@ -267,6 +268,7 @@ class Venda extends MY_Controller {
 					}
 				}
 			} else {// -> Quando a Lista não foi Criada
+				$desc=(int)$this -> input -> post('desconto', TRUE);
 				$produto = $this -> usuario_model -> getProduto(0, $this -> input -> post('codigoP', TRUE));
 				if (($produto != FALSE) && (trim($this -> input -> post('quantP', TRUE)) != "")) {//->Verifica se Possui o Produto e se foi passada uma quantidade
 					if ($this -> input -> post('quantP', TRUE) <= $produto -> estoque_produto) {// -> Verifica se a quantidade passada é menor ou igual a que tem no estoque
@@ -287,10 +289,10 @@ class Venda extends MY_Controller {
 							$produtos = $this -> venda_model ->getLista(1,$this -> session -> userdata('id'));// -> Pega todos os Itens da Lista
 						if ($tipo == 0) {
 							if ($id != -1) {
-								$data = array('total' => $total, 'produtos' => $produtos, 'cliente' => $cliente,'idlista'=>1,'mensagemC' => "Foi Adicionado o item: " . $produto -> cod_barra_produto);
+								$data = array('total' => $total,'desconto'=>$desc, 'produtos' => $produtos, 'cliente' => $cliente,'idlista'=>1,'mensagemC' => "Foi Adicionado o item: " . $produto -> cod_barra_produto);
 								$this -> my_load_view('vendaComum', $data);
 							} else {
-								$data = array('total' => $total, 'produtos' => $produtos,'idlista'=>1, 'mensagemC' => "Foi Adicionado o item: " . $produto -> cod_barra_produto);
+								$data = array('total' => $total,'desconto'=>$desc, 'produtos' => $produtos,'idlista'=>1, 'mensagemC' => "Foi Adicionado o item: " . $produto -> cod_barra_produto);
 								$this -> my_load_view('vendaComum', $data);
 							}
 						} else {
@@ -305,10 +307,10 @@ class Venda extends MY_Controller {
 					} else{// -> Quando der erro ao inserir novo item da Lista
 						if ($tipo == 0) {
 							if ($id != -1) {
-								$data = array('total' => $total, 'cliente' => $cliente, 'mensagem' => "Erro ao Inserir Produto na Lista");
+								$data = array('total' => $total,'desconto'=>$desc, 'cliente' => $cliente, 'mensagem' => "Erro ao Inserir Produto na Lista");
 								$this -> my_load_view('vendaComum', $data);
 							} else {
-								$data = array('total' => $total, 'mensagem' => "Erro ao Inserir Produto na Lista");
+								$data = array('total' => $total,'desconto'=>$desc, 'mensagem' => "Erro ao Inserir Produto na Lista");
 								$this -> my_load_view('vendaComum', $data);
 							}
 						} else {
@@ -323,10 +325,10 @@ class Venda extends MY_Controller {
 					}} else {// -> Quando a quantidade pedida nao existe
 						if ($tipo == 0) {
 							if ($id != -1) {
-								$data = array('total' => $total, 'cliente' => $cliente, 'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
+								$data = array('total' => $total,'desconto'=>$desc, 'cliente' => $cliente, 'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
 								$this -> my_load_view('vendaComum', $data);
 							} else {
-								$data = array('total' => $total, 'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
+								$data = array('total' => $total,'desconto'=>$desc, 'mensagem' => "Quantidade do Produto Inesistente. Só possui " . $produto -> estoque_produto . " itens em  estoque");
 								$this -> my_load_view('vendaComum', $data);
 							}
 						} else {
@@ -342,10 +344,10 @@ class Venda extends MY_Controller {
 				} else {// -> Quando nao existe o produto ou a quantidade é =0
 					if ($tipo == 0) {
 						if ($id != -1) {
-							$data = array('total' => $total, 'cliente' => $cliente, 'mensagem' => "Produto não Encontrado ou Quantidade Invalida");
+							$data = array('total' => $total,'desconto'=>$desc, 'cliente' => $cliente, 'mensagem' => "Produto não Encontrado ou Quantidade Invalida");
 							$this -> my_load_view('vendaComum', $data);
 						} else {
-							$data = array('total' => $total, 'mensagem' => "Produto não Encontrado ou Quantidade Invalida");
+							$data = array('total' => $total,'desconto'=>$desc, 'mensagem' => "Produto não Encontrado ou Quantidade Invalida");
 							$this -> my_load_view('vendaComum', $data);
 						}
 					} else {
@@ -364,13 +366,13 @@ class Venda extends MY_Controller {
 		}
 	}
 
-	public function selCliente($id, $total, $tipo = 0,$idlista=-1) {
+	public function selCliente($id,$desconto=0, $total, $tipo = 0,$idlista=-1) {
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
 			if ($id < 0) {
-				$data = array('total' => $total, 'tipo' => $tipo,'idlista'=>$idlista);
+				$data = array('total' => $total,'desconto'=>$desconto, 'tipo' => $tipo,'idlista'=>$idlista);
 				$this -> my_load_view('vendaCliente', $data);
 			} else {
 				$cliente = $this -> usuario_model -> getCliente($id, 0);
@@ -381,9 +383,9 @@ class Venda extends MY_Controller {
 						if ($total ==null) {
 							$total=0;
 						}
-						$data = array('total' => $total,'cliente' => $cliente, 'produtos' => $produtos,'idlista'=>$idLista);
+						$data = array('total' => $total,'desconto'=>$desconto,'cliente' => $cliente, 'produtos' => $produtos,'idlista'=>$idLista);
 				} else {
-						$data = array('total' => $total, 'cliente' => $cliente,'idlista'=>$idLista);
+						$data = array('total' => $total, 'desconto'=>$desconto,'cliente' => $cliente,'idlista'=>$idLista);
 					}
 					if ($tipo == 0) {
 						$this -> my_load_view('vendaComum', $data);
@@ -396,7 +398,7 @@ class Venda extends MY_Controller {
 		}
 	}
 
-	public function buscaCliente($total, $tipo,$idlista=-1) {
+	public function buscaCliente($desconto=0,$total, $tipo,$idlista=-1) {
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
@@ -404,17 +406,17 @@ class Venda extends MY_Controller {
 			if ($this -> input -> post('tipo', TRUE) == 1) {
 				$aux = str_split(trim($this -> input -> post('nome', TRUE)));
 				if ((count($aux) > 14) || ((count($aux) < 14))) {
-					$data = array('total' => $total, 'mensagem' => "CPF Invalido", 'tipo' => $tipo,'idlista'=>$idlista);
+					$data = array('total' => $total,'desconto'=>$desconto, 'mensagem' => "CPF Invalido", 'tipo' => $tipo,'idlista'=>$idlista);
 					$this -> my_load_view('vendaCliente', $data);
 				} else {
 					$dado = $this -> input -> post('nome');
 
 					$cliente = $this -> usuario_model -> getCliente(trim($dado), $this -> input -> post('tipo', TRUE));
 					if ($cliente == FALSE) {
-						$data = array('total' => $total, 'mensagem' => "Cliente não Cadastrado", 'tipo' => $tipo,'idlista'=>$idlista);
+						$data = array('total' => $total,'desconto'=>$desconto, 'mensagem' => "Cliente não Cadastrado", 'tipo' => $tipo,'idlista'=>$idlista);
 						$this -> my_load_view('vendaCliente', $data);
 					} else {
-						$data = array('total' => $total, 'cliente' => $cliente, 'tipo' => $tipo,'idlista'=>$idlista);
+						$data = array('total' => $total, 'desconto'=>$desconto,'cliente' => $cliente, 'tipo' => $tipo,'idlista'=>$idlista);
 						$this -> my_load_view('vendaCliente', $data);
 					}
 				}
@@ -422,10 +424,10 @@ class Venda extends MY_Controller {
 				$dado = trim($this -> input -> post('nome', TRUE));
 				$dado = $this -> usuario_model -> getCliente($dado, $this -> input -> post('tipo', TRUE));
 				if ($dado == FALSE) {
-					$data = array('total' => $total, 'mensagem' => "Cliente não Cadastrado", 'tipo' => $tipo,'idlista'=>$idlista);
+					$data = array('total' => $total, 'desconto'=>$desconto,'mensagem' => "Cliente não Cadastrado", 'tipo' => $tipo,'idlista'=>$idlista);
 					$this -> my_load_view('vendaCliente', $data);
 				} else {
-					$data = array('total' => $total, 'cliente' => $dado, 'tipo' => $tipo,'idlista'=>$idlista);
+					$data = array('total' => $total,'desconto'=>$desconto, 'cliente' => $dado, 'tipo' => $tipo,'idlista'=>$idlista);
 					$this -> my_load_view('vendaCliente', $data);
 				}
 			}
@@ -620,7 +622,7 @@ class Venda extends MY_Controller {
 		}
 	}
 
-	public function deletaItem($i, $total, $tipo = 0, $id = -1,$idlista=-1) {
+	public function deletaItem($i, $desconto=0,$total, $tipo = 0, $id = -1,$idlista=-1) {
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
@@ -639,10 +641,10 @@ class Venda extends MY_Controller {
 					$produto = $this -> usuario_model -> getProduto($i,0);// -> Pega o Produto
 					if ($tipo == 0) {
 						if ($id != -1) {
-							$data = array('total' => $total, 'idlista'=>$idlista,'produtos' => $produtos, 'cliente' => $cliente,'mensagemC' => "Foi Deletado o item: " . $produto -> cod_barra_produto);
+							$data = array('total' => $total,'desconto'=>$desconto, 'idlista'=>$idlista,'produtos' => $produtos, 'cliente' => $cliente,'mensagemC' => "Foi Deletado o item: " . $produto -> cod_barra_produto);
 							$this -> my_load_view('vendaComum', $data);
 						} else {
-							$data = array('total' => $total,'idlista'=>$idlista, 'produtos' => $produtos,'mensagemC' => "Foi Deletado o item: " . $produto -> cod_barra_produto);
+							$data = array('total' => $total,'desconto'=>$desconto,'idlista'=>$idlista, 'produtos' => $produtos,'mensagemC' => "Foi Deletado o item: " . $produto -> cod_barra_produto);
 							//print_r($data);
 							$this -> my_load_view('vendaComum', $data);
 						}
@@ -660,10 +662,10 @@ class Venda extends MY_Controller {
 					$produtos = $this -> venda_model ->getLista($idlista,$this -> session -> userdata('id'));// -> Pega todos os Itens da Lista
 					if ($tipo == 0) {
 						if ($id != -1) {
-							$data = array('total' => $total, 'idlista'=>$idlista,'produtos' => $produtos, 'cliente' => $cliente,'mensagem' => "Erro ao Deletar Produto na Lista");
+							$data = array('total' => $total, 'desconto'=>$desconto,'idlista'=>$idlista,'produtos' => $produtos, 'cliente' => $cliente,'mensagem' => "Erro ao Deletar Produto na Lista");
 							$this -> my_load_view('vendaComum', $data);
 						} else {
-							$data = array('total' => $total,'idlista'=>$idlista, 'produtos' => $produtos,'mensagem' => "Erro ao Deletar Produto na Lista");
+							$data = array('total' => $total,'desconto'=>$desconto,'idlista'=>$idlista, 'produtos' => $produtos,'mensagem' => "Erro ao Deletar Produto na Lista");
 							$this -> my_load_view('vendaComum', $data);
 						}
 					} else {
@@ -681,10 +683,10 @@ class Venda extends MY_Controller {
 					$produtos = $this -> venda_model ->getLista($idlista,$this -> session -> userdata('id'));// -> Pega todos os Itens da Lista
 					if ($tipo == 0) {
 						if ($id != -1) {
-							$data = array('total' => $total, 'idlista'=>$idlista,'produtos' => $produtos, 'cliente' => $cliente,'mensagem' => "Erro nem uma Lista");
+							$data = array('total' => $total,'desconto'=>$desconto, 'idlista'=>$idlista,'produtos' => $produtos, 'cliente' => $cliente,'mensagem' => "Erro nem uma Lista");
 							$this -> my_load_view('vendaComum', $data);
 						} else {
-							$data = array('total' => $total,'idlista'=>$idlista, 'produtos' => $produtos,'mensagem' => "Erro nem uma Lista");
+							$data = array('total' => $total,'desconto'=>$desconto,'idlista'=>$idlista, 'produtos' => $produtos,'mensagem' => "Erro nem uma Lista");
 							$this -> my_load_view('vendaComum', $data);
 						}
 					} else {
@@ -1036,7 +1038,7 @@ class Venda extends MY_Controller {
 		}
 	}
 
-	public function visualizaI($idProduto, $total, $tipo = 0, $idCliente = 0, $id = 0, $valorMim = 0,$idlista= -1) {
+	public function visualizaI($idProduto,$desconto=0, $total, $tipo = 0, $idCliente = 0, $id = 0, $valorMim = 0,$idlista= -1) {
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
@@ -1046,30 +1048,30 @@ class Venda extends MY_Controller {
 				$produtos = $this -> venda_model ->getLista($idlista,$this -> session -> userdata('id'));// -> Pega todos os Itens da Lista
 				if ($tipo == 0) {
 					$cliente = $this -> usuario_model -> getCliente($idCliente, 0);
-					$data = array('cliente' => $cliente, 'total' => $total,'idlista'=>$idlista, 'produtos' => $produtos, 'id' => $id, 'valorMim' => $valorMim);
+					$data = array('cliente' => $cliente,'desconto'=>$desconto, 'total' => $total,'idlista'=>$idlista, 'produtos' => $produtos, 'id' => $id, 'valorMim' => $valorMim);
 					$this -> my_load_view('vendaRetorno', $data);
 				} else if ($tipo == 1) {
 					if ($idCliente != 0) {
 						$cliente = $this -> usuario_model -> getCliente($idCliente, 0);
-						$data = array('cliente' => $cliente,'idlista'=>$idlista, 'total' => $total, 'produtos' => $produtos);
+						$data = array('cliente' => $cliente,'desconto'=>$desconto,'idlista'=>$idlista, 'total' => $total, 'produtos' => $produtos);
 						$this -> my_load_view('vendaComum', $data);
 					} else {
-						$data = array('total' => $total,'idlista'=>$idlista, 'produtos' => $produtos);
+						$data = array('total' => $total,'desconto'=>$desconto,'idlista'=>$idlista, 'produtos' => $produtos);
 						$this -> my_load_view('vendaComum', $data);
 					}
 				} else if ($tipo == 2) {
 					if ($idCliente != 0) {
 						$cliente = $this -> usuario_model -> getCliente($idCliente, 0);
-						$data = array('cliente' => $cliente,'idlista'=>$idlista, 'total' => $total, 'produtos' => $produtos);
+						$data = array('cliente' => $cliente,'desconto'=>$desconto,'idlista'=>$idlista, 'total' => $total, 'produtos' => $produtos);
 						$this -> my_load_view('vendaConsig', $data);
 					} else {
-						$data = array('total' => $total,'idlista'=>$idlista, 'produtos' => $produtos);
+						$data = array('total' => $total,'desconto'=>$desconto,'idlista'=>$idlista, 'produtos' => $produtos);
 						$this -> my_load_view('vendaConsig', $data);
 					}
 				}
 			} else {
 				$produto = $this -> usuario_model -> getFoto(trim($idProduto));
-				$data = array('idCliente' => $idCliente, 'tipo' => $tipo, 'total' => $total, 'produto' => $produto, 'id' => $id, 'valorMim' => $valorMim,'idlista'=>$idlista);
+				$data = array('idCliente' => $idCliente, 'desconto'=>$desconto,'tipo' => $tipo, 'total' => $total, 'produto' => $produto, 'id' => $id, 'valorMim' => $valorMim,'idlista'=>$idlista);
 				$this -> my_load_view('vendaVerProduto', $data);
 			}
 		} else {

@@ -113,15 +113,15 @@ for($i=0;$i<count($produtos);$i++){
 								<a style="margin-left: 3%;" type="button" class="btn btn-info btn-sm" href="<?php
 									if (isset($cliente)) {
 										if(isset($idlista)){
-											echo site_url("venda/visualizaI/" . $produtos[$i]['id_produto'] . "/" . $total . "/0/" . $cliente[0]['id_cliente']."/".$id."/0/".$idlista);
+											echo site_url("venda/visualizaI/" . $produtos[$i]['id_produto'] . "/0/" . $total . "/0/" . $cliente[0]['id_cliente']."/".$id."/0/".$idlista);
 										}else{
-											echo site_url("venda/visualizaI/" . $produtos[$i]['id_produto'] . "/" . $total . "/0/" . $cliente[0]['id_cliente']."/".$id);
+											echo site_url("venda/visualizaI/" . $produtos[$i]['id_produto'] . "/0/" . $total . "/0/" . $cliente[0]['id_cliente']."/".$id);
 										}
 									}else{
 										if(isset($idlista)){
-										   echo site_url("venda/visualizaI/" . $produtos[$i]['id_produto'] . "/" . $total . "/0/0/".$id."/0/".$idlista);
+										   echo site_url("venda/visualizaI/" . $produtos[$i]['id_produto'] . "/0/" . $total . "/0/0/".$id."/0/".$idlista);
 										}else{
-											echo site_url("venda/visualizaI/" . $produtos[$i]['id_produto'] . "/" . $total . "/0/0/".$id);
+											echo site_url("venda/visualizaI/" . $produtos[$i]['id_produto'] . "/0/" . $total . "/0/0/".$id);
 										}
 									}?>">Ver Produto</a>
 								

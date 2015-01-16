@@ -56,9 +56,9 @@
 								}
 							?></label>
 								<a class="btn btn-default btn-xs" href="<?php if(isset($idlista)) {
-																				   echo site_url("venda/selCliente/-1/".$total."/0/".$idlista);
+																				   echo site_url("venda/selCliente/-1/".$desconto."/" .$total."/0/".$idlista);
 																				}else{
-																					echo site_url("venda/selCliente/-1/".$total."/0");
+																					echo site_url("venda/selCliente/-1/".$desconto."/" .$total."/0");
 																				}
 																		?>" style="margin-left: 6%;" role="button">Selecionar</a>
 							</div>
@@ -68,6 +68,8 @@
 					if (isset($cliente)) {
 						 if(isset($idlista)) {
 						 	 echo site_url("venda/novoitem/" . $total . "/0/" . $cliente[0]['id_cliente']. '/'.$idlista);
+						 }else{
+						 	echo site_url("venda/novoitem/" . $total . "/0/" . $cliente[0]['id_cliente']);
 						 }
 					} else if(isset($idlista)) {
 						 echo site_url("venda/novoitem/" . $total . '/0/-1/'.$idlista);
@@ -88,9 +90,9 @@
 										<label for="inputEmail3" class="col-sm-4 control-label">Desconto:</label>
 										<div class="col-sm-7">
 											<select name="desconto" class="form-control">
-												<option selected value="0">0</option>
-												<option value="40">40%</option>
-												<option value="50">50%</option>
+												<option <?php if($desconto==0) { ?> selected <?php } ?>  value="0">0</option>
+												<option <?php if($desconto==40) { ?> selected <?php } ?>  value="40">40%</option>
+												<option <?php if($desconto==50) { ?>  selected <?php } ?> value="50">50%</option>
 											</select>
 										</div>
 									</div>
@@ -131,31 +133,31 @@
 												<td style="text-align: center;"> <?php echo $produtos[$i]['valor_pago']; ?></td>
 												<td style="text-align: center;"><a type="button" class="btn btn-info btn-sm" href="<?php if (isset($cliente)) {
 																if(isset($idlista)){
-																	echo site_url("venda/deletaItem/" . $produtos[$i]['id_produto'] . "/" . $total . "/0/" . $cliente[0]['id_cliente'].'/'.$idlista);
+																	echo site_url("venda/deletaItem/" . $produtos[$i]['id_produto'] . "/".$desconto."/" . $total . "/0/" . $cliente[0]['id_cliente'].'/'.$idlista);
 																}else{
-																	echo site_url("venda/deletaItem/" . $produtos[$i]['id_produto'] . "/" . $total . "/0/" . $cliente[0]['id_cliente']);
+																	echo site_url("venda/deletaItem/" . $produtos[$i]['id_produto'] . "/" .$desconto."/" . $total . "/0/" . $cliente[0]['id_cliente']);
 																}
 															}else{
 																if(isset($idlista)){
-																	echo site_url("venda/deletaItem/" . $produtos[$i]['id_produto'] . "/" . $total.'/0/-1/'.$idlista);
+																	echo site_url("venda/deletaItem/" . $produtos[$i]['id_produto'] . "/".$desconto."/". $total.'/0/-1/'.$idlista);
 																}else{
-																    echo site_url("venda/deletaItem/" . $produtos[$i]['id_produto'] . "/" . $total);
+																    echo site_url("venda/deletaItem/" . $produtos[$i]['id_produto'] . "/" .$desconto."/" . $total);
 																 }
 															}?> " >Deletar </a>
 															
 															<a style="margin-left: 3%;" type="button" class="btn btn-info btn-sm" href="<?php
 																if (isset($cliente)) {
 																	if(isset($idlista)){
-																		echo site_url("venda/visualizaI/" . $produtos[$i]['id_produto'] . "/" . $total . "/1/" . $cliente[0]['id_cliente']."/0/0/".$idlista);
+																		echo site_url("venda/visualizaI/" . $produtos[$i]['id_produto'] . "/" .$desconto."/" . $total . "/1/" . $cliente[0]['id_cliente']."/0/0/".$idlista);
 																	}else{
-																		echo site_url("venda/visualizaI/" . $produtos[$i]['id_produto'] . "/" . $total . "/1/" . $cliente[0]['id_cliente']);
+																		echo site_url("venda/visualizaI/" . $produtos[$i]['id_produto'] . "/" .$desconto."/" . $total . "/1/" . $cliente[0]['id_cliente']);
 																	}
 																}else{
 																	
 																	if(isset($idlista)){
-																	   echo site_url("venda/visualizaI/" . $produtos[$i]['id_produto'] . "/" . $total . "/1/0/0/0/".$idlista);
+																	   echo site_url("venda/visualizaI/" . $produtos[$i]['id_produto'] . "/".$desconto."/"  . $total . "/1/0/0/0/".$idlista);
 																	}else{
-																		echo site_url("venda/visualizaI/" . $produtos[$i]['id_produto'] . "/" . $total . "/1");
+																		echo site_url("venda/visualizaI/" . $produtos[$i]['id_produto'] . "/".$desconto."/"  . $total . "/1");
 																	}
 																}?>">Ver Produto</a> </td>
 										 	</tr>

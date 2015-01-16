@@ -55,9 +55,9 @@
 							}
 							?></label>
 							<a class="btn btn-default btn-xs" href="<?php if(isset($idlista)) {
-																				   echo site_url("venda/selCliente/-1/".$total."/1/".$idlista);
+																				   echo site_url("venda/selCliente/-1/0/".$total."/1/".$idlista);
 																				}else{
-																					echo site_url("venda/selCliente/-1/".$total."/1");
+																					echo site_url("venda/selCliente/-1/0/".$total."/1");
 																				}?>" style="margin-left: 6%;" role="button">Selecionar</a>
 							<input type="text" class="form-control" id="id" <?php
 							if (isset($cliente)) { echo "value=\"" . $cliente[0]['id_cliente'] . "\"";
@@ -71,6 +71,8 @@
 				if (isset($cliente)) {
 						 if(isset($idlista)) {
 						 	 echo site_url("venda/novoitem/" . $total . "/1/" . $cliente[0]['id_cliente']. '/'.$idlista);
+						 }else{
+						 	echo site_url("venda/novoitem/" . $total . "/1/" . $cliente[0]['id_cliente']);
 						 }
 					} else if(isset($idlista)) {
 						 echo site_url("venda/novoitem/" . $total . '/1/-1/'.$idlista);
@@ -135,30 +137,30 @@
 									<td style="text-align: center;"> <a type="button" class="btn btn-info btn-sm" href="<?php
 									if (isset($cliente)) {
 										if(isset($idlista)){
-											echo site_url("venda/deletaItem/" . $produtos[$i]['id_produto'] . "/" . $total . "/1/" . $cliente[0]['id_cliente'].'/'.$idlista);
+											echo site_url("venda/deletaItem/" . $produtos[$i]['id_produto'] . "/0/" . $total . "/1/" . $cliente[0]['id_cliente'].'/'.$idlista);
 										}else{
-											echo site_url("venda/deletaItem/" . $produtos[$i]['id_produto'] . "/" . $total . "/1/" . $cliente[0]['id_cliente']);
+											echo site_url("venda/deletaItem/" . $produtos[$i]['id_produto'] . "/0/" . $total . "/1/" . $cliente[0]['id_cliente']);
 										}
 									}else{
 										if(isset($idlista)){
-											echo site_url("venda/deletaItem/" . $produtos[$i]['id_produto'] . "/" . $total.'/1/-1/'.$idlista);
+											echo site_url("venda/deletaItem/" . $produtos[$i]['id_produto'] . "/0/" . $total.'/1/-1/'.$idlista);
 										}else{
-										    echo site_url("venda/deletaItem/" . $produtos[$i]['id_produto'] . "/" . $total."/1");
+										    echo site_url("venda/deletaItem/" . $produtos[$i]['id_produto'] . "/0/" . $total."/1");
 										 }
 									}
 									?>">Deletar</a><a style="margin-left: 3%;" type="button" class="btn btn-info btn-sm" href="<?php
 									if (isset($cliente)) {
 										if(isset($idlista)){
-											echo site_url("venda/visualizaI/" . $produtos[$i]['id_produto'] . "/" . $total . "/2/" . $cliente[0]['id_cliente']."/0/0/".$idlista);
+											echo site_url("venda/visualizaI/" . $produtos[$i]['id_produto'] . "/0/" . $total . "/2/" . $cliente[0]['id_cliente']."/0/0/".$idlista);
 										}else{
-											echo site_url("venda/visualizaI/" . $produtos[$i]['id_produto'] . "/" . $total . "/2/" . $cliente[0]['id_cliente']);
+											echo site_url("venda/visualizaI/" . $produtos[$i]['id_produto'] . "/0/" . $total . "/2/" . $cliente[0]['id_cliente']);
 										}
 									}else{
 										
 										if(isset($idlista)){
-										   echo site_url("venda/visualizaI/" . $produtos[$i]['id_produto'] . "/" . $total . "/2/0/0/0/".$idlista);
+										   echo site_url("venda/visualizaI/" . $produtos[$i]['id_produto'] . "/0/" . $total . "/2/0/0/0/".$idlista);
 										}else{
-											echo site_url("venda/visualizaI/" . $produtos[$i]['id_produto'] . "/" . $total . "/2");
+											echo site_url("venda/visualizaI/" . $produtos[$i]['id_produto'] . "/0/" . $total . "/2");
 										}
 									}
 									?>">Ver Produto</a>

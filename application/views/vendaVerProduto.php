@@ -29,7 +29,11 @@
 					<div class="col-md-6 col-md-offset-3" align="center">
 						<ul class="pager">
 							<li>
-								<a type="button" href="<?php echo site_url("venda/visualizaI/-1/" . $total . "/" . $tipo . "/" . $idCliente . "/" . $id."/".$valorMim."/".$idlista); ?>">Voltar</a>
+								<a type="button" href="<?php if(isset($desconto)){
+															    echo site_url("venda/visualizaI/-1/" .$desconto."/". $total . "/" . $tipo . "/" . $idCliente . "/" . $id."/".$valorMim."/".$idlista);
+															    }else{
+															    	echo site_url("venda/visualizaI/-1/0/". $total . "/" . $tipo . "/" . $idCliente . "/" . $id."/".$valorMim."/".$idlista);
+															    } ?>">Voltar</a>
 							</li>
 						</ul>
 					</div>
