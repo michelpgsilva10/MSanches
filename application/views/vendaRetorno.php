@@ -47,12 +47,12 @@
 				<?php } ?>
 				<br />
 				<form class="form-inline" name="formV" method="post" role="form" action="<?php
-				echo site_url("venda/verificaItem/" . $total . "/" . $cliente[0]['id_cliente']."/".$id."/".$valorMim);
+				echo site_url("venda/verificaItem/" . $total . "/" . $cliente[0]['id_cliente']."/".$id."/".$idlista);
 				?>">
 					<div class="row">
 						<div class="col-md-7 col-md-offset-3" align="center">
 							<div class="form-group">
-								<label for="inputEmail3" control-label" >Cliente: <?php
+								<label for="inputEmail3" class="control-label" >Cliente: <?php
 								if (isset($cliente)) { echo $cliente[0]['nome_cliente'];
 								} else { echo "Não Selecionado";
 								}
@@ -93,28 +93,43 @@
 								<?php 
 for($i=0;$i<count($produtos);$i++){
 ?>
-<tr <?php if($produtos[$i]->tipo_produto==1){?> class="success" <?php } ?>>
-	<td style="text-align: center;"> <?php echo $i+1; ?> </td>
-								<td style="text-align: center;"> <?php echo $produtos[$i]->	cod_barra_produto ?>
-								 <?php if($produtos[$i]->tipo_produto==1){ ?>
+<tr <?php if($produtos[$i]['quantidade_D']!=0){?> class="success" <?php } ?>>
+	                            <td style="text-align: center;"> <?php echo $i+1; ?> </td>
+								<td style="text-align: center;"> <?php echo $produtos[$i]['codbarras'];?>
+								 <?php if($produtos[$i]['quantidade_D']!=0){ ?>
 								 	<span class="glyphicon glyphicon-ok form-control-feedback"></span>
 								 <?php } ?>
 								</td>
-								<td style="text-align: center;"> <?php echo $produtos[$i]->	estoque_produto ?>
+								<td style="text-align: center;"> <?php echo $produtos[$i]['quantidade']; ?>
 								</td>
-								<td style="text-align: center;"> <?php echo $produtos[$i]->	modelo_produto ?>
+								<td style="text-align: center;"> <?php echo $produtos[$i]['quantidade_D']; ?>
 								</td>
-								<td style="text-align: center;"> <?php echo $produtos[$i]->	del_produto ?>%
+								<td style="text-align: center;"> <?php echo $produtos[$i]['desconto']; ?>%
 								</td>
-								<td style="text-align: center;"> <?php echo ($produtos[$i]->valor_produto*100/(100-$produtos[$i]->	del_produto)) ?>
+								<td style="text-align: center;"> <?php echo $produtos[$i]['valor_uni']; ?>
 								</td>
-								<td style="text-align: center;"> <?php echo $produtos[$i]->valor_produto*($produtos[$i]->estoque_produto-$produtos[$i]->modelo_produto) ?></td>
-								<td style="text-align: center;"> <a type="button" class="btn btn-info btn-sm" href="<?php
-								echo site_url("venda/visualizaI/" . $produtos[$i]->id_produto . "/" . $total . "/0/" . $cliente[0]['id_cliente']."/".$id."/".$valorMim);
-								?>">Ver Produto</a><?php if($produtos[$i]->tipo_produto==1){ ?> <a type="button" class="btn btn-info btn-sm" href="<?php
-								echo site_url("venda/voltarCom/" .$i. "/" . $total . "/" . $cliente[0]['id_cliente']."/".$id."/".$valorMim);
-								?>">Desfazer Ação</a><?php } ?>
+								<td style="text-align: center;"> <?php echo $produtos[$i]['valor_pago']; ?></td>
+								<td style="text-align: center;"> 
+								<a style="margin-left: 3%;" type="button" class="btn btn-info btn-sm" href="<?php
+									if (isset($cliente)) {
+										if(isset($idlista)){
+											echo site_url("venda/visualizaI/" . $produtos[$i]['id_produto'] . "/0/" . $total . "/0/" . $cliente[0]['id_cliente']."/".$id."/0/".$idlista);
+										}else{
+											echo site_url("venda/visualizaI/" . $produtos[$i]['id_produto'] . "/0/" . $total . "/0/" . $cliente[0]['id_cliente']."/".$id);
+										}
+									}else{
+										if(isset($idlista)){
+										   echo site_url("venda/visualizaI/" . $produtos[$i]['id_produto'] . "/0/" . $total . "/0/0/".$id."/0/".$idlista);
+										}else{
+											echo site_url("venda/visualizaI/" . $produtos[$i]['id_produto'] . "/0/" . $total . "/0/0/".$id);
+										}
+									}?>">Ver Produto</a>
 								
+								<?php if($produtos[$i]['quantidade_D']!=0){ ?> 
+									
+									<a type="button" class="btn btn-info btn-sm" href="<?php
+											echo site_url("venda/voltarCom/" .$produtos[$i]['id_produto']. "/" . $total . "/" . $cliente[0]['id_cliente']."/".$id."/".$idlista);
+										?>">Desfazer Ação</a><?php } ?>
 								<?php }  ?>
 								
 							</tbody>
@@ -131,11 +146,11 @@ for($i=0;$i<count($produtos);$i++){
 					<div class="col-md-6 col-md-offset-3" align="center">
 						<ul class="pager">
 							<li>
-								<a type="button" href="<?php echo site_url("venda/sair/1")?>">Sair</a>
+								<a type="button" href="<?php echo site_url("venda/sair/1/".$idlista)?>">Sair</a>
 							</li>
 							<li>
 								<a type="button" href="<?php
-								echo site_url("venda/finalizarRetorno/" . $total . "/" . $cliente[0]['id_cliente']."/".$id);?>">Finalizar</a>
+								echo site_url("venda/finalizarRetorno/" . $total . "/" . $cliente[0]['id_cliente']."/".$id."/".$idlista);?>">Finalizar</a>
 							</li>
 						</ul>
 					</div>
