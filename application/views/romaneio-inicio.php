@@ -137,10 +137,9 @@ if ($vendas) {
 			$pdf -> Cell(5.55, 0.8, $vendas[$i - 3]['cod_barra_produto'], 1, 0, 'C');
 			$pdf -> Cell(5.6, 0.8, $vendas[$i - 2]['cod_barra_produto'], 1, 0, 'C');
 			$pdf -> Cell(5.55, 0.8, $vendas[$i - 1]['cod_barra_produto'], 1, 1, 'C');
-		} else if(count($vendas) - $i < 3){
-			if ($fotos_fim < count($vendas) - $i)
-				$fotos_fim = count($vendas) - $i;
-		}
+			
+			$fotos_fim = count($vendas) - $i;
+		}		
 		
 		if ($i % 12 == 0) {
 			$pdf -> AddPage();
@@ -148,7 +147,7 @@ if ($vendas) {
 		}	
 	}	
 	
-	if ($fotos_fim == 1) {
+	if ($fotos_fim == 2) {
 		$pdf -> Cell(5.55, 0.5, '', 0, 0, 'L');
 		$pdf -> Cell(5.6, 0.5, '', 0, 0, 'L');
 		$pdf -> Cell(5.55, 0.5, '', 0, 1, 'L');
@@ -159,8 +158,10 @@ if ($vendas) {
 		
 		$pdf -> Cell(5.55, 0.8, $vendas[count($vendas) - 2]['cod_barra_produto'], 1, 0, 'C');
 		$pdf -> Cell(5.55, 0.8, $vendas[count($vendas) - 1]['cod_barra_produto'], 1, 0, 'C');
-		$pdf -> Cell(5.55, 0.8, '', 1, 1, 'C');
-	} else if ($fotos_fim == 2) {
+		$pdf -> Cell(5.55, 0.8, '', 0, 0, 'C');
+	} 
+	
+	if ($fotos_fim == 1) {
 		$pdf -> Cell(5.55, 0.5, '', 0, 0, 'L');
 		$pdf -> Cell(5.6, 0.5, '', 0, 0, 'L');
 		$pdf -> Cell(5.55, 0.5, '', 0, 1, 'L');
