@@ -4,7 +4,7 @@
 			<div class="col-md-9 col-md-push-3">
 				<div class="container-fluid">
 					<div  class="panel panel-default">
-						<div class="row" style="margin-top: 20px; width: 100%; padding-left: 7%">
+						<div class="row" style="margin-top: 20px; width: 100%; padding-left: 7%;">
 							<div class="list-group teste">								
 								<?php 
 									if($detalhes_compra) {
@@ -35,8 +35,8 @@
 									<div style="float: left; width: 20%" align="center">
 										<h4 class="text-primary">Subtotal</h4>
 									</div>
-								</div>
-								
+								</div>	
+								<div class="scroll-tabela">							
 								<?php
 									
 										for ($i = 0; $i < count($detalhes_compra); $i++) {
@@ -71,6 +71,7 @@
 								
 								<?php
 										 }
+										 echo '</div>';
 									} else {									
 								?>
 																
@@ -94,6 +95,7 @@
 										<h4 class="text-primary">Subtotal</h4>
 									</div>
 								</div>
+								<div class="scroll-tabela">
 								
 								<?php
 									for ($i = 0; $i < count($detalhes_compra); $i++) {
@@ -144,6 +146,7 @@
 								</div>
 								<?php
 										}
+										echo '</div>';
 									}
 								?>
 								

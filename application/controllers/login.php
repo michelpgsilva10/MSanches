@@ -8,9 +8,11 @@ class Login extends MY_Controller {
 	}
 
 	public function index() {
+		
 		$this -> form_validation -> set_rules('login', 'Login', 'required|xss_clean');
 		$this -> form_validation -> set_rules('password', 'Senha', 'required|xss_clean');
 		if ($this -> form_validation -> run() == FALSE) {
+			$this -> session -> sess_destroy();
 			$this -> form_validation -> set_error_delimiters('<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">×</button>', '</div>');
 			$this -> my_load_view('login', NULL);
 		} else {
@@ -28,6 +30,7 @@ class Login extends MY_Controller {
 				$this -> usuario_model -> logs( $aux ->ID_USER,0);
 				redirect('home');
 			} else {
+				$this -> session -> sess_destroy();
 				$data["mensagem"] = "Senha ou Email Incorretos, Tente Novamente";
 				$this -> my_load_view('login', $data);
 			}

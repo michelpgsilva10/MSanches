@@ -38,5 +38,6 @@ a.button:hover {
 <a href="<?php echo site_url("produtos")?>" class="button blue">Produtos</a><br/>
 <a href="<?php echo site_url("venda")?>" class="button green">Vendas</a><br/>
 <a href="<?php echo site_url("cliente")?>" class="button red">Clientes</a><br/>
+<a href="<?php echo site_url("empresa")?>" class="button orange">Empresas</a><br/>
 
 </div>

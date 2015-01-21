@@ -65,3 +65,13 @@
 	font-size: 20px;
 	color: #428BCA;	
 }
+
+.scroll-tabela {
+	border: 1.75px solid #428BCA;
+	border-top: 2.5px solid #428BCA;
+	width: 100%; 
+	height: 400px; 
+	overflow-y: scroll; 
+	overflow-x: hidden; 
+	border-radius: 5px;
+}
