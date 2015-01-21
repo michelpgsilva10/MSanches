@@ -1,11 +1,12 @@
 <?php
 
-Class Venda_model  extends CI_Model {
+Class Balanco_model  extends CI_Model {
+		
 	function getExID($iduser) {
 		$this -> db -> select_max('id_lista');
 		$this -> db -> from('venda_lista');
 		$this -> db -> where("id_user", $iduser);
-		$this -> db -> where('tipo_lista !=', 2);
+		$this -> db -> where('tipo_lista', 2);
 		$query = $this -> db -> get();
 		if ($query -> num_rows() > 0) {
 			return $query -> row();
@@ -19,7 +20,7 @@ Class Venda_model  extends CI_Model {
 		$this -> db -> from('venda_lista');
 		$this -> db -> where('id_lista', $idlista);
 		$this -> db -> where('id_user', $iduser);
-		$this -> db -> where('tipo_lista !=', 2);
+		$this -> db -> where('tipo_lista', 2);
 		$this -> db -> order_by("codbarras", "ASC");
 		$query = $this -> db -> get();
 		if ($query -> num_rows() > 0) {
@@ -34,7 +35,7 @@ Class Venda_model  extends CI_Model {
 		$this -> db -> from('venda_lista');
 		$this -> db -> where('id_lista', $idlista);
 		$this -> db -> where('id_user', $iduser);
-		$this -> db -> where('tipo_lista !=', 2);
+		$this -> db -> where('tipo_lista', 2);
 		$query = $this -> db -> get();
 		if ($query -> num_rows() > 0) {
 			return $query -> row();
@@ -51,27 +52,27 @@ Class Venda_model  extends CI_Model {
 	}
 	
 	public function updateItem($idProduto,$idlista,$iduser,$data) {
-		$this -> db ->where('id_produto', $idProduto);
+		$this -> db -> where('id_produto', $idProduto);
 		$this -> db -> where('id_lista', $idlista);
 		$this -> db -> where('id_user', $iduser);
-		$this -> db -> where('tipo_lista !=', 2);
-		$this -> db ->update('venda_lista', $data);
+		$this -> db -> where('tipo_lista', 2);
+		$this -> db -> update('venda_lista', $data);
 		return $this -> db -> affected_rows();
 	}
 	
 	public function deleteItem($idProduto,$idlista,$iduser) {
-		$this -> db ->where('id_produto', $idProduto);
+		$this -> db -> where('id_produto', $idProduto);
 		$this -> db -> where('id_lista', $idlista);
 		$this -> db -> where('id_user', $iduser);
-		$this -> db -> where('tipo_lista !=', 2);
-		$this -> db ->delete('venda_lista');
+		$this -> db -> where('tipo_lista', 2);
+		$this -> db -> delete('venda_lista');
 		return $this -> db -> affected_rows();
 	}
 	
 	public function deleteLista($idlista,$iduser) {
 		$this -> db -> where('id_lista', $idlista);
 		$this -> db -> where('id_user', $iduser);
-		$this -> db -> where('tipo_lista !=', 2);
+		$this -> db -> where('tipo_lista', 2);
 		$this -> db ->delete('venda_lista');
 		return $this -> db -> affected_rows();
 	}
@@ -79,10 +80,10 @@ Class Venda_model  extends CI_Model {
 	public function verificaItem($idProduto,$idlista,$iduser) {
 		$this -> db -> select('quantidade,desconto,quantidade_D');	
 		$this -> db -> from('venda_lista');
-		$this -> db ->where('id_produto', $idProduto);
+		$this -> db -> where('id_produto', $idProduto);
 		$this -> db -> where('id_lista', $idlista);
 		$this -> db -> where('id_user', $iduser);
-		$this -> db -> where('tipo_lista !=', 2);
+		$this -> db -> where('tipo_lista', 2);
 		$query = $this -> db -> get();
 		if ($query -> num_rows() > 0) {
 			return $query -> row();
