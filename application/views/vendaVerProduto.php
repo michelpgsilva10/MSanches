@@ -29,10 +29,15 @@
 					<div class="col-md-6 col-md-offset-3" align="center">
 						<ul class="pager">
 							<li>
-								<a type="button" href="<?php if(isset($desconto)){
-															    echo site_url("venda/visualizaI/-1/" .$desconto."/". $total . "/" . $tipo . "/" . $idCliente . "/" . $id."/".$valorMim."/".$idlista);
-															    }else{
-															    	echo site_url("venda/visualizaI/-1/0/". $total . "/" . $tipo . "/" . $idCliente . "/" . $id."/".$valorMim."/".$idlista);
+								<a type="button" href="<?php if($tipo!=4){
+																	if(isset($desconto)){
+																	    echo site_url("venda/visualizaI/-1/" .$desconto."/". $total . "/" . $tipo . "/" . $idCliente . "/" . $id."/".$valorMim."/".$idlista);
+																    }else{
+																    	echo site_url("venda/visualizaI/-1/0/". $total . "/" . $tipo . "/" . $idCliente . "/" . $id."/".$valorMim."/".$idlista);
+																	}
+																}else{
+																	echo site_url("empresa/visualizaI/-1/".$idlista);
+																	
 															    } ?>">Voltar</a>
 							</li>
 						</ul>
