@@ -6,7 +6,7 @@ class Produtos extends MY_Controller {
 		$this -> load -> library('session');
 	}
 
-	public function index() {
+	public function index() {//----------------------------------OK
 		$this -> load -> library('pagination');
 		$datestring = "%m%d";
 		$time = time();
@@ -38,7 +38,7 @@ class Produtos extends MY_Controller {
 		}
 	}
 
-	public function pagina($inicio = 0, $tipo = 0,$maior = 0, $menor = 0,$quali = 0) {
+	public function pagina($inicio = 0, $tipo = 0,$maior = 0, $menor = 0,$quali = 0) {//------------------------Ok
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
@@ -81,7 +81,7 @@ class Produtos extends MY_Controller {
 		}
 	}
 
-	public function Deletar($foto, $id, $code) {
+	public function Deletar($foto, $id, $code) {//----------------------OK
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
@@ -95,7 +95,7 @@ class Produtos extends MY_Controller {
 		}
 	}
 
-	public function alterar($id) {
+	public function alterar($id) {//----------------------OK 
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
@@ -159,9 +159,12 @@ class Produtos extends MY_Controller {
 					$code = $tipo . $model . $valor;
 					$nome = $produto -> foto_produto;
 					$detalhe = $this -> input -> post('detalhe', TRUE);
-					$quantidade = $this -> input -> post('quant', TRUE);
+                                        $data2 = array(
+                                            'quantidade' => $this -> input -> post('quant', TRUE)
+                                        );
+                                        $this -> usuario_model -> updateItemnovo($id,$this -> session -> userdata('nivel'),$data2);
 					$todos = $this -> usuario_model -> logs($this -> session -> userdata('id'), 3, $code);
-					$this -> usuario_model -> updateProduto($id, $tipo, $valor, $quantidade, $model, $nome, $code,$detalhe);
+					$this -> usuario_model -> updateProduto($id, $tipo, $valor, $model, $nome, $code,$detalhe);
 					redirect('produtos/perEtiqueta/' . $code);
 				}
 			} else {
@@ -177,7 +180,7 @@ class Produtos extends MY_Controller {
 
 	}
 
-	public function busca2($code,$tipo=0) {
+	public function busca2($code,$tipo=0) {///------------------OK
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
@@ -196,7 +199,7 @@ class Produtos extends MY_Controller {
 		}
 	}
 
-	public function busca() {
+	public function busca() {//-----------------------OK
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
@@ -220,7 +223,7 @@ class Produtos extends MY_Controller {
 		}
 	}
 
-	public function novo() {
+	public function novo() {///----------------------------OK
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
@@ -236,7 +239,7 @@ class Produtos extends MY_Controller {
 		}
 	}
 
-	public function etiquetas() {
+	public function etiquetas() {///--------------------------OK
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
@@ -247,19 +250,32 @@ class Produtos extends MY_Controller {
 		}
 	}
 
-	public function estoque() {
+	public function estoque() {//A Arrumar
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
-			$data = array('brinco' => $this -> usuario_model -> getQantidade(3) -> id, 'anel' => $this -> usuario_model -> getQantidade(1) -> id, 'colar' => $this -> usuario_model -> getQantidade(4) -> id, 'pulceira' => $this -> usuario_model -> getQantidade(6) -> id, 'bracelete' => $this -> usuario_model -> getQantidade(2) -> id, 'conjunto' => $this -> usuario_model -> getQantidade(5) -> id, 'tornozeleira' => $this -> usuario_model -> getQantidade(7) -> id, 'brinco2' => $this -> usuario_model -> getQantidadeItem(3) -> total, 'anel2' => $this -> usuario_model -> getQantidadeItem(1) -> total, 'colar2' => $this -> usuario_model -> getQantidadeItem(4) -> total, 'pulceira2' => $this -> usuario_model -> getQantidadeItem(6) -> total, 'bracelete2' => $this -> usuario_model -> getQantidadeItem(2) -> total, 'conjunto2' => $this -> usuario_model -> getQantidadeItem(5) -> total, 'tornozeleira2' => $this -> usuario_model -> getQantidadeItem(7) -> total);
+			$data = array('brinco' => $this -> usuario_model -> getQantidade(3) -> id,
+                                      'anel' => $this -> usuario_model -> getQantidade(1) -> id, 
+                                      'colar' => $this -> usuario_model -> getQantidade(4) -> id, 
+                                      'pulceira' => $this -> usuario_model -> getQantidade(6) -> id, 
+                                      'bracelete' => $this -> usuario_model -> getQantidade(2) -> id, 
+                                      'conjunto' => $this -> usuario_model -> getQantidade(5) -> id, 
+                                      'tornozeleira' => $this -> usuario_model -> getQantidade(7) -> id, 
+                                      'brinco2' => $this -> usuario_model -> getQantidadeItem(3,$this -> session -> userdata('nivel')) -> total, 
+                                      'anel2' => $this -> usuario_model -> getQantidadeItem(1,$this -> session -> userdata('nivel')) -> total, 
+                                      'colar2' => $this -> usuario_model -> getQantidadeItem(4,$this -> session -> userdata('nivel')) -> total, 
+                                      'pulceira2' => $this -> usuario_model -> getQantidadeItem(6,$this -> session -> userdata('nivel')) -> total, 
+                                      'bracelete2' => $this -> usuario_model -> getQantidadeItem(2,$this -> session -> userdata('nivel')) -> total, 
+                                      'conjunto2' => $this -> usuario_model -> getQantidadeItem(5,$this -> session -> userdata('nivel')) -> total, 
+                                      'tornozeleira2' => $this -> usuario_model -> getQantidadeItem(7,$this -> session -> userdata('nivel')) -> total);
 			$this -> my_load_view('estoque', $data);
 		} else {
 			redirect('login');
 		}
 	}
 
-	public function uloadFA() {
+	public function uloadFA() {//---------OK
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
@@ -285,7 +301,7 @@ class Produtos extends MY_Controller {
 		}
 	}
 
-	public function perEtiqueta($code) {
+	public function perEtiqueta($code) {//---------------------OK
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
@@ -297,7 +313,7 @@ class Produtos extends MY_Controller {
 		}
 	}
 
-	public function alteraFoto($id) {
+	public function alteraFoto($id) {///-----------------OK
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
@@ -309,7 +325,7 @@ class Produtos extends MY_Controller {
 		}
 	}
 
-	public function novaFoto() {
+	public function novaFoto() {//-----------------Ok
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
@@ -383,7 +399,7 @@ class Produtos extends MY_Controller {
 		}
 	}
 
-	public function uloadF() {
+	public function uloadF() {//-------OK
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');

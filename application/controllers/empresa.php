@@ -146,15 +146,15 @@ class Empresa extends MY_Controller {
 			   
 			   if($this -> balanco_model ->deleteItem($idProduto,$idlista,$this -> session -> userdata('id'))){
 			   	 $produto = $this -> usuario_model -> getProduto($idProduto,0);// -> Pega o Produto
-			     $total = $this -> balanco_model ->getValor(1,$this -> session -> userdata('id'))->valor_pago;// -> Pega o Valor Total da somatoria dos Valores pago
-				 $produtos = $this -> balanco_model ->getLista(1,$this -> session -> userdata('id'));// -> Pega todos os Itens da Lista
+			     $total = $this -> balanco_model ->getValor($idlista,$this -> session -> userdata('id'))->valor_pago;// -> Pega o Valor Total da somatoria dos Valores pago
+				 $produtos = $this -> balanco_model ->getLista($idlista,$this -> session -> userdata('id'));// -> Pega todos os Itens da Lista
 			   	 $data = array('total' => $total,'produtos' => $produtos,'idlista'=>$idlista,'mensagemC' => "Foi Deletado o item: " . $produto -> cod_barra_produto);
 				 $this -> my_load_view('balanco', $data);
 				 
 			   }else{
-			   	 $total = $this -> balanco_model ->getValor(1,$this -> session -> userdata('id'))->valor_pago;// -> Pega o Valor Total da somatoria dos Valores pago
-				 $produtos = $this -> balanco_model ->getLista(1,$this -> session -> userdata('id'));// -> Pega todos os Itens da Lista
-			   	 $data = array('total' => $total,'produtos' => $produtos,'idlista'=>$idlista,'mensagem' => "Produto não Encontrado");
+			   	 $total = $this -> balanco_model ->getValor($idlista,$this -> session -> userdata('id'))->valor_pago;// -> Pega o Valor Total da somatoria dos Valores pago
+				 $produtos = $this -> balanco_model ->getLista($idlista,$this -> session -> userdata('id'));// -> Pega todos os Itens da Lista
+			   	 $data = array('total' => $total,'produtos' => $produtos,'idlista'=>$idlista,'mensagem' => "Erro ao Deletar o produto");
 				 $this -> my_load_view('balanco', $data);
 			   }
 			   
@@ -174,12 +174,93 @@ class Empresa extends MY_Controller {
 			   	$data = array('tipo' => 4,'produto' => $produto,'idlista'=>$idlista);
 				$this -> my_load_view('vendaVerProduto', $data);
 			}else{
-				$produtos = $this -> balanco_model ->getLista($idlista,$this -> session -> userdata('id'));// -> Pega todos os Itens da Lista
-			    $total = $this -> balanco_model ->getValor($idlista,$this -> session -> userdata('id'))->valor_pago;// -> Pega o Valor Total da somatoria dos Valores pago
-				$data = array('total' => $total,'produtos' => $produtos,'idlista'=>$idlista);
-				$this -> my_load_view('balanco', $data);
+                           $produtos = $this -> balanco_model ->getLista($idlista,$this -> session -> userdata('id'));// -> Pega todos os Itens da Lista
+			   $total = $this -> balanco_model ->getValor($idlista,$this -> session -> userdata('id'))->valor_pago;// -> Pega o Valor Total da somatoria dos Valores pago
+                           $data = array('total' => $total,'produtos' => $produtos,'idlista'=>$idlista);
+                           $this -> my_load_view('balanco', $data);
 			}
 			
+		} else {
+			redirect('login');
+		}
+	}
+        public function finalizaBalancao($idlista=-1)
+	{
+		$datestring = "%m%d";
+		$time = time();
+		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
+		if ($this -> session -> userdata('load') == $load) {		
+		  if($idlista!=-1){
+                      $total = $this -> balanco_model ->getValor($idlista,$this -> session -> userdata('id'))->valor_pago;// -> Pega o Valor Total da somatoria dos Valores pago
+                      if($total != FALSE){
+                          $this->load->model('usuario_model');
+                          $verifica =-1;
+                          $idVenda = $this -> usuario_model -> setVenda($this -> session -> userdata('nivel'), $total,4);
+                          $produtos = $this -> balanco_model ->getLista($idlista,$this -> session -> userdata('id'));// -> Pega todos os Itens da Lista
+                          for($i=0;$i<count($produtos);$i++){
+                             $produto = $this -> balanco_model ->getProduto($this -> session -> userdata('nivel'),$produtos[$i]['id_produto']) ;
+                              if($produto==FALSE){ 
+                                $data = array(
+                                    'quantidade' => $produtos[$i]['quantidade'],
+                                    'loja_fk' => $this -> session -> userdata('nivel'),
+                                    'produto_fk' => $produtos[$i]['id_produto']
+                                );
+                                if(!$this -> balanco_model ->setitemnovo($data)){
+                                    $verifica=1;
+                                    break;
+                                }else{
+                                    $this -> usuario_model -> setCompra($this -> session -> userdata('nivel'), $produtos[$i]['quantidade'], $produtos[$i]['id_produto'], $idVenda, $produtos[$i]['desconto']);
+                                    if(!$this -> balanco_model ->deleteItem($produtos[$i]['id_produto'],$idlista,$this -> session -> userdata('id'))){
+                                      $verifica=3;
+                                    } 
+                                }
+                             }else{
+                                $data = array(
+                                    'quantidade' => $produtos[$i]['quantidade'] + $produto->quantidade
+                                ); 
+                                if(!$this -> balanco_model ->updateItemnovo($produtos[$i]['id_produto'],$this -> session -> userdata('nivel'),$data)){
+                                    $verifica=2;
+                                    break;
+                                }else{
+                                  $this -> usuario_model -> setCompra($this -> session -> userdata('nivel'), $produtos[$i]['quantidade'], $produtos[$i]['id_produto'], $idVenda, $produtos[$i]['desconto']);
+                                  if(!$this -> balanco_model ->deleteItem($produtos[$i]['id_produto'],$idlista,$this -> session -> userdata('id'))){
+                                      $verifica=3;
+                                  }  
+                                }
+                                 
+                            }
+                          }
+                          if($verifica==-1){
+                              redirect('home');
+                          }else if($verifica==1){
+                              $produtos = $this -> balanco_model ->getLista($idlista,$this -> session -> userdata('id'));// -> Pega todos os Itens da Lista
+                              $total = $this -> balanco_model ->getValor($idlista,$this -> session -> userdata('id'))->valor_pago;// -> Pega o Valor Total da somatoria dos Valores pago
+                              $data = array('total' => $total,'produtos' => $produtos,'idlista'=>$idlista,'menssagen'=>"Erro ao inserir novo item na loja");
+                              $this -> my_load_view('balanco', $data);
+                          }else if($verifica==2){
+                               $produtos = $this -> balanco_model ->getLista($idlista,$this -> session -> userdata('id'));// -> Pega todos os Itens da Lista
+                              $total = $this -> balanco_model ->getValor($idlista,$this -> session -> userdata('id'))->valor_pago;// -> Pega o Valor Total da somatoria dos Valores pago
+                              $data = array('total' => $total,'produtos' => $produtos,'idlista'=>$idlista,'menssagen'=>"Erro ao fazer Update do item na loja");
+                              $this -> my_load_view('balanco', $data);
+                          }else if($verifica==3){
+                                $total = $this -> balanco_model ->getValor($idlista,$this -> session -> userdata('id'))->valor_pago;// -> Pega o Valor Total da somatoria dos Valores pago
+                                $produtos = $this -> balanco_model ->getLista($idlista,$this -> session -> userdata('id'));// -> Pega todos os Itens da Lista
+                                $data = array('total' => $total,'produtos' => $produtos,'idlista'=>$idlista,'mensagem' => "Erro ao Deletar o produto");
+                                $this -> my_load_view('balanco', $data);
+                          }else{
+                             $produtos = $this -> balanco_model ->getLista($idlista,$this -> session -> userdata('id'));// -> Pega todos os Itens da Lista
+                              $total = $this -> balanco_model ->getValor($idlista,$this -> session -> userdata('id'))->valor_pago;// -> Pega o Valor Total da somatoria dos Valores pago
+                              $data = array('total' => $total,'produtos' => $produtos,'idlista'=>$idlista,'menssagen'=>"Erro ao Efetuar a verificação");
+                              $this -> my_load_view('balanco', $data); 
+                          }
+                      }else{
+                          $data = array('total' => 0,'idlista'=>-1,'menssagen'=>"Nem um Produto Selecionado");
+                          $this -> my_load_view('balanco', $data);
+                      }
+                  }else{
+                       $data = array('total' => 0,'idlista'=>-1,'menssagen'=>"Nem um Produto Selecionado");
+                       $this -> my_load_view('balanco', $data);
+                  }
 		} else {
 			redirect('login');
 		}
