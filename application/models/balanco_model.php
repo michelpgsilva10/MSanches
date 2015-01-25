@@ -29,6 +29,18 @@ Class Balanco_model  extends CI_Model {
 			return FALSE;
 		}
 	}
+        function getProduto($idloja, $idproduto) {
+		$this -> db -> select('*');
+		$this -> db -> from('loja_produto');
+		$this -> db -> where('loja_fk', $idloja);
+		$this -> db -> where('produto_fk', $idproduto);
+		$query = $this -> db -> get();
+		if ($query -> num_rows() > 0) {
+			return $query -> row();
+		} else {
+			return FALSE;
+		}
+	}
 
 	function getValor($idlista, $iduser) {
 		$this -> db -> select_sum('valor_pago');
@@ -51,6 +63,20 @@ Class Balanco_model  extends CI_Model {
 		return $this -> db -> affected_rows();
 	}
 	
+        public function setitemnovo($data) {
+
+		$str = $this -> db -> insert_string('loja_produto', $data);
+		$this -> db -> query($str);
+		return $this -> db -> affected_rows();
+	}
+	
+        public function updateItemnovo($idProduto,$idloja,$data) {
+		$this -> db -> where('loja_fk', $idloja);
+		$this -> db -> where('produto_fk', $idProduto);
+		$this -> db -> update('loja_produto', $data);
+		return $this -> db -> affected_rows();
+	}
+        
 	public function updateItem($idProduto,$idlista,$iduser,$data) {
 		$this -> db -> where('id_produto', $idProduto);
 		$this -> db -> where('id_lista', $idlista);

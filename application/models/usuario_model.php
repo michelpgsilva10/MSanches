@@ -43,7 +43,7 @@ Class Usuario_model  extends CI_Model {
 
 	function getQantidade($tipo,$menor=0,$maior=0,$quali=0) {
 		$this -> db -> select('COUNT(\'id_produto\') AS id');
-		$this -> db -> from('produto');
+		$this -> db -> from('produto p');
 		if ($tipo != 0) {
 			$this -> db -> where('tipo_produto', $tipo);
 		}
@@ -67,10 +67,12 @@ Class Usuario_model  extends CI_Model {
 		}
 	}
 
-	function getQantidadeItem($tipo) {
-		$this -> db -> select('SUM(estoque_produto) AS total');
-		$this -> db -> from('produto');
+	function getQantidadeItem($tipo,$idloja) {
+		$this -> db -> select('SUM(lp.quantidade) AS total');
+		$this -> db -> from('produto p');
+                $this->db->join('loja_produto lp', 'lp.produto_fk=p.id_produto');
 		$this -> db -> where('del_produto !=', '1');
+                $this -> db -> where('lp.loja_fk',$idloja );
 		$this -> db -> where('estoque_produto !=', 0);
 		$this -> db -> where('tipo_produto', $tipo);
 		$query = $this -> db -> get();
@@ -127,21 +129,20 @@ Class Usuario_model  extends CI_Model {
 		$this -> db -> insert('logs', $data);
 	}
 
-	function setProduto($tipo, $valor, $quantidade, $model, $nome, $codel,$detalhe) {
+	function setProduto($tipo, $valor, $model, $nome, $codel,$detalhe) {
 		$data = array('tipo_produto' => $tipo,
 					  'valor_produto' => $valor,
 					  'modelo_produto' => $model,
-					  'estoque_produto' => $quantidade,
 					  'foto_produto' => $nome,
 					  'cod_barra_produto' => $codel,
 					  'quali_produto' => $detalhe);
 		$this -> db -> insert('produto', $data);
+                return $this -> db -> insert_id();
 	}
 
-	function updateProduto($id, $tipo, $valor, $quantidade, $model, $nome, $code,$detalhe) {
+	function updateProduto($id, $tipo, $valor,  $model, $nome, $code,$detalhe) {
 		$data = array('tipo_produto' => $tipo,
 					  'valor_produto' => $valor,
-					  'estoque_produto' => $quantidade,
 					  'modelo_produto' => $model,
 					  'foto_produto' => $nome,
 					  'cod_barra_produto' => $code,
@@ -196,10 +197,38 @@ Class Usuario_model  extends CI_Model {
 		$this -> db -> where('id_produto', $id);
 		$this -> db -> update('produto', $data);
 	}
-
+        
+        function getQuantidadeProduto($idproduto, $idloja=0) {
+		$this -> db -> select('*');
+		$this -> db -> from('loja_produto');
+		if ($idloja != 0) {
+			$this -> db -> where('loja_fk', $idloja);
+		} else {
+			$this -> db -> where('produto_fk', $idproduto);
+		}
+		$query = $this -> db -> get();
+		if ($query -> num_rows() > 0) {
+			return $query -> result_array();
+		} else {
+			return FALSE;
+		}
+	}
+          function getProdutoLoja($idloja, $idproduto) {
+		$this -> db -> select('*');
+		$this -> db -> from('loja_produto');
+		$this -> db -> where('loja_fk', $idloja);
+		$this -> db -> where('produto_fk', $idproduto);
+		$query = $this -> db -> get();
+		if ($query -> num_rows() > 0) {
+			return $query -> row();
+		} else {
+			return FALSE;
+		}
+	}
+        
 	function getBusca($id, $code) {
 		$this -> db -> select('*');
-		$this -> db -> from('produto');
+		$this -> db -> from('produto p');
 		if (strcmp($code, "0") == 0) {
 			$this -> db -> where('id_produto', $id);
 		} else {
@@ -212,14 +241,28 @@ Class Usuario_model  extends CI_Model {
 			return FALSE;
 		}
 	}
+        
+        public function updateItemnovo($idProduto,$idloja,$data) {
+		$this -> db -> where('loja_fk', $idloja);
+		$this -> db -> where('produto_fk', $idProduto);
+		$this -> db -> update('loja_produto', $data);
+		return $this -> db -> affected_rows();
+	}
+        public function setitemnovo($data) {
 
-	function getProduto($id, $code,$add=0) {
+		$str = $this -> db -> insert_string('loja_produto', $data);
+		$this -> db -> query($str);
+		return $this -> db -> affected_rows();
+	}
+
+	function getProduto($id, $code,$add=0,$idloja) {
 		if($add != 0){
-			$this -> db -> select('id_produto,valor_produto,estoque_produto,cod_barra_produto,modelo_produto,del_produto');
+			$this -> db -> select('p.id_produto,p.valor_produto,lp.quantidade as estoque_produto,p.cod_barra_produto,p.modelo_produto,p.del_produto');
 		}else{	
-			$this -> db -> select('id_produto,valor_produto,estoque_produto,cod_barra_produto,modelo_produto');
+			$this -> db -> select('p.id_produto,p.valor_produto,lp.quantidade as estoque_produto,p.cod_barra_produto,p.modelo_produto');
 		}
-		$this -> db -> from('produto');
+		$this -> db -> from('produto p');
+                $this->db->join('loja_produto lp', 'lp.loja_fk = '.$idloja.' and lp.produto_fk=p.id_produto');
 		if (strcmp($code, "0") == 0) {
 			$this -> db -> where('id_produto', $id);
 		} else {
@@ -234,11 +277,12 @@ Class Usuario_model  extends CI_Model {
 		}
 	}
 
-	function getClientes($inicio) {
+	function getClientes($inicio,$idloja) {
 		$this -> db -> select('*');
 		$this -> db -> from('cliente');
 		$this -> db -> join('endereco', 'cliente.endereco_fk = endereco.id_endereco');
 		$this -> db -> where('del_cliente', 0);
+                $this -> db -> where('loja_fk', $idloja);
 		$this -> db -> order_by('nome_cliente', 'asc');
 
 		//$this -> db -> limit($inicio, 15);
@@ -263,7 +307,19 @@ Class Usuario_model  extends CI_Model {
 			return FALSE;
 		}
 	}
-
+        
+        function getLoja() {
+		$this -> db -> select('id_loja,nome_loja');
+		$this -> db -> from('loja');
+		$query = $this -> db -> get();
+		if ($query -> num_rows() > 0) {
+			return $query -> result_array();
+		} else {
+			return FALSE;
+		}
+	}
+        
+        
 	function getVendaC($id = -1) {
 		$this -> db -> select('*');
 		$this -> db -> from('venda_consignado');
@@ -402,11 +458,11 @@ Class Usuario_model  extends CI_Model {
 
 	}
 
-	function setVenda($id_cliente, $valor, $data = 0) {
+	function setVenda($id_cliente, $valor,$Tipo,$data = 0) {
 		if ($data != 0) {
-			$data = array('cliente_fk' => $id_cliente, 'valor_venda' => $valor, 'data_retorno_venda' => $data);
+			$data = array('cliente_fk' => $id_cliente, 'valor_venda' => $valor, 'data_retorno_venda' => $data,'tipo_venda'=>$Tipo);
 		} else {
-			$data = array('cliente_fk' => $id_cliente, 'valor_venda' => $valor);
+			$data = array('cliente_fk' => $id_cliente, 'valor_venda' => $valor,'tipo_venda'=>$Tipo);
 		}
 		$this -> db -> insert('venda', $data);
 
