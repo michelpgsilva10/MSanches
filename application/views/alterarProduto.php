@@ -43,7 +43,7 @@ function Finalizar(){
 									<div class="form-group">
 										<label for="inputEmail3" class="col-sm-3 control-label">Tipo </label>
 										<div class="col-sm-7">
-											<select class="form-control" name="tipo" id="tipo" required >
+											<select class="form-control" name="tipo" id="tipo" style="text-align: center;" required >
 												<option value=""></option>
 												<option value="3" <?php if($produto->tipo_produto==3){echo "selected"; } ?>>Brinco</option>
 												<option value="1" <?php if($produto->tipo_produto==1){echo "selected"; } ?>>Anel</option>
@@ -71,11 +71,42 @@ function Finalizar(){
 										</div> 
 									</div>
 									<div class="form-group">
-										<label for="inputEmail3" class="col-sm-3 control-label">Quantidade</label>
-										<div class="col-sm-3">
-											<input type="text" class="form-control" id="quant" name="quant" value="<?php echo $produto->estoque_produto; ?>" style="text-align: center" onkeypress="return SomenteNumero(event);" required>
-										</div>
-									</div>
+                                                                        <label for="inputEmail3" class="col-sm-3 control-label">Quantidade:</label>
+                                                                        <div class="col-sm-7">
+                                                                            <div class=" scroll-tabela" style=" height: 100px;">
+                                                                                <table>
+                                                                                    <?php for($i=0;$i<count($lojas);$i++){ ?>
+                                                                                    <tr style=" margin-top: 10px;" class="col-md-12">
+                                                                                        <td>
+                                                                                                   <h6><?php echo $lojas[$i]['nome_loja']; ?>:</h6>
+                                                                                                </td> 
+                                                                                                <td>
+                                                                                                    <div class="col-md-10">
+                                                                                                        <input type="text" class="form-control" id="quant" <?php if($loja == $lojas[$i]['id_loja'] ){  ?>name="quant"  <?php }?>
+                                                                                                               value="<?php if($quantidade!=FALSE){
+                                                                                                                                $verifica=1;
+                                                                                                                                for($j=0;$j<count($quantidade);$j++){
+                                                                                                                                    if($lojas[$i]['id_loja']==$quantidade[$j]['loja_fk']){
+                                                                                                                                        echo $quantidade[$j]['quantidade'];
+                                                                                                                                        $verifica=0;
+                                                                                                                                        break;
+                                                                                                                                    }
+                                                                                                                                 }
+                                                                                                                                 if($verifica==1){
+                                                                                                                                     echo '0';
+                                                                                                                                 }
+                                                                                                                            }else {
+                                                                                                                  echo '0';
+                                                                                                               }?>" style="text-align: center" onkeypress="return SomenteNumero(event);" <?php if($loja != $lojas[$i]['id_loja'] ){  ?> required disabled <?php }?>>
+
+                                                                                                    </div>    
+                                                                                                </td>
+                                                                                        </tr>
+                                                                                    <?php } ?>
+                                                                                </table>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
 
 								</div>
 								<div class="col-xs-5">
