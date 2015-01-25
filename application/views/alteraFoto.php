@@ -36,11 +36,11 @@
 						<a href="<?php echo site_url("produtos")?>"> Produtos </a>
 					</li>
 
-					<li>
+					<li class="active">
 						<a href="<?php echo site_url("produtos/busca")?>">Buscar Produto</a>
 
 					</li>
-					<li class="active">
+					<li>
 						<a href="<?php echo site_url("produtos/novo")?>">Novo Produto</a>
 					</li>
 					<li>
