@@ -302,8 +302,8 @@ class Produtos extends MY_Controller {
         $time = time();
         $load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
         if ($this->session->userdata('load') == $load) {
-            $produto = $this->usuario_model->getBusca($tipo = $this->input->post('id', TRUE), 0);
-            $config['upload_path'] = "/home/mmsan532/public_html/sistema/css/img/img_produto";
+            $produto = $this->usuario_model->getBusca($this->input->post('id', TRUE), 0);
+            $config['upload_path'] = "C:/Users/kaue/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto/";
             $config['file_name'] = $produto->foto_produto;
             $config['allowed_types'] = 'jpg';
             $config['max_size'] = '2048';
@@ -312,11 +312,11 @@ class Produtos extends MY_Controller {
                 unlink("C:/Users/kaue/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto/" . $produto->foto_produto);
             }
             if (!$this->upload->do_upload("fileF")) {
-                $data = array('mensagem' => $this->upload->display_errors());
-                $this->my_load_view('selFoto', $data);
+                $data = array('id' => $this->input->post('id', TRUE),'mensagem' => $this->upload->display_errors());
+                $this->my_load_view('alteraFoto', $data);
             } else {
                 $this->usuario_model->logs($this->session->userdata('id'), 2);
-                redirect('produtos/alterar/' . $tipo = $this->input->post('id', TRUE));
+                redirect('produtos/alterar/' . $this->input->post('id', TRUE));
             }
         } else {
             redirect('login');
