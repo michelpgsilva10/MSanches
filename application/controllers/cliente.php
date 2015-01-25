@@ -10,20 +10,20 @@ class Cliente extends MY_Controller {
     	//$this->fpdf->fontpath = 'application/libraries/font/';
 	}
 
-	public function index() {
+	public function index() {//-----OK
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
 			$data["cadastro_cliente"] = false;
-			$data["clientes"] = $this -> usuario_model -> getClientes(0);
+			$data["clientes"] = $this -> usuario_model -> getClientes(0,$this -> session -> userdata('nivel'));
 			$this -> my_load_view('clientes', $data);
 		} else {
 			redirect('login');
 		}
 	}
 	
-	public function novoCliente() {
+	public function novoCliente() {//-----OK
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
@@ -34,7 +34,7 @@ class Cliente extends MY_Controller {
 		}
 	}
 
-	public function adicionar() {
+	public function adicionar() {//----OK
 		#Validação para tabela Cliente
 		$this -> form_validation -> set_rules('nome_cliente', 'Nome', 'required');
 		$this -> form_validation -> set_rules('cpf_cliente', 'CPF', 'callback_validaCPF|callback_cpfExistente');
@@ -77,7 +77,8 @@ class Cliente extends MY_Controller {
 					'cpf_cliente' => $this -> input -> post('cpf_cliente'),
 					'ref_comercial' => $this -> input -> post('ref_comercial_cliente'),
 					'tel_cliente' => $this -> input -> post('tel_cliente'),
-					'endereco_fk' => $endereco_fk
+					'endereco_fk' => $endereco_fk,
+                                        'loja_fk' => $this->session->userdata('nivel')
 				);
 				
 				$this -> db -> insert('cliente', $cliente_insert);
@@ -91,7 +92,7 @@ class Cliente extends MY_Controller {
 
 	}
 
-	function editar() {
+	function editar() {//--------OK
 		$this -> form_validation -> set_rules('nome_cliente', 'Nome', 'required');
 		$this -> form_validation -> set_rules('cpf_cliente', 'CPF', 'callback_validaCPF');
 		$this -> form_validation -> set_rules('tel_cliente', 'Telefone', 'required');
