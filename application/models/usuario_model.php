@@ -262,7 +262,7 @@ Class Usuario_model  extends CI_Model {
 			$this -> db -> select('p.id_produto,p.valor_produto,lp.quantidade as estoque_produto,p.cod_barra_produto,p.modelo_produto');
 		}
 		$this -> db -> from('produto p');
-                $this->db->join('loja_produto lp', 'lp.loja_fk = '.$idloja.' and lp.produto_fk=p.id_produto');
+                $this->db->join('loja_produto lp', 'lp.produto_fk=p.id_produto and lp.loja_fk = '.$idloja);
 		if (strcmp($code, "0") == 0) {
 			$this -> db -> where('id_produto', $id);
 		} else {
