@@ -61,18 +61,20 @@ class Venda extends MY_Controller {
         $load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
         if ($this->session->userdata('load') == $load) {
             $vendas1 = $this->usuario_model->getVendaC();
-            if ($vendas1 != FALSE) {
+            if ($vendas1 != NULL) {
                 for ($i = 0; $i < count($vendas1); $i++) {
                     $venda = $this->usuario_model->getVenda($vendas1[$i]['id_venda_inicio']);
-                    $cliente = $this->usuario_model->getCliente($venda->cliente_fk, 0);
-                    $data1 = explode(" ", $venda->data_venda);
-                    $data1 = explode("-", $data1[0]);
-                    $data = "" . $data1[2];
-                    $data = $data . "-" . $data1[1];
-                    $data = $data . "-" . $data1[0];
-                    $venda->data_venda = $data;
-                    $venda->cliente_fk = $cliente[0]['nome_cliente'];
-                    $vendas[$i] = $venda;
+                    $cliente = $this->usuario_model->getCliente($venda->cliente_fk, 0,$this->session->userdata('nivel'));
+                    if($cliente!=NULL){
+                        $data1 = explode(" ", $venda->data_venda);
+                        $data1 = explode("-", $data1[0]);
+                        $data = "" . $data1[2];
+                        $data = $data . "-" . $data1[1];
+                        $data = $data . "-" . $data1[0];
+                        $venda->data_venda = $data;
+                        $venda->cliente_fk = $cliente[0]['nome_cliente'];
+                        $vendas[] = $venda;
+                    }
                 }
                 $data = array('vendas' => $vendas);
                 $this->my_load_view('consignado', $data);
@@ -90,7 +92,7 @@ class Venda extends MY_Controller {
         $load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
         if ($this->session->userdata('load') == $load) {
             if ($id != -1) {
-                $cliente = $this->usuario_model->getCliente($id, 0);
+                $cliente = $this->usuario_model->getCliente($id, 0,$this->session->userdata('nivel'));
             }
             if ($idlista != -1) {//->Verifica se possui lista
                 $desc = (int) $this->input->post('desconto', TRUE);
@@ -644,6 +646,7 @@ class Venda extends MY_Controller {
                     $total = $this->venda_model->getValor($idlista, $this->session->userdata('id'))->valor_pago; // -> Pega o Valor Total da somatoria dos Valores pago
                     if ($total == null) {
                         $total = 0;
+                        $idlista=-1;
                     }
                     $produtos = $this->venda_model->getLista($idlista, $this->session->userdata('id')); // -> Pega todos os Itens da Lista
                     $produto = $this->usuario_model->getProduto($i, 0, 0, $this->session->userdata('nivel')); // -> Pega o Produto
@@ -691,10 +694,10 @@ class Venda extends MY_Controller {
                 $produtos = $this->venda_model->getLista($idlista, $this->session->userdata('id')); // -> Pega todos os Itens da Lista
                 if ($tipo == 0) {
                     if ($id != -1) {
-                        $data = array('total' => $total, 'desconto' => $desconto, 'idlista' => $idlista, 'produtos' => $produtos, 'cliente' => $cliente, 'mensagem' => "Erro nem uma Lista");
+                        $data = array('total' => $total, 'desconto' => $desconto, 'idlista' => $idlista, 'produtos' => $produtos, 'cliente' => $cliente, 'mensagem' => "Erro não possui item Cadastrado");
                         $this->my_load_view('vendaComum', $data);
                     } else {
-                        $data = array('total' => $total, 'desconto' => $desconto, 'idlista' => $idlista, 'produtos' => $produtos, 'mensagem' => "Erro nem uma Lista");
+                        $data = array('total' => $total, 'desconto' => $desconto, 'idlista' => $idlista, 'produtos' => $produtos, 'mensagem' => "Erro não possui item Cadastrado");
                         $this->my_load_view('vendaComum', $data);
                     }
                 } else {
@@ -736,10 +739,10 @@ class Venda extends MY_Controller {
         $time = time();
         $load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
         if ($this->session->userdata('load') == $load) {
-            $produto = $this->usuario_model->getProduto(0, trim($this->input->post('codigoP', TRUE)));
+            $produto = $this->usuario_model->getProduto(0, trim($this->input->post('codigoP', TRUE)),0,$this->session->userdata('nivel'));
             $total = $this->venda_model->getValor($idlista, $this->session->userdata('id'))->valor_pago;
             $idLista = $this->venda_model->getExID($this->session->userdata('id'))->id_lista;
-            $cliente = $this->usuario_model->getCliente($idCliente, 0);
+            $cliente = $this->usuario_model->getCliente($idCliente, 0,$this->session->userdata('nivel'));
             $produtos = $this->venda_model->getLista($idlista, $this->session->userdata('id'));
             if ($produto != FALSE) {
                 if ($idLista != null) {
@@ -881,9 +884,9 @@ class Venda extends MY_Controller {
             if ($verifica == 1) {
                 $compras = $this->usuario_model->getCompras($id);
                 $venda = $this->usuario_model->getVenda($id);
-                $cliente = $this->usuario_model->getCliente($venda->cliente_fk, 0);
+                $cliente = $this->usuario_model->getCliente($venda->cliente_fk, 0,$this->session->userdata('nivel'));
                 for ($i = 0; $i < count($compras); $i++) {
-                    $produto = $this->usuario_model->getProduto($compras[$i]['produto_fk'], 0, 1);
+                    $produto = $this->usuario_model->getProduto($compras[$i]['produto_fk'], 0, $this->session->userdata('nivel'));
                     $desconto = $produto->valor_produto * ($compras[$i]['desconto_compra'] / 100); //->Calcula o desconto	
                     $nproduto = array(
                         'id_lista' => 1,
@@ -911,16 +914,18 @@ class Venda extends MY_Controller {
                     $vendas1 = $this->usuario_model->getVendaC();
                     if ($vendas1 != FALSE) {
                         for ($i = 0; $i < count($vendas1); $i++) {
-                            $venda = $this->usuario_model->getVenda($vendas1[$i]['id_venda_inicio']);
-                            $cliente = $this->usuario_model->getCliente($venda->cliente_fk, 0);
-                            $data1 = explode(" ", $venda->data_venda);
-                            $data1 = explode("-", $data1[0]);
-                            $data = "" . $data1[2];
-                            $data = $data . "-" . $data1[1];
-                            $data = $data . "-" . $data1[0];
-                            $venda->data_venda = $data;
-                            $venda->cliente_fk = $cliente[0]['nome_cliente'];
-                            $vendas[$i] = $venda;
+                           $venda = $this->usuario_model->getVenda($vendas1[$i]['id_venda_inicio']);
+                           $cliente = $this->usuario_model->getCliente($venda->cliente_fk, 0,$this->session->userdata('nivel'));
+                           if($cliente!=NULL){
+                               $data1 = explode(" ", $venda->data_venda);
+                               $data1 = explode("-", $data1[0]);
+                               $data = "" . $data1[2];
+                               $data = $data . "-" . $data1[1];
+                               $data = $data . "-" . $data1[0];
+                               $venda->data_venda = $data;
+                               $venda->cliente_fk = $cliente[0]['nome_cliente'];
+                               $vendas[] = $venda;
+                           }
                         }
                         $data = array('vendas' => $vendas, 'mensagem' => "Erro ao isserir na lista de produto");
                         $this->my_load_view('consignado', $data);
@@ -934,15 +939,17 @@ class Venda extends MY_Controller {
                 if ($vendas1 != FALSE) {
                     for ($i = 0; $i < count($vendas1); $i++) {
                         $venda = $this->usuario_model->getVenda($vendas1[$i]['id_venda_inicio']);
-                        $cliente = $this->usuario_model->getCliente($venda->cliente_fk, 0);
-                        $data1 = explode(" ", $venda->data_venda);
-                        $data1 = explode("-", $data1[0]);
-                        $data = "" . $data1[2];
-                        $data = $data . "-" . $data1[1];
-                        $data = $data . "-" . $data1[0];
-                        $venda->data_venda = $data;
-                        $venda->cliente_fk = $cliente[0]['nome_cliente'];
-                        $vendas[$i] = $venda;
+                        $cliente = $this->usuario_model->getCliente($venda->cliente_fk, 0,$this->session->userdata('nivel'));
+                        if($cliente!=NULL){
+                            $data1 = explode(" ", $venda->data_venda);
+                            $data1 = explode("-", $data1[0]);
+                            $data = "" . $data1[2];
+                            $data = $data . "-" . $data1[1];
+                            $data = $data . "-" . $data1[0];
+                            $venda->data_venda = $data;
+                            $venda->cliente_fk = $cliente[0]['nome_cliente'];
+                            $vendas[] = $venda;
+                        }
                     }
                     $data = array('vendas' => $vendas, 'mensagem' => "Erro na criação da lista de produto");
                     $this->my_load_view('consignado', $data);
@@ -961,8 +968,8 @@ class Venda extends MY_Controller {
         $time = time();
         $load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
         if ($this->session->userdata('load') == $load) {
-            $cliente = $this->usuario_model->getCliente($idCliente, 0);
-            $produto = $this->usuario_model->getProduto($idproduto, 0);
+            $cliente = $this->usuario_model->getCliente($idCliente, 0,$this->session->userdata('nivel'));
+            $produto = $this->usuario_model->getProduto($idproduto, 0,0,$this->session->userdata('nivel'));
             $total = $this->venda_model->getValor($idlista, $this->session->userdata('id'))->valor_pago;
             $quantidade = $this->venda_model->verificaItem($produto->id_produto, $idlista, $this->session->userdata('id'));
             $desconto = $produto->valor_produto * ($quantidade->desconto / 100);
@@ -990,12 +997,14 @@ class Venda extends MY_Controller {
         $load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
         if ($this->session->userdata('load') == $load) {
             $produtos = $this->venda_model->getLista($idlista, $this->session->userdata('id'));
-            $cliente = $this->usuario_model->getCliente($idCliente, 0);
-            $vendaRtorno = $this->usuario_model->setVenda($idCliente, $total);
+            $cliente = $this->usuario_model->getCliente($idCliente, 0,$this->session->userdata('nivel'));
+            $vendaRtorno = $this->usuario_model->setVenda($idCliente, $total,2);
             for ($i = 0; $i < count($produtos); $i++) {
-                $produto = $this->usuario_model->getProduto($produtos[$i]['id_produto'], 0);
-                $produto->estoque_produto += $produtos[$i]['quantidade_D'];
-                $this->usuario_model->updateVendaProduto($produto->id_produto, $produto->estoque_produto);
+                $produto = $this->usuario_model->getProduto($produtos[$i]['id_produto'], 0,0,$this->session->userdata('nivel')); 
+                $data = array(
+                  'quantidade' => $produto->estoque_produto += $produtos[$i]['quantidade_D']
+                 );  
+                $this->usuario_model->updateLojaproduto($produtos[$i]['id_produto'], $this->session->userdata('nivel'), $data);
                 if ($produtos[$i]['quantidade_D'] != $produtos[$i]['quantidade']) {
                     $this->usuario_model->setCompra($idCliente, $produtos[$i]['quantidade_D'] - $produtos[$i]['quantidade_D'], $produto->id_produto, $vendaRtorno, $produtos[$i]['desconto']);
                 } else {
