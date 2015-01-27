@@ -89,7 +89,7 @@
 									<th style="text-align: center"></th>
 								</tr>
 							</thead>
-							<tbody id="tabelaV">
+							<tbody id="tabelaV" >
 								<?php 
 for($i=0;$i<count($produtos);$i++){
 ?>
