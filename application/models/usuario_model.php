@@ -348,11 +348,12 @@ Class Usuario_model  extends CI_Model {
 		}
 	}
 
-	function getCliente($dado, $tipo) {
+	function getCliente($dado, $tipo,$idloja) {
 		$this -> db -> select('*');
 		$this -> db -> from('cliente');
 		$this -> db -> join('endereco', 'cliente.endereco_fk = endereco.id_endereco');
 		$this -> db -> where('del_cliente', 0);
+                $this -> db -> where('loja_fk', $idloja);
 		if ($tipo == 1) {
 			$this -> db -> where('cpf_cliente', $dado);
 		} else if ($tipo == 2) {
@@ -367,6 +368,12 @@ Class Usuario_model  extends CI_Model {
 		} else {
 			return false;
 		}
+	}
+         public function updateLojaproduto($idProduto,$idloja,$data) {
+		$this -> db -> where('loja_fk', $idloja);
+		$this -> db -> where('produto_fk', $idProduto);
+		$this -> db -> update('loja_produto', $data);
+		return $this -> db -> affected_rows();
 	}
 
 	function getCpf($cpf) {
