@@ -120,7 +120,7 @@
 										<th style="text-align: center"></th>
 									</tr>
 								</thead>
-								<tbody id="tabelaV">
+                                                                    <tbody id="tabelaV">
 									<?php if($total!=0){
 										for($i=0;$i<count($produtos);$i++){?>
 											
