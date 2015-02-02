@@ -246,7 +246,7 @@ Class Usuario_model  extends CI_Model {
 		if ($nivel == 1) 
 			$this -> db -> where("endereco.uf_endereco = 'MT'");
 		else if ($nivel == 2)
-			$this -> db -> where("endereco.uf_endereceo = 'SP'");
+			$this -> db -> where("endereco.uf_endereco = 'SP'");
 		
 		$this -> db -> order_by('nome_cliente', 'asc');
 
