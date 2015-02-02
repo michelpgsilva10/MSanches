@@ -235,10 +235,19 @@ Class Usuario_model  extends CI_Model {
 	}
 
 	function getClientes($inicio) {
+		
+		$nivel = $this->session->userdata('nivel');
+		
 		$this -> db -> select('*');
 		$this -> db -> from('cliente');
 		$this -> db -> join('endereco', 'cliente.endereco_fk = endereco.id_endereco');
 		$this -> db -> where('del_cliente', 0);
+		
+		if ($nivel == 1) 
+			$this -> db -> where("endereco.uf_endereco = 'MT'");
+		else if ($nivel == 2)
+			$this -> db -> where("endereco.uf_endereceo = 'SP'");
+		
 		$this -> db -> order_by('nome_cliente', 'asc');
 
 		//$this -> db -> limit($inicio, 15);
