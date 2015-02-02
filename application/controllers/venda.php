@@ -490,10 +490,10 @@ class Venda extends MY_Controller {
             } else {
                 if ($total != null) {
                     $produtos = $produtos = $this->venda_model->getLista($idlista, $this->session->userdata('id'));
-                    $data = array('total' => $total, 'idlista' => $idlista, 'produtos' => $produtos, 'mensagem' => "Cliente não Selecionado");
+                    $data = array('total' => $total, 'idlista' => $idlista,'desconto' => 0, 'produtos' => $produtos, 'mensagem' => "Cliente não Selecionado");
                     $this->my_load_view('vendaComum', $data);
                 } else {
-                    $data = array('total' => $total, 'idlista' => $idlista, 'mensagem' => "Cliente não Selecionado");
+                    $data = array('total' => $total, 'idlista' => $idlista,'desconto' => 0, 'mensagem' => "Cliente não Selecionado");
                     $this->my_load_view('vendaComum', $data);
                 }
             }
@@ -638,7 +638,7 @@ class Venda extends MY_Controller {
         $load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
         if ($this->session->userdata('load') == $load) {
             if ($id != -1) {
-                $cliente = $this->usuario_model->getCliente($id, 0);
+                $cliente = $this->usuario_model->getCliente($id, 0,$this->session->userdata('nivel'));
             }
             if ($idlista != -1) {
                 if ($this->venda_model->deleteItem($i, $idlista, $this->session->userdata('id'))) {
@@ -1054,7 +1054,7 @@ class Venda extends MY_Controller {
                     $this->my_load_view('vendaRetorno', $data);
                 } else if ($tipo == 1) {
                     if ($idCliente != 0) {
-                        $cliente = $this->usuario_model->getCliente($idCliente, 0);
+                        $cliente = $this->usuario_model->getCliente($idCliente, 0,$this->session->userdata('nivel'));
                         $data = array('cliente' => $cliente, 'desconto' => $desconto, 'idlista' => $idlista, 'total' => $total, 'produtos' => $produtos);
                         $this->my_load_view('vendaComum', $data);
                     } else {
@@ -1063,7 +1063,7 @@ class Venda extends MY_Controller {
                     }
                 } else if ($tipo == 2) {
                     if ($idCliente != 0) {
-                        $cliente = $this->usuario_model->getCliente($idCliente, 0);
+                        $cliente = $this->usuario_model->getCliente($idCliente, 0,$this->session->userdata('nivel'));
                         $data = array('cliente' => $cliente, 'desconto' => $desconto, 'idlista' => $idlista, 'total' => $total, 'produtos' => $produtos);
                         $this->my_load_view('vendaConsig', $data);
                     } else {

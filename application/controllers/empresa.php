@@ -189,31 +189,34 @@ class Empresa extends MY_Controller {
                     for ($i = 0; $i < count($produtos); $i++) {
                         $produto = $this->balanco_model->getProduto($this->session->userdata('nivel'), $produtos[$i]['id_produto']);
                         if ($produto == FALSE) {
-                            for ($i = 0; $i < count($lojas); $i++) {
-                                if ($this->session->userdata('nivel') == $lojas[$i]['id_loja']) {
+                            for ($j = 0; $j < count($lojas); $j++) {
+                                if ($this->session->userdata('nivel') == $lojas[$j]['id_loja']) {
                                     $data = array(
-                                        'quantidade' => $this->input->post('quant', TRUE),
-                                        'loja_fk' => $lojas[$i]['id_loja'],
-                                        'produto_fk' => $id
+                                        'quantidade' => $produtos[$i]['quantidade'],
+                                        'loja_fk' => $lojas[$j]['id_loja'],
+                                        'produto_fk' =>  $produtos[$i]['id_produto']
                                     );
                                 } else {
                                     $data = array(
                                         'quantidade' => 0,
-                                        'loja_fk' => $lojas[$i]['id_loja'],
-                                        'produto_fk' => $id
+                                        'loja_fk' => $lojas[$j]['id_loja'],
+                                        'produto_fk' =>  $produtos[$i]['id_produto']
                                     );
                                 }
                                 if (!$this->balanco_model->setitemnovo($data)) {
                                     $verifica = 1;
                                     break;
-                                } else {
+                                }
+                            }
+                            if($verifica==1){
+                                break;   
+                            }else {
                                     $this->usuario_model->setCompra($this->session->userdata('nivel'), $produtos[$i]['quantidade'], $produtos[$i]['id_produto'], $idVenda, $produtos[$i]['desconto']);
-                                    if (!$this->balanco_model->deleteItem($produtos[$i]['id_produto'], $idlista, $this->session->userdata('id'))) {
+                                    if ($this->balanco_model->deleteItem($produtos[$i]['id_produto'], $idlista, $this->session->userdata('id'))==0) {
                                         $verifica = 3;
                                         break;
                                     }
                                 }
-                            }
                         } else {
                             $data = array(
                                 'quantidade' => $produtos[$i]['quantidade'] + $produto->quantidade
@@ -230,7 +233,9 @@ class Empresa extends MY_Controller {
                         }
                     }
                     if ($verifica == -1) {
-                        redirect('home');
+                     $data = array('mensagemC' => "Todos os Produtos Foram Adicionados no Estoque");
+                     $this->my_load_view('principal', $data);
+                     
                     } else if ($verifica == 1) {
                         $produtos = $this->balanco_model->getLista($idlista, $this->session->userdata('id')); // -> Pega todos os Itens da Lista
                         $total = $this->balanco_model->getValor($idlista, $this->session->userdata('id'))->valor_pago; // -> Pega o Valor Total da somatoria dos Valores pago
