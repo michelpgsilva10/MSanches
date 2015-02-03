@@ -13,7 +13,7 @@ class Etiqueta extends MY_Controller {
 		if ($this -> session -> userdata('load')==$load) {
 			$quantidade = $this -> input -> post('quantidade', TRUE);
 			$code = $this -> input -> post('code', TRUE);
-			$produto = $this -> usuario_model -> getProduto(0, $code); 
+			$produto = $this -> usuario_model -> getProduto(0, $code,0,$this->session->userdata('nivel')); 
 			$code1 = str_split($code);
 			if($code1[0]>=1){
 			$data1 = "I8,A,001".PHP_EOL.
@@ -56,14 +56,14 @@ class Etiqueta extends MY_Controller {
 			"A745,86,2,3,1,1,N,\"".$code."\"".PHP_EOL.
 			"P".$quantidade.PHP_EOL; 
 			}
-			if (file_exists("D:/Dropbox/Dropbox/Projetos Trabalho/MSanches/css/arquivo/etiquetas.prn")) {
-				unlink("D:/Dropbox/Dropbox/Projetos Trabalho/MSanches/css/arquivo/etiquetas.prn");
+			if (file_exists("C:/Users/kaue/Dropbox/Projetos Trabalho/MSanches/css/arquivo/etiquetas.prn")) {
+				unlink("C:/Users/kaue/Dropbox/Projetos Trabalho/MSanches/css/arquivo/etiquetas.prn");
 			}
-			$arquivo = fopen("D:/Dropbox/Dropbox/Projetos Trabalho/MSanches/css/arquivo/etiquetas.prn", 'w');
+			$arquivo = fopen("C:/Users/kaue/Dropbox/Projetos Trabalho/MSanches/css/arquivo/etiquetas.prn", 'w');
 			fwrite($arquivo,$data1);
 			fclose($arquivo);
 			
-			$filename = "D:/Dropbox/Dropbox/Projetos Trabalho/MSanches/css/arquivo/etiquetas.prn";
+			$filename = "C:/Users/kaue/Dropbox/Projetos Trabalho/MSanches/css/arquivo/etiquetas.prn";
 			header("Pragma: public");
 			header("Expires: 0");
 			header("Cache-Control: must-revalidate, post-check=0, pre-check=0");

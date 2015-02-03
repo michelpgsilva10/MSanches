@@ -89,7 +89,7 @@
 									<th style="text-align: center"></th>
 								</tr>
 							</thead>
-							<tbody id="tabelaV">
+							<tbody id="tabelaV" class=" width: 100%; height: 400px; overflow-y: scroll; " >
 								<?php 
 for($i=0;$i<count($produtos);$i++){
 ?>
