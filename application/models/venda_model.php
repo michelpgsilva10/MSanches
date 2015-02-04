@@ -68,10 +68,14 @@ Class Venda_model  extends CI_Model {
 		return $this -> db -> affected_rows();
 	}
 	
-	public function deleteLista($idlista,$iduser) {
+	public function deleteLista($idlista,$iduser,$tipo_lista=0) {
 		$this -> db -> where('id_lista', $idlista);
 		$this -> db -> where('id_user', $iduser);
-		$this -> db -> where('tipo_lista !=', 2);
+		if($tipo_lista==2){
+			$this -> db -> where('tipo_lista', 1);
+		}else{
+			$this -> db -> where('tipo_lista !=', 2);
+		}
 		$this -> db ->delete('venda_lista');
 		return $this -> db -> affected_rows();
 	}

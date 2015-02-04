@@ -151,6 +151,19 @@ Class Usuario_model  extends CI_Model {
 		$this -> db -> update('produto', $data);
 	}
 
+		function getAllProdutos() {
+		$this -> db -> select('*');
+		$this -> db -> from('produto');
+		$this -> db -> where('del_produto !=', '1');
+		$this -> db -> order_by("id_produto", "ASC");
+		$query = $this -> db -> get();
+		if ($query -> num_rows() > 0) {
+			return $query -> result_array();
+		} else {
+			return FALSE;
+		}
+	}
+	
 	function getProdutos($inicio, $tipo,$quali=0,$menor=0,$maior=0) {
 		$this -> db -> select('*');
 		$this -> db -> from('produto');

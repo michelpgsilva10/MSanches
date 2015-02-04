@@ -6,6 +6,21 @@ class Bugs extends MY_Controller {
 		$this -> load -> library('session');
 	}
 
+	function insereProdutos() {
+		$lojas = $this -> usuario_model -> getLoja();
+		$todos = $this -> usuario_model -> getAllProdutos();
+		for ($j = 0; $j < count($todos); $j++) {
+
+			for ($i = 0; $i < count($lojas); $i++) {
+
+				$data = array('quantidade' => 0, 'loja_fk' => $lojas[$i]['id_loja'], 'produto_fk' => $todos[$j]['id_produto']);
+
+				$this -> usuario_model -> setitemnovo($data);
+			}
+		}
+		echo "Numero de Produtos Criados ".$j."</br>";
+	}
+
 	function fotoErro($proxima = 0) {
 		$maxId = $this -> usuario_model -> getID();
 		$aux = $this -> usuario_model -> getFoto(1);
@@ -50,7 +65,7 @@ class Bugs extends MY_Controller {
 		} else {
 			$data = array('posicao' => 0);
 		}
-		
+
 		$this -> my_load_view('bugsFoto', $data);
 	}
 
@@ -71,15 +86,14 @@ class Bugs extends MY_Controller {
 				$nome = $nome . ".jpg";
 				$messagem = "Alterado com Sucesso";
 				if (file_exists("/home/mmsan532/public_html/sistema/css/img/img_produto/" . $produtos[$posicaoVP][$i] -> foto_produto)) {
-					if(rename("/home/mmsan532/public_html/sistema/css/img/img_produto/" . $produtos[$posicaoVP][$i] -> foto_produto,
-							  "/home/mmsan532/public_html/sistema/css/img/img_produto/" . $nome)==FALSE){
+					if (rename("/home/mmsan532/public_html/sistema/css/img/img_produto/" . $produtos[$posicaoVP][$i] -> foto_produto, "/home/mmsan532/public_html/sistema/css/img/img_produto/" . $nome) == FALSE) {
 						$messagem = "Erro ao Alterar o Nome da Foto";
-						$erro=TRUE;
+						$erro = TRUE;
 						break;
 					}
 				}
-				$this -> usuario_model -> updatefoto($produtos[$posicaoVP][$i] -> id_produto,$nome);
-			}else{
+				$this -> usuario_model -> updatefoto($produtos[$posicaoVP][$i] -> id_produto, $nome);
+			} else {
 				$nome = $produtos[$posicaoVP][$i] -> id_produto;
 				if ($nome < 10) {
 					$nome = "000" . $nome;
@@ -89,23 +103,23 @@ class Bugs extends MY_Controller {
 					$nome = "0" . $nome;
 				}
 				$nome = $nome . ".jpg";
-				$this -> usuario_model -> updatefoto($produtos[$posicaoVP][$i] -> id_produto,$nome);
+				$this -> usuario_model -> updatefoto($produtos[$posicaoVP][$i] -> id_produto, $nome);
 			}
 		}
-		if($posicaoVP < count($produtos)){
-			$posicaoVP++;	
-			if(isset($erro)){
-				$data = array('produtos' => $produtos[$posicaoVP], 'posicao' => $posicaoVP,'mensagem'=>$messagem);
-			}else{
-				$data = array('produtos' => $produtos[$posicaoVP], 'posicao' => $posicaoVP,'mensagemC'=>$messagem);
+		if ($posicaoVP < count($produtos)) {
+			$posicaoVP++;
+			if (isset($erro)) {
+				$data = array('produtos' => $produtos[$posicaoVP], 'posicao' => $posicaoVP, 'mensagem' => $messagem);
+			} else {
+				$data = array('produtos' => $produtos[$posicaoVP], 'posicao' => $posicaoVP, 'mensagemC' => $messagem);
 			}
 			$this -> my_load_view('bugsFoto', $data);
-		}else{
+		} else {
 			$posicaoVP++;
-			if(isset($erro)){
-				$data = array('posicao' => $posicaoVP,'mensagem'=>$messagem);
-			}else{
-				$data = array('posicao' => $posicaoVP,'mensagemC'=>$messagem);
+			if (isset($erro)) {
+				$data = array('posicao' => $posicaoVP, 'mensagem' => $messagem);
+			} else {
+				$data = array('posicao' => $posicaoVP, 'mensagemC' => $messagem);
 			}
 			$this -> my_load_view('bugsFoto', $data);
 		}
