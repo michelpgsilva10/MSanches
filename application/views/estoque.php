@@ -1,10 +1,22 @@
 <script language="JavaScript"></script>
 <div class="panel panel-default">
-	<div class="panel-body">
-		<div class="row">
-			<div class="col-md-9 col-md-push-3">
+	<div class="panel-body">		
+		<div class="row">			
+			<div class="col-md-9 col-md-push-3">				
 				<div  class="panel panel-default">
+					
 					<div class="container-fluid" align="center">
+						<div width="100%" align="center" style="padding-top: 10px; padding-bottom: 10px;">
+							<div class="btn-group" align="left">
+								<select id="opcao_loja" class="form-control">
+									<option value="0">Todas as Lojas</option>	
+									<?php
+										for ($i = 0; $i < count($lojas); $i++)
+											echo '<option value="' . $lojas[$i]['id_loja'] . '">' . $lojas[$i]['nome_loja'] . '</option>'; 
+									?>								
+								</select>						
+							</div>
+						</div>	
 						<div class="row">
 							<div class="col-md-8 col-md-offset-2" align="center" >
 								<table class="table table-striped table-hover">

@@ -78,12 +78,13 @@ Class Usuario_model  extends CI_Model {
 		}
 	}
 
-	function getQantidadeItem($tipo,$idloja) {
+	function getQantidadeItem($tipo, $idloja) {
 		$this -> db -> select('SUM(lp.quantidade) AS total');
 		$this -> db -> from('produto p');
-                $this->db->join('loja_produto lp', 'lp.produto_fk=p.id_produto');
+        $this -> db -> join('loja_produto lp', 'lp.produto_fk = p.id_produto');
 		$this -> db -> where('del_produto !=', '1');
-                $this -> db -> where('lp.loja_fk',$idloja );
+		if($idloja <> 0)
+        	$this -> db -> where('lp.loja_fk', $idloja);
 		$this -> db -> where('estoque_produto !=', 0);
 		$this -> db -> where('tipo_produto', $tipo);
 		$query = $this -> db -> get();
@@ -344,7 +345,7 @@ Class Usuario_model  extends CI_Model {
 	}
         
         function getLoja() {
-		$this -> db -> select('id_loja,nome_loja');
+		$this -> db -> select('id_loja, nome_loja');
 		$this -> db -> from('loja');
 		$query = $this -> db -> get();
 		if ($query -> num_rows() > 0) {
