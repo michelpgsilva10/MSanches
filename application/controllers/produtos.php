@@ -290,7 +290,8 @@ class Produtos extends MY_Controller {
                 'pulceira2' => $this->usuario_model->getQantidadeItem(6, $this->session->userdata('nivel'))->total,
                 'bracelete2' => $this->usuario_model->getQantidadeItem(2, $this->session->userdata('nivel'))->total,
                 'conjunto2' => $this->usuario_model->getQantidadeItem(5, $this->session->userdata('nivel'))->total,
-                'tornozeleira2' => $this->usuario_model->getQantidadeItem(7, $this->session->userdata('nivel'))->total);
+                'tornozeleira2' => $this->usuario_model->getQantidadeItem(7, $this->session->userdata('nivel'))->total,
+				'lojas' => $this->usuario_model->getLoja());
             $this->my_load_view('estoque', $data);
         } else {
             redirect('login');
