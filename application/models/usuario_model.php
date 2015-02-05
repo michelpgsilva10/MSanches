@@ -282,22 +282,22 @@ Class Usuario_model  extends CI_Model {
 
 	function getProduto($id, $code,$add=0,$idloja=-1) {
 		if($add != 0){
-                    if($idloja!=-1){
-			$this -> db -> select('p.id_produto,p.valor_produto,lp.quantidade as estoque_produto,p.cod_barra_produto,p.modelo_produto,p.del_produto');
-                    }else{
-                        $this -> db -> select('p.id_produto,p.valor_produto,p.cod_barra_produto,p.modelo_produto,p.del_produto');
-                    }
+            if($idloja!=-1){
+				$this -> db -> select('p.id_produto,p.valor_produto,lp.quantidade as estoque_produto,p.cod_barra_produto,p.modelo_produto,p.del_produto');
+            }else{
+                $this -> db -> select('p.id_produto,p.valor_produto,p.cod_barra_produto,p.modelo_produto,p.del_produto');
+            }
 		}else{	
-                      if($idloja!=-1){
-			$this -> db -> select('p.id_produto,p.valor_produto,lp.quantidade as estoque_produto,p.cod_barra_produto,p.modelo_produto');
-                      }else{
-                          $this -> db -> select('p.id_produto,p.valor_produto,p.cod_barra_produto,p.modelo_produto');
-                      }
+          if($idloja!=-1){
+			  $this -> db -> select('p.id_produto,p.valor_produto,lp.quantidade as estoque_produto,p.cod_barra_produto,p.modelo_produto');
+          }else{
+              $this -> db -> select('p.id_produto,p.valor_produto,p.cod_barra_produto,p.modelo_produto');
+          }
 		}
 		$this -> db -> from('produto p');
-                if($idloja!=-1){
-                    $this->db->join('loja_produto lp', 'lp.produto_fk=p.id_produto and lp.loja_fk = '.$idloja);
-                }
+        if($idloja!=-1){
+            $this->db->join('loja_produto lp', 'lp.produto_fk=p.id_produto and lp.loja_fk = '.$idloja);
+        }
 		if (strcmp($code, "0") == 0) {
 			$this -> db -> where('id_produto', $id);
 		} else {
