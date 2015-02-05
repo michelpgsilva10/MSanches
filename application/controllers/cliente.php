@@ -84,7 +84,7 @@ class Cliente extends MY_Controller {
 				$this -> db -> insert('cliente', $cliente_insert);
 				
 				$data["cadastro_cliente"] = TRUE;
-				$data["clientes"] = $this -> usuario_model -> getClientes(0);
+				$data["clientes"] = $this -> usuario_model -> getClientes(0, $this -> session -> userdata('nivel'));
 				
 				$this -> my_load_view('clientes', $data);
 			}				
@@ -180,7 +180,7 @@ class Cliente extends MY_Controller {
 		if ($this -> input -> post('btn_pesquisa_cliente')) {
 			$data["cadastro_cliente"] = false;
 			if ($this -> form_validation -> run()) {
-				$data["clientes"] = $this -> usuario_model -> getCliente($this -> input -> post('pesquisa_cliente'), $opt);
+				$data["clientes"] = $this -> usuario_model -> getCliente($this -> input -> post('pesquisa_cliente'), $opt, $this -> session -> userdata('nivel'));
 				$this -> my_load_view('clientes', $data);				
 			} else {
 				$data["cadastro_cliente"] = false;
@@ -197,18 +197,18 @@ class Cliente extends MY_Controller {
 
 	function comprasCliente($id_cliente) {
 		$data["compras"] = $this -> usuario_model -> getComprasCliente($id_cliente);
-		$data["cliente"] = $this -> usuario_model -> getCliente($id_cliente, 0);
+		$data["cliente"] = $this -> usuario_model -> getCliente($id_cliente, 0, $this -> session -> userdata('nivel'));
 		
 		$this -> my_load_view('comprasCliente', $data);
 	}
 
 	function editarCliente($id_cliente) {
-		$data["cliente"] = $this -> usuario_model -> getCliente($id_cliente, 0);
+		$data["cliente"] = $this -> usuario_model -> getCliente($id_cliente, 0, $this -> session -> userdata('nivel'));
 		$this -> my_load_view('editarCliente', $data);
 	}
 
 	function infoCliente($id_cliente, $edicao_cliente) {
-		$data["cliente"] = $this -> usuario_model -> getCliente($id_cliente, 0);
+		$data["cliente"] = $this -> usuario_model -> getCliente($id_cliente, 0, $this -> session -> userdata('nivel'));
 		
 		if ($edicao_cliente == 1)
 			$data["atualizar_cliente"] = true;
