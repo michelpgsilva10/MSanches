@@ -158,29 +158,18 @@ class Produtos extends MY_Controller {
                     $code = $tipo . $model . $valor;
                     $nome = $produto->foto_produto;
                     $detalhe = $this->input->post('detalhe', TRUE);
-                    if ($this->usuario_model->getProdutoLoja($this->session->userdata('nivel'), $id) != FALSE) {
-                        $data2 = array(
-                            'quantidade' => $this->input->post('quant', TRUE)
-                        );
-                        $this->usuario_model->updateItemnovo($id, $this->session->userdata('nivel'), $data2);
-                    } else {
-                        $lojas = $this->usuario_model->getLoja();
-                        for ($i = 0; $i < count($lojas); $i++) {
-                            if ($this->session->userdata('nivel') == $lojas[$i]['id_loja']) {
-                                $data = array(
-                                    'quantidade' => $this->input->post('quant', TRUE),
-                                    'loja_fk' => $lojas[$i]['id_loja'],
-                                    'produto_fk' => $id
-                                );
-                            } else {
-                                $data = array(
-                                    'quantidade' => 0,
-                                    'loja_fk' => $lojas[$i]['id_loja'],
-                                    'produto_fk' => $id
-                                );
-                            }
-                            $this->usuario_model->setitemnovo($data);
+                    $lojas = $this->usuario_model->getLoja();
+                    for ($i = 0; $i < count($lojas); $i++) {
+                        if ($this->session->userdata('nivel') == $lojas[$i]['id_loja']) {
+                            $data = array(
+                                'quantidade' => $this->input->post('quant'.$lojas[$i]['id_loja'], TRUE),
+                            );
+                        } else {
+                            $data = array(
+                                'quantidade' => $this->input->post('quant'.$lojas[$i]['id_loja'], TRUE),
+                            );
                         }
+                        $this->usuario_model->updateItemnovo($id,$lojas[$i]['id_loja'],$data);
                     }
                     $todos = $this->usuario_model->logs($this->session->userdata('id'), 3, $code);
                     $this->usuario_model->updateProduto($id, $tipo, $valor, $model, $nome, $code, $detalhe);
@@ -254,7 +243,9 @@ class Produtos extends MY_Controller {
                 $data = array('mensagem' => " A Foto não Foi Selecionada");
                 $this->my_load_view('novoProduto', $data);
             } else {
-                $this->my_load_view('novoProduto', null);
+            	$lojas = $this->usuario_model->getLoja();
+				$data = array('lojas' => $lojas,'loja'=>$this->session->userdata('nivel'));
+                $this->my_load_view('novoProduto', $data);
             }
         } else {
             redirect('login');
@@ -393,7 +384,8 @@ class Produtos extends MY_Controller {
                     } else if ($id < 1000) {
                         $id = "0" . $id;
                     } else if ($id > 10000) {
-                        $data = array('foto' => TRUE, '$mensagem' => "Estouro de Tipo - Fale com o Tecnico");
+                    	$lojas = $this->usuario_model->getLoja();
+                        $data = array('foto' => TRUE, 'lojas' => $lojas,'$mensagem' => "Estouro de Tipo - Fale com o Tecnico");
                         $this->my_load_view('novoProduto', $data);
                     }
                     if ($valor < 10) {
@@ -403,7 +395,8 @@ class Produtos extends MY_Controller {
                     } else if ($valor < 1000) {
                         $valor = "0" . $valor;
                     } else if ($valor > 10000) {
-                        $data = array('foto' => TRUE, '$mensagem' => "Valor Superior que 10.000");
+                    	$lojas = $this->usuario_model->getLoja();
+                        $data = array('foto' => TRUE,'lojas' => $lojas,'$mensagem' => "Valor Superior que 10.000");
                         $this->my_load_view('novoProduto', $data);
                     }
 
@@ -413,26 +406,18 @@ class Produtos extends MY_Controller {
                     $idproduto = $this->usuario_model->setProduto($tipo, $valor, $id, $nome, $code, $detalhe);
                     $lojas = $this->usuario_model->getLoja();
                     for ($i = 0; $i < count($lojas); $i++) {
-                        if ($this->session->userdata('nivel') == $lojas[$i]['id_loja']) {
                             $data = array(
-                                'quantidade' => $this->input->post('quant', TRUE),
+                                'quantidade' => $this->input->post('quant'.$lojas[$i]['id_loja'], TRUE),
                                 'loja_fk' => $lojas[$i]['id_loja'],
                                 'produto_fk' => $idproduto
                             );
-                        } else {
-                            $data = array(
-                                'quantidade' => 0,
-                                'loja_fk' => $lojas[$i]['id_loja'],
-                                'produto_fk' => $idproduto
-                            );
-                        }
                         $this->usuario_model->setitemnovo($data);
                     }
                     redirect('produtos/perEtiqueta/' . $code);
                 }
             } else {
-
-                $data = array('foto' => TRUE, 'nome' => $nome);
+            	$lojas = $this->usuario_model->getLoja();
+                $data = array('foto' => TRUE,'lojas' => $lojas,'loja'=>$this->session->userdata('nivel'),'nome' => $nome);
                 $this->my_load_view('novoProduto', $data);
             }
         } else {

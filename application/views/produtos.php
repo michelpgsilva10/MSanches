@@ -66,7 +66,7 @@
 											</select>
 										</div>
 										<div class="col-xs-6 col-sm-4"  align="center" style="margin-left: -2%;">
-											<select class="form-control" name="detalhe" id="detalhe" style="text-align: center;" onchange="troca();" disabled>
+											<select class="form-control" name="detalhe" id="detalhe" style="text-align: center;" onchange="troca();" >
 												<option value="0" <?php if($detalhe==0){echo "selected"; } ?>>Todos</option>
 												<option value="1" <?php if($detalhe==1){echo "selected"; } ?>>Só Dourado</option>
 												<option value="2" <?php if($detalhe==2){echo "selected"; } ?>>Dourado c/ Pedra Natural</option>

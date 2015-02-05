@@ -69,9 +69,25 @@ function Desabilitar(){
 									</div>
 									<div class="form-group">
 										<label for="inputEmail3" class="col-sm-3 control-label">Quantidade</label>
-										<div class="col-sm-3">
-											<input type="text" class="form-control" id="quant" name="quant" style="text-align: center" onkeypress="return SomenteNumero(event);" required>
-										</div>
+										<div class="col-sm-7">
+	                                        <div class=" scroll-tabela" style=" height: 100px;">
+	                                            <table style="width: 100%;">
+	                                                <?php for($i=0;$i<count($lojas);$i++){ ?>
+	                                                <tr>
+	                                                    <td style="width: 60%; padding-left: 10px; padding-top: 5px;">
+	                                                      <h6><?php echo $lojas[$i]['nome_loja']; ?>:</h6>
+	                                                    </td> 
+	                                                    <td style="width: 20%; padding-right: 10px; padding-top: 5px;">
+	                                                          <input type="text" class="form-control" id="quant" <?php if($loja==0){ echo "name=\"quant".$lojas[$i]['id_loja']."\""; }else if($loja == $lojas[$i]['id_loja'] ){  echo "name='quant'".$lojas[$i]['id_loja']; }?>
+	                                                             value="<?php echo '0'; ?>" style="text-align: center" onkeypress="return SomenteNumero(event);" <?php 
+                                                                		if($loja!=0){
+                                                                			if($loja != $lojas[$i]['id_loja'] ){  ?> required disabled <?php }}?>>
+	                                                            </td>
+	                                                    </tr>
+	                                                <?php } ?>
+	                                            </table>
+	                                        </div>
+	                                    </div>
 									</div>
 
 								</div>
