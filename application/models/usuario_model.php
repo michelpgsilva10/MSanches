@@ -17,7 +17,7 @@ Class Usuario_model  extends CI_Model {
 	function getLojaUser($idUser) {
 		$this -> db -> select('NOME_USER,ID_USER,NIVEL_USER');
 		$this -> db -> from('user');
-		$this -> db -> where('NIVEL_USER', $idUser);
+		$this -> db -> where('ID_USER', $idUser);
 		$query = $this -> db -> get();
 		if ($query -> num_rows() > 0) {
 			return $query -> row();

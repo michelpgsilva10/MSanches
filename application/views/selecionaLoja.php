@@ -54,7 +54,7 @@ if (isset($mensagem)) {
 	<div class="col-md-6 col-md-offset-3">
 		<h4><strong> Qual loja você deseja Vender? </strong></h4>
 		<br />
-		<form name="formL" class="form-horizontal" role="form"  method="post" action="<?php echo site_url("venda/seleloja"); ?>">
+		<form name="formL" class="form-horizontal" role="form"  method="post" action="<?php if(isset($tipo)){ echo site_url("empresa/seleloja"); }else{ echo site_url("venda/seleloja"); } ?>">
 			<div class="form-group">
 				<div class="col-sm-7">
 				<select class="form-control" name="loja" id="loja" style="text-align: center;" required>
