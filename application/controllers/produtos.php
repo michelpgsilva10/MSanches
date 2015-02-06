@@ -268,7 +268,7 @@ class Produtos extends MY_Controller {
         $time = time();
         $load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
         if ($this->session->userdata('load') == $load) {
-            $data = array('brinco' => $this->usuario_model->getQantidade(3)->id,
+            /*$data = array('brinco' => $this->usuario_model->getQantidade(3)->id,
                 'anel' => $this->usuario_model->getQantidade(1)->id,
                 'colar' => $this->usuario_model->getQantidade(4)->id,
                 'pulceira' => $this->usuario_model->getQantidade(6)->id,
@@ -282,7 +282,12 @@ class Produtos extends MY_Controller {
                 'bracelete2' => $this->usuario_model->getQantidadeItem(2, $this->session->userdata('nivel'))->total,
                 'conjunto2' => $this->usuario_model->getQantidadeItem(5, $this->session->userdata('nivel'))->total,
                 'tornozeleira2' => $this->usuario_model->getQantidadeItem(7, $this->session->userdata('nivel'))->total,
-				'lojas' => $this->usuario_model->getLoja());
+				'lojas' => $this->usuario_model->getLoja()); */
+				
+			$data["quantidade_item"] = $this -> usuario_model -> getQuantidadeItem2($this -> session -> userdata('nivel'));
+			$data["quantidade_modelo"] = $this -> usuario_model -> getQuantidade2($this -> session -> userdata('nivel'));
+			$data["total_produto"] = $this -> usuario_model -> getTotalProdutos($this -> session -> userdata('nivel')) -> quantidade;
+			$data["total_modelo"] = $this -> usuario_model -> getTotalModelos($this -> session -> userdata('nivel'));
             $this->my_load_view('estoque', $data);
         } else {
             redirect('login');

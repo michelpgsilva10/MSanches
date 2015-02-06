@@ -23,17 +23,21 @@
 									<thead>
 										<th></th>
 										<th style="text-align: center">Tipo</th>
-										<th style="text-align: center">Quntidade de Modelos</th>
+										<th style="text-align: center">Quantidade de Modelos</th>
 										<th style="text-align: center">Quantidade em Estoque</th>
 									</thead>
 									<tbody>
-										<tr>
-											<td style="text-align: center">1</td>
-											<td style="text-align: center">Anel</td>
-											<td style="text-align: center"><?php echo $anel; ?></td>
-											<td style="text-align: center"><?php echo $anel2; ?></td>
-										</tr>
-										<tr>
+										<?php
+										for ($i = 0; $i < count($quantidade_item); $i++) {
+											echo '<tr>';
+												echo '<td style="text-align: center">' . $quantidade_modelo[$i]["tipo_produto"] . '</td>';
+												echo '<td style="text-align: center">' . $quantidade_item[$i]["nome_produto"] . '</td>';
+												echo '<td style="text-align: center">' . $quantidade_modelo[$i]["modelo_produto"] . '</td>';
+												echo '<td style="text-align: center">' . $quantidade_item[$i]["quantidade"] . '</td>';
+											echo '</tr>';
+										}
+										?>
+							<!--			<tr>
 											<td style="text-align: center"> 2 </td>
 											<td style="text-align: center">Bracelete</td>
 											<td style="text-align: center"><?php echo $bracelete; ?></td>
@@ -68,13 +72,13 @@
 											<td style="text-align: center">Tornozeleira</td>
 											<td style="text-align: center"><?php echo $tornozeleira; ?></td>
 											<td style="text-align: center"><?php echo $tornozeleira2; ?></td>
-										</tr>
+										</tr>  -->
 									</tbody>
 									<tfoot>
 										<tr>
 											<td style="text-align: center" colspan="2"><b> Total </b></td>
-											<td style="text-align: center"><?php echo $tornozeleira+$brinco+$anel+$colar+$pulceira+$bracelete+$conjunto+$tornozeleira; ?></td>
-											<td style="text-align: center"><?php echo $tornozeleira2+$brinco2+$anel2+$colar2+$pulceira2+$bracelete2+$conjunto2+$tornozeleira2; ?></td>
+											<td style="text-align: center"><?php echo $total_modelo; ?></td>
+											<td style="text-align: center"><?php echo $total_produto; ?></td>
 										</tr>
 									</tfoot>
 								</table>
