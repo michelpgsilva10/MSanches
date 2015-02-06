@@ -4,7 +4,7 @@
 		$("#confirma").click(function() {
 			$("#dialog").dialog("close");
 		});
-	}); 
+	});
 </script>
 <style>
 	a.button {
