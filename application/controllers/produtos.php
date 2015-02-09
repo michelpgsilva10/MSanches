@@ -285,9 +285,15 @@ class Produtos extends MY_Controller {
 				'lojas' => $this->usuario_model->getLoja()); */
 				
 			$data["quantidade_item"] = $this -> usuario_model -> getQuantidadeItem2($this -> session -> userdata('nivel'));
-			$data["quantidade_modelo"] = $this -> usuario_model -> getQuantidade2($this -> session -> userdata('nivel'));
-			$data["total_produto"] = $this -> usuario_model -> getTotalProdutos($this -> session -> userdata('nivel')) -> quantidade;
-			$data["total_modelo"] = $this -> usuario_model -> getTotalModelos($this -> session -> userdata('nivel'));
+			$data["quantidade_modelo"] = $this -> usuario_model -> getQuantidade2($this -> session -> userdata('nivel'));			
+			$data["id_lojas"] = $this -> usuario_model -> getIdLojas($this -> session -> userdata('nivel'));	
+			$data["lojas"] = $this -> usuario_model -> getLoja();	
+			
+			if ($this -> session -> userdata('nivel') == 0) {
+				$data["quantidade_item_total"] = $this -> usuario_model -> getQuantidadeItemTotal();
+				$data["quantidade_modelo_total"] = $this -> usuario_model -> getQuantidadeTotal();
+			}	
+			
             $this->my_load_view('estoque', $data);
         } else {
             redirect('login');

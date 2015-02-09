@@ -5,6 +5,8 @@ function hideAlertSuccess() {
 
 
 $(document).ready(function() {
+	var estoqueLoja = '0';
+	
 	$('#cpf_cliente').mask('999.999.999-99');
 	$('#tel_cliente').mask('(99) 99999-9999');
 
@@ -33,5 +35,13 @@ $(document).ready(function() {
 			$('#pesquisa_cliente').mask('999.999.999-99');	 
 		}
 		$('#pesquisa_cliente').focus();	
+	});
+	
+	$('#opcao_loja').change(function() {	
+		
+		$('#div' + estoqueLoja).hide();			
+		$('#div' + $('#opcao_loja').val()).show();
+		
+		estoqueLoja = $('#opcao_loja').val();	
 	});
 });

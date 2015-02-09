@@ -96,12 +96,28 @@ Class Usuario_model  extends CI_Model {
 	}
 	
 	function getQuantidadeItem2($id_loja) {
-		$this -> db -> select("CASE p.tipo_produto WHEN 1 THEN 'Anel' WHEN 2 THEN 'Bracelete' WHEN 3 THEN 'Brinco' WHEN 4 THEN 'Colar' WHEN 5 THEN 'Conjunto' WHEN 6 THEN 'Pulseira' WHEN 7 THEN 'Tornozeleira' END nome_produto, SUM(lp.quantidade) quantidade", false);
+		$this -> db -> select("CASE p.tipo_produto WHEN 1 THEN 'Anel' WHEN 2 THEN 'Bracelete' WHEN 3 THEN 'Brinco' WHEN 4 THEN 'Colar' WHEN 5 THEN 'Conjunto' WHEN 6 THEN 'Pulseira' WHEN 7 THEN 'Tornozeleira' END nome_produto, SUM(lp.quantidade) quantidade, lp.loja_fk, p.tipo_produto", false);
 		$this -> db -> from("produto p");
 		$this -> db -> join("loja_produto lp", "p.id_produto = lp.produto_fk");
 		$this -> db -> where("p.del_produto !=", "1");
 		if ($id_loja <> 0) 
 			$this -> db -> where("lp.loja_fk", $id_loja);
+		$this -> db -> group_by("lp.loja_fk, p.tipo_produto");
+		
+		$query = $this -> db -> get();
+		
+		if ($query -> num_rows() > 0) {
+			return $query -> result_array();
+		} else {
+			return false;
+		}
+	}
+	
+	function getQuantidadeItemTotal() {
+		$this -> db -> select("CASE p.tipo_produto WHEN 1 THEN 'Anel' WHEN 2 THEN 'Bracelete' WHEN 3 THEN 'Brinco' WHEN 4 THEN 'Colar' WHEN 5 THEN 'Conjunto' WHEN 6 THEN 'Pulseira' WHEN 7 THEN 'Tornozeleira' END nome_produto, SUM(lp.quantidade) quantidade, p.tipo_produto", false);
+		$this -> db -> from("produto p");
+		$this -> db -> join("loja_produto lp", "p.id_produto = lp.produto_fk");
+		$this -> db -> where("p.del_produto !=", "1");
 		$this -> db -> group_by("p.tipo_produto");
 		
 		$query = $this -> db -> get();
@@ -118,7 +134,12 @@ Class Usuario_model  extends CI_Model {
 		$this -> db -> from("produto p");
 		$this -> db -> join("loja_produto lp", "p.id_produto = lp.produto_fk");
 		$this -> db -> where("p.del_produto !=", "1");
-		$this -> db -> group_by("p.tipo_produto");
+		
+		if ($id_loja <> 0)
+			$this -> db -> where("lp.loja_fk", $id_loja);
+		
+		$this -> db -> group_by("lp.loja_fk, p.tipo_produto");
+		$this -> db -> order_by("lp.loja_fk, p.tipo_produto");
 		
 		$query = $this -> db -> get();
 		
@@ -129,34 +150,39 @@ Class Usuario_model  extends CI_Model {
 		}
 	}
 	
-	function getTotalProdutos($id_loja) {
-		$this -> db -> select_sum("lp.quantidade");
+	function getQuantidadeTotal() {
+		$this -> db -> select("p.tipo_produto, COUNT(p.modelo_produto) modelo_produto", false);
 		$this -> db -> from("produto p");
 		$this -> db -> join("loja_produto lp", "p.id_produto = lp.produto_fk");
-		$this -> db -> where("p.del_produto !=", "1");
+		$this -> db -> where("p.del_produto !=", "1");		
+		$this -> db -> group_by("p.tipo_produto");
+		$this -> db -> order_by("p.tipo_produto");
 		
 		$query = $this -> db -> get();
 		
 		if ($query -> num_rows() > 0) {
-			return $query -> row();
+			return $query -> result_array();
 		} else {
-			return 0;
+			return false;
 		}
 	}
 	
-	function getTotalModelos($id_loja) {
-		$this -> db -> select("p.modelo_produto");
-		$this -> db -> from("produto p");
-		$this -> db -> join("loja_produto lp", "p.id_produto = lp.produto_fk");
-		$this -> db -> where("p.del_produto !=", "1");
+	function getIdLojas($id_loja) {
+		$this -> db -> distinct();
+		$this -> db -> select("id_loja");
+		$this -> db -> from("loja");
+		
+		if ($id_loja <> 0)
+			$this -> db -> where("id_loja", $id_loja);
+		
+		$this -> db -> order_by("id_loja");
 		
 		$query = $this -> db -> get();
 		
-		if ($query -> num_rows() > 0) {
-			return $query -> num_rows();
-		} else {
+		if ($query -> num_rows() > 0)
+			return $query -> result_array();
+		else
 			return 0;
-		}
 	}
 
 	function deletarProduto($id) {
@@ -408,7 +434,7 @@ Class Usuario_model  extends CI_Model {
 		}
 	}
         
-        function getLoja() {
+    function getLoja() {
 		$this -> db -> select('id_loja, nome_loja');
 		$this -> db -> from('loja');
 		$query = $this -> db -> get();

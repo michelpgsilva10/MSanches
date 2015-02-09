@@ -7,6 +7,9 @@
 					
 					<div class="container-fluid" align="center">
 						<div width="100%" align="center" style="padding-top: 10px; padding-bottom: 10px;">
+							<?php 
+								if (count($id_lojas) > 1) {
+							?>
 							<div class="btn-group" align="left">
 								<select id="opcao_loja" class="form-control">
 									<option value="0">Todas as Lojas</option>	
@@ -16,9 +19,16 @@
 									?>								
 								</select>						
 							</div>
-						</div>	
-						<div class="row">
+							<?php } ?>
+						</div>
+						
+						<?php 
+							if ($this -> session -> userdata('nivel') == 0) {
+						?>
+						
+						<div id="div0" class="row">
 							<div class="col-md-8 col-md-offset-2" align="center" >
+								
 								<table class="table table-striped table-hover">
 									<thead>
 										<th></th>
@@ -27,15 +37,73 @@
 										<th style="text-align: center">Quantidade em Estoque</th>
 									</thead>
 									<tbody>
-										<?php
-										for ($i = 0; $i < count($quantidade_item); $i++) {
-											echo '<tr>';
-												echo '<td style="text-align: center">' . $quantidade_modelo[$i]["tipo_produto"] . '</td>';
-												echo '<td style="text-align: center">' . $quantidade_item[$i]["nome_produto"] . '</td>';
-												echo '<td style="text-align: center">' . $quantidade_modelo[$i]["modelo_produto"] . '</td>';
-												echo '<td style="text-align: center">' . $quantidade_item[$i]["quantidade"] . '</td>';
-											echo '</tr>';
-										}
+										<?php	
+											$quantidade_prod = 0;
+											$quantidade_modelo_prod = 0;
+																			
+											for ($j = 0; $j < count($quantidade_item_total); $j++) {
+												echo '<tr>';
+													echo '<td style="text-align: center">' . $quantidade_item_total[$j]["tipo_produto"] . '</td>';
+													echo '<td style="text-align: center">' . $quantidade_item_total[$j]["nome_produto"] . '</td>';
+													echo '<td style="text-align: center">' . $quantidade_modelo_total[$j]["modelo_produto"] . '</td>';
+													echo '<td style="text-align: center">' . $quantidade_item_total[$j]["quantidade"] . '</td>';
+												echo '</tr>';
+													
+												$quantidade_prod += $quantidade_item_total[$j]["quantidade"];
+												$quantidade_modelo_prod +=  $quantidade_modelo_total[$j]["modelo_produto"];
+				
+											}									
+										?>
+									</tbody>
+									<tfoot>
+										<tr>
+											<td style="text-align: center" colspan="2"><b> Total </b></td>
+											<td style="text-align: center"><?php echo $quantidade_modelo_prod; ?></td>
+											<td style="text-align: center"><?php echo $quantidade_prod; ?></td>
+										</tr>
+									</tfoot>
+								</table>								
+							</div>
+						</div>
+						<?php } ?>
+						
+							
+						<?php 
+							for ($i = 0; $i < count($id_lojas); $i++) {
+								if (count($id_lojas) > 1)
+									$display_div = 'style="display: none;"';
+								else
+									$display_div = '';
+						?>												
+						
+						<div class="row" <?php echo 'id="div' . $id_lojas[$i]["id_loja"] . '"; ' . $display_div; ?> >
+							<div class="col-md-8 col-md-offset-2" align="center" >
+								
+								<table class="table table-striped table-hover">
+									<thead>
+										<th></th>
+										<th style="text-align: center">Tipo</th>
+										<th style="text-align: center">Quantidade de Modelos</th>
+										<th style="text-align: center">Quantidade em Estoque</th>
+									</thead>
+									<tbody>
+										<?php	
+											$quantidade_prod = 0;
+											$quantidade_modelo_prod = 0;
+																			
+											for ($j = 0; $j < count($quantidade_item); $j++) {
+												if ($quantidade_item[$j]["loja_fk"] == $id_lojas[$i]["id_loja"]) {
+													echo '<tr>';
+														echo '<td style="text-align: center">' . $quantidade_item[$j]["tipo_produto"] . '</td>';
+														echo '<td style="text-align: center">' . $quantidade_item[$j]["nome_produto"] . '</td>';
+														echo '<td style="text-align: center">' . $quantidade_modelo[$j]["modelo_produto"] . '</td>';
+														echo '<td style="text-align: center">' . $quantidade_item[$j]["quantidade"] . '</td>';
+													echo '</tr>';
+													
+													$quantidade_prod += $quantidade_item[$j]["quantidade"];
+													$quantidade_modelo_prod +=  $quantidade_modelo[$j]["modelo_produto"];
+												}
+											}									
 										?>
 							<!--			<tr>
 											<td style="text-align: center"> 2 </td>
@@ -77,13 +145,14 @@
 									<tfoot>
 										<tr>
 											<td style="text-align: center" colspan="2"><b> Total </b></td>
-											<td style="text-align: center"><?php echo $total_modelo; ?></td>
-											<td style="text-align: center"><?php echo $total_produto; ?></td>
+											<td style="text-align: center"><?php echo $quantidade_modelo_prod; ?></td>
+											<td style="text-align: center"><?php echo $quantidade_prod; ?></td>
 										</tr>
 									</tfoot>
-								</table>
+								</table>								
 							</div>
 						</div>
+						<?php } ?>
 					</div>
 					<br />
 				</div>
