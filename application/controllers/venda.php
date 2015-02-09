@@ -13,7 +13,32 @@ class Venda extends MY_Controller {
         $time = time();
         $load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
         if ($this->session->userdata('load') == $load) {
-            $this->my_load_view('venda', NULL);
+        	if($this->session->userdata('nivel')==0){
+        		$lojas = $this->usuario_model->getLoja();
+				$data = array('lojas' => $lojas);
+            	$this->my_load_view('selecionaLoja', $data);
+			}else{
+				$this->my_load_view('venda', NULL);
+			}
+        } else {
+            redirect('login');
+        }
+    }
+	public function seleloja() {
+        $datestring = "%m%d";
+        $time = time();
+        $load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
+        if ($this->session->userdata('load') == $load) {
+        	$this->load->library('form_validation');
+        	$this -> form_validation -> set_rules('loja', 'Loja', 'required|xss_clean');
+			if ($this -> form_validation -> run() == FALSE) {
+        		$lojas = $this->usuario_model->getLoja();
+				$data = array('lojas' => $lojas,'mensagem' => "Erro ao Selecionar a Loja");
+                $this->my_load_view('selecionaLoja', $data);
+			}else{
+				$this -> session -> set_userdata('nivel', trim($this->input->post('loja', TRUE)));
+            	$this->my_load_view('venda', NULL);
+			}
         } else {
             redirect('login');
         }
@@ -97,7 +122,7 @@ class Venda extends MY_Controller {
             if ($idlista != -1) {//->Verifica se possui lista
                 $desc = (int) $this->input->post('desconto', TRUE);
                 $produtos = $this->venda_model->getLista($idlista, $this->session->userdata('id')); // -> Pega todos os Itens da Lista
-                $produto = $this->usuario_model->getProduto(0, trim($this->input->post('codigoP', TRUE)), 0, $this->session->userdata('nivel')); // -> Pega o Produto
+                $produto = $this->usuario_model->getProduto(0, trim($this->input->post('codigoP', TRUE)), 1, $this->session->userdata('nivel')); // -> Pega o Produto
                 if (($produto != FALSE) && (trim($this->input->post('quantP', TRUE)) != "")) {//Verifica se o produto Existe
                     $testeE = 0; // Flag de Erro
                     $quantidade = $this->venda_model->verificaItem($produto->id_produto, $idlista, $this->session->userdata('id'));
@@ -269,7 +294,7 @@ class Venda extends MY_Controller {
                 }
             } else {// -> Quando a Lista não foi Criada
                 $desc = (int) $this->input->post('desconto', TRUE);
-                $produto = $this->usuario_model->getProduto(0, trim($this->input->post('codigoP', TRUE)), 0, $this->session->userdata('nivel'));
+                $produto = $this->usuario_model->getProduto(0, trim($this->input->post('codigoP', TRUE)), 1, $this->session->userdata('nivel'));
                 if (($produto != FALSE) && (trim($this->input->post('quantP', TRUE)) != "")) {//->Verifica se Possui o Produto e se foi passada uma quantidade
                     if ($this->input->post('quantP', TRUE) <= $produto->estoque_produto) {// -> Verifica se a quantidade passada é menor ou igual a que tem no estoque
                         $desconto = $produto->valor_produto * ((int) $this->input->post('desconto', TRUE) / 100); //->Calcula o desconto	
@@ -452,7 +477,7 @@ class Venda extends MY_Controller {
                     $idVenda = $this->usuario_model->setVenda($cliente[0]['id_cliente'], $total, 0);
                     $sProduto = -1;
                     for ($i = 0; $i < count($produtos); $i++) {
-                        $produto = $this->usuario_model->getProduto($produtos[$i]['id_produto'], 0, 0, $this->session->userdata('nivel'));
+                        $produto = $this->usuario_model->getProduto($produtos[$i]['id_produto'], 0, 1, $this->session->userdata('nivel'));
                         if ($produtos[$i]['quantidade'] <= $produto->estoque_produto) {
                             if ($produtos[$i]['quantidade'] == $produto->estoque_produto) {
                                 $data = array(
@@ -520,7 +545,7 @@ class Venda extends MY_Controller {
                         $this->usuario_model->setVendaC($idVenda); //nova item da tabela consignato
                         $sProduto = -1;
                         for ($i = 0; $i < count($produtos); $i++) {
-                            $produto = $this->usuario_model->getProduto($produtos[$i]['id_produto'], 0, 0, $this->session->userdata('nivel'));
+                            $produto = $this->usuario_model->getProduto($produtos[$i]['id_produto'], 0, 1, $this->session->userdata('nivel'));
                             if ($produtos[$i]->estoque_produto > $produto->estoque_produto) {
                                 $sProduto = $produtos[$i]['codbarras'];
                                 break;
@@ -535,7 +560,7 @@ class Venda extends MY_Controller {
                             $this->my_load_view('vendaConsig', $data);
                         } else {
                             for ($i = 0; $i < count($produtos); $i++) {
-                                $produto = $this->usuario_model->getProduto($produtos[$i]['id_produto'], 0, 0, $this->session->userdata('nivel'));
+                                $produto = $this->usuario_model->getProduto($produtos[$i]['id_produto'], 0, 1, $this->session->userdata('nivel'));
                                 if ($produtos[$i]['quantidade'] == $produto->estoque_produto) {
                                     $data = array(
                                         'quantidade' => 0
@@ -601,11 +626,10 @@ class Venda extends MY_Controller {
         $load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
         if ($this->session->userdata('load') == $load) {
             if ($idlista != -1) {
-                if ($this->venda_model->deleteLista($idlista, $this->session->userdata('id'))) {
+                if ($this->venda_model->deleteLista($idlista, $this->session->userdata('id'),$tipo)) {
                     if ($tipo == 0) {
                         redirect('venda');
                     } else {
-
                         redirect('venda/consignado');
                     }
                 } else {
@@ -649,7 +673,7 @@ class Venda extends MY_Controller {
                         $idlista=-1;
                     }
                     $produtos = $this->venda_model->getLista($idlista, $this->session->userdata('id')); // -> Pega todos os Itens da Lista
-                    $produto = $this->usuario_model->getProduto($i, 0, 0, $this->session->userdata('nivel')); // -> Pega o Produto
+                    $produto = $this->usuario_model->getProduto($i, 0, 1, $this->session->userdata('nivel')); // -> Pega o Produto
                     if ($tipo == 0) {
                         if ($id != -1) {
                             $data = array('total' => $total, 'desconto' => $desconto, 'idlista' => $idlista, 'produtos' => $produtos, 'cliente' => $cliente, 'mensagemC' => "Foi Deletado o item: " . $produto->cod_barra_produto);
@@ -739,15 +763,15 @@ class Venda extends MY_Controller {
         $time = time();
         $load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
         if ($this->session->userdata('load') == $load) {
-            $produto = $this->usuario_model->getProduto(0, trim($this->input->post('codigoP', TRUE)),0,$this->session->userdata('nivel'));
-            $total = $this->venda_model->getValor($idlista, $this->session->userdata('id'))->valor_pago;
-            $idLista = $this->venda_model->getExID($this->session->userdata('id'))->id_lista;
+            $produto = $this->usuario_model->getProduto(0, trim($this->input->post('codigoP', TRUE)),1,$this->session->userdata('nivel'));
+            $total = $this->venda_model->getValor($idlista, $this->session->userdata('id'),1)->valor_pago;
+            $idLista = $this->venda_model->getExID($this->session->userdata('id'),1)->id_lista;
             $cliente = $this->usuario_model->getCliente($idCliente, 0,$this->session->userdata('nivel'));
-            $produtos = $this->venda_model->getLista($idlista, $this->session->userdata('id'));
+            $produtos = $this->venda_model->getLista($idlista, $this->session->userdata('id'),1);
             if ($produto != FALSE) {
                 if ($idLista != null) {
                     $verifica = -1;
-                    $quantidade = $this->venda_model->verificaItem($produto->id_produto, $idlista, $this->session->userdata('id'));
+                    $quantidade = $this->venda_model->verificaItem($produto->id_produto, $idlista, $this->session->userdata('id'),1);
                     if ($quantidade != FALSE) {//Verifica se já existe um produto
                         if ($quantidade->quantidade >= $quantidade->quantidade_D + 1) {//Verifica se a quantidade devolvida mais um é menor que a quantidade levada
                             if ($this->input->post('quantP', TRUE) != 1) {//verifica se a quantidade passada é != de 1
@@ -757,9 +781,9 @@ class Venda extends MY_Controller {
                                         'quantidade_D' => $quantidade->quantidade_D + $this->input->post('quantP', TRUE),
                                         'valor_pago' => ($produto->valor_produto - $desconto) * ($quantidade->quantidade - ($quantidade->quantidade_D + $this->input->post('quantP', TRUE)))
                                     );
-                                    if ($this->venda_model->updateItem($produto->id_produto, $idlista, $this->session->userdata('id'), $nproduto)) {
-                                        $total = $this->venda_model->getValor($idLista, $this->session->userdata('id'))->valor_pago;
-                                        $produtos = $this->venda_model->getLista($idlista, $this->session->userdata('id'));
+                                    if ($this->venda_model->updateItem($produto->id_produto, $idlista, $this->session->userdata('id'), $nproduto,1)) {
+                                        $total = $this->venda_model->getValor($idLista, $this->session->userdata('id'),1)->valor_pago;
+                                        $produtos = $this->venda_model->getLista($idlista, $this->session->userdata('id'),1);
                                         if ($quantidade->quantidade_D != 0) {//Verifica se já foi verificado
                                             $verifica = -4;
                                         } else {
@@ -777,14 +801,14 @@ class Venda extends MY_Controller {
                                     'quantidade_D' => $quantidade->quantidade_D + 1,
                                     'valor_pago' => ($produto->valor_produto - $desconto) * ($quantidade->quantidade - ($quantidade->quantidade_D + 1))
                                 );
-                                if ($this->venda_model->updateItem($produto->id_produto, $idlista, $this->session->userdata('id'), $nproduto)) {
+                                if ($this->venda_model->updateItem($produto->id_produto, $idlista, $this->session->userdata('id'), $nproduto,1)) {
                                     if ($quantidade->quantidade_D != 0) {
                                         $verifica = -4;
                                     } else {
                                         $verifica = 0;
                                     }
-                                    $total = $this->venda_model->getValor($idLista, $this->session->userdata('id'))->valor_pago;
-                                    $produtos = $this->venda_model->getLista($idlista, $this->session->userdata('id'));
+                                    $total = $this->venda_model->getValor($idLista, $this->session->userdata('id'),1)->valor_pago;
+                                    $produtos = $this->venda_model->getLista($idlista, $this->session->userdata('id'),1);
                                 } else {
                                     $verifica = -3;
                                 }
@@ -873,9 +897,9 @@ class Venda extends MY_Controller {
         $load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
         if ($this->session->userdata('load') == $load) {
             $verifica = 1;
-            $idLista = $this->venda_model->getExID($this->session->userdata('id'))->id_lista;
+            $idLista = $this->venda_model->getExID($this->session->userdata('id'),1)->id_lista;
             if ($idLista != null) {
-                if ($this->venda_model->deleteLista($idLista, $this->session->userdata('id'))) {
+                if ($this->venda_model->deleteLista($idLista, $this->session->userdata('id'),2)) {
                     $verifica = 1;
                 } else {
                     $verifica = 2;
@@ -885,8 +909,9 @@ class Venda extends MY_Controller {
                 $compras = $this->usuario_model->getCompras($id);
                 $venda = $this->usuario_model->getVenda($id);
                 $cliente = $this->usuario_model->getCliente($venda->cliente_fk, 0,$this->session->userdata('nivel'));
+                $verifica=-1;
                 for ($i = 0; $i < count($compras); $i++) {
-                    $produto = $this->usuario_model->getProduto($compras[$i]['produto_fk'], 0, $this->session->userdata('nivel'));
+                    $produto = $this->usuario_model->getProduto($compras[$i]['produto_fk'], 0,1, $this->session->userdata('nivel'));
                     $desconto = $produto->valor_produto * ($compras[$i]['desconto_compra'] / 100); //->Calcula o desconto	
                     $nproduto = array(
                         'id_lista' => 1,
@@ -896,18 +921,16 @@ class Venda extends MY_Controller {
                         'quantidade' => $compras[$i]['quantidade_produto'],
                         'valor_uni' => $produto->valor_produto,
                         'desconto' => $compras[$i]['desconto_compra'],
-                        'valor_pago' => ($produto->valor_produto - $desconto) * $compras[$i]['quantidade_produto']
+                        'valor_pago' => ($produto->valor_produto - $desconto) * $compras[$i]['quantidade_produto'],
+                        'tipo_lista' => 1
                     );
-                    if ($this->venda_model->setitem($nproduto)) {
-                        $verifica = -1;
-                    } else {
+                    if (!$this->venda_model->setitem($nproduto)) {
                         $verifica = 2;
-                        break;
                     }
                 }
                 if ($verifica == -1) {
-                    $produtos = $this->venda_model->getLista(1, $this->session->userdata('id')); // -> Atualiza a lista produtos
-                    $total = $this->venda_model->getValor(1, $this->session->userdata('id'))->valor_pago; // -> Pega o Valor Total da somatoria dos Valores pago
+                    $produtos = $this->venda_model->getLista(1, $this->session->userdata('id'),1); // -> Atualiza a lista produtos
+                    $total = $this->venda_model->getValor(1, $this->session->userdata('id'),1)->valor_pago; // -> Pega o Valor Total da somatoria dos Valores pago
                     $data = array('cliente' => $cliente, 'idlista' => 1, 'total' => $total, 'produtos' => $produtos, 'id' => $id);
                     $this->my_load_view('vendaRetorno', $data);
                 } else {
@@ -969,17 +992,17 @@ class Venda extends MY_Controller {
         $load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
         if ($this->session->userdata('load') == $load) {
             $cliente = $this->usuario_model->getCliente($idCliente, 0,$this->session->userdata('nivel'));
-            $produto = $this->usuario_model->getProduto($idproduto, 0,0,$this->session->userdata('nivel'));
-            $total = $this->venda_model->getValor($idlista, $this->session->userdata('id'))->valor_pago;
-            $quantidade = $this->venda_model->verificaItem($produto->id_produto, $idlista, $this->session->userdata('id'));
+            $produto = $this->usuario_model->getProduto($idproduto, 0,1,$this->session->userdata('nivel'));
+            $total = $this->venda_model->getValor($idlista, $this->session->userdata('id'),1)->valor_pago;
+            $quantidade = $this->venda_model->verificaItem($produto->id_produto, $idlista, $this->session->userdata('id'),1);
             $desconto = $produto->valor_produto * ($quantidade->desconto / 100);
             $nproduto = array(
                 'quantidade_D' => 0,
                 'valor_pago' => ($produto->valor_produto - $desconto) * ($quantidade->quantidade - 0)
             );
-            if ($this->venda_model->updateItem($produto->id_produto, $idlista, $this->session->userdata('id'), $nproduto)) {
-                $total = $this->venda_model->getValor($idlista, $this->session->userdata('id'))->valor_pago;
-                $produtos = $this->venda_model->getLista($idlista, $this->session->userdata('id'));
+            if ($this->venda_model->updateItem($produto->id_produto, $idlista, $this->session->userdata('id'), $nproduto,1)) {
+                $total = $this->venda_model->getValor($idlista, $this->session->userdata('id'),1)->valor_pago;
+                $produtos = $this->venda_model->getLista($idlista, $this->session->userdata('id'),1);
                 $data = array('cliente' => $cliente, 'total' => $total, 'idlista' => $idlista, 'produtos' => $produtos, 'id' => $id);
                 $this->my_load_view('vendaRetorno', $data);
             } else {
@@ -996,24 +1019,24 @@ class Venda extends MY_Controller {
         $time = time();
         $load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
         if ($this->session->userdata('load') == $load) {
-            $produtos = $this->venda_model->getLista($idlista, $this->session->userdata('id'));
+            $produtos = $this->venda_model->getLista($idlista, $this->session->userdata('id'),1);
             $cliente = $this->usuario_model->getCliente($idCliente, 0,$this->session->userdata('nivel'));
             $vendaRtorno = $this->usuario_model->setVenda($idCliente, $total,2);
             for ($i = 0; $i < count($produtos); $i++) {
-                $produto = $this->usuario_model->getProduto($produtos[$i]['id_produto'], 0,0,$this->session->userdata('nivel')); 
+                $produto = $this->usuario_model->getProduto($produtos[$i]['id_produto'], 0,1,$this->session->userdata('nivel')); 
                 $data = array(
                   'quantidade' => $produto->estoque_produto += $produtos[$i]['quantidade_D']
                  );  
                 $this->usuario_model->updateLojaproduto($produtos[$i]['id_produto'], $this->session->userdata('nivel'), $data);
                 if ($produtos[$i]['quantidade_D'] != $produtos[$i]['quantidade']) {
-                    $this->usuario_model->setCompra($idCliente, $produtos[$i]['quantidade_D'] - $produtos[$i]['quantidade_D'], $produto->id_produto, $vendaRtorno, $produtos[$i]['desconto']);
+                    $this->usuario_model->setCompra($idCliente, $produtos[$i]['quantidade'] - $produtos[$i]['quantidade_D'], $produto->id_produto, $vendaRtorno, $produtos[$i]['desconto']);
                 } else {
                     $this->usuario_model->setCompra($idCliente, 0, $produto->id_produto, $vendaRtorno, $produtos[$i]['desconto']);
                 }
             }
             $vendasC = $this->usuario_model->getVendaC($idVenda);
             $this->usuario_model->updateVendaCom($vendasC[0]['id_venda_consignado'], $vendaRtorno);
-            $total = $this->venda_model->getValor($idlista, $this->session->userdata('id'))->valor_pago;
+            $total = $this->venda_model->getValor($idlista, $this->session->userdata('id'),1)->valor_pago;
             if ($total == null) {
                 $total = 0;
             }
@@ -1049,7 +1072,9 @@ class Venda extends MY_Controller {
                 $total = $this->venda_model->getValor($idlista, $this->session->userdata('id'))->valor_pago; // -> Pega o Valor Total da somatoria dos Valores pago
                 $produtos = $this->venda_model->getLista($idlista, $this->session->userdata('id')); // -> Pega todos os Itens da Lista
                 if ($tipo == 0) {
-                    $cliente = $this->usuario_model->getCliente($idCliente, 0);
+                	$produtos = $this->venda_model->getLista($idlista, $this->session->userdata('id'),1);
+					$total = $this->venda_model->getValor($idlista, $this->session->userdata('id'),1)->valor_pago; // -> Pega o Valor Total da somatoria dos Valores pago
+                    $cliente = $this->usuario_model->getCliente($idCliente, 0,$this->session->userdata('nivel'));
                     $data = array('cliente' => $cliente, 'desconto' => $desconto, 'total' => $total, 'idlista' => $idlista, 'produtos' => $produtos, 'id' => $id, 'valorMim' => $valorMim);
                     $this->my_load_view('vendaRetorno', $data);
                 } else if ($tipo == 1) {

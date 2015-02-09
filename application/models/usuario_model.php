@@ -14,6 +14,17 @@ Class Usuario_model  extends CI_Model {
 			return FALSE;
 		}
 	}
+	function getLojaUser($idUser) {
+		$this -> db -> select('NOME_USER,ID_USER,NIVEL_USER');
+		$this -> db -> from('user');
+		$this -> db -> where('ID_USER', $idUser);
+		$query = $this -> db -> get();
+		if ($query -> num_rows() > 0) {
+			return $query -> row();
+		} else {
+			return FALSE;
+		}
+	}
 
 	function getID() {
 		$this -> db -> select_max('id_produto');
@@ -67,12 +78,13 @@ Class Usuario_model  extends CI_Model {
 		}
 	}
 
-	function getQantidadeItem($tipo,$idloja) {
+	function getQantidadeItem($tipo, $idloja) {
 		$this -> db -> select('SUM(lp.quantidade) AS total');
 		$this -> db -> from('produto p');
-                $this->db->join('loja_produto lp', 'lp.produto_fk=p.id_produto');
+        $this -> db -> join('loja_produto lp', 'lp.produto_fk = p.id_produto');
 		$this -> db -> where('del_produto !=', '1');
-                $this -> db -> where('lp.loja_fk',$idloja );
+		if($idloja <> 0)
+        	$this -> db -> where('lp.loja_fk', $idloja);
 		$this -> db -> where('estoque_produto !=', 0);
 		$this -> db -> where('tipo_produto', $tipo);
 		$query = $this -> db -> get();
@@ -81,6 +93,96 @@ Class Usuario_model  extends CI_Model {
 		} else {
 			return 0;
 		}
+	}
+	
+	function getQuantidadeItem2($id_loja) {
+		$this -> db -> select("CASE p.tipo_produto WHEN 1 THEN 'Anel' WHEN 2 THEN 'Bracelete' WHEN 3 THEN 'Brinco' WHEN 4 THEN 'Colar' WHEN 5 THEN 'Conjunto' WHEN 6 THEN 'Pulseira' WHEN 7 THEN 'Tornozeleira' END nome_produto, SUM(lp.quantidade) quantidade, lp.loja_fk, p.tipo_produto", false);
+		$this -> db -> from("produto p");
+		$this -> db -> join("loja_produto lp", "p.id_produto = lp.produto_fk");
+		$this -> db -> where("p.del_produto !=", "1");
+		if ($id_loja <> 0) 
+			$this -> db -> where("lp.loja_fk", $id_loja);
+		$this -> db -> group_by("lp.loja_fk, p.tipo_produto");
+		
+		$query = $this -> db -> get();
+		
+		if ($query -> num_rows() > 0) {
+			return $query -> result_array();
+		} else {
+			return false;
+		}
+	}
+	
+	function getQuantidadeItemTotal() {
+		$this -> db -> select("CASE p.tipo_produto WHEN 1 THEN 'Anel' WHEN 2 THEN 'Bracelete' WHEN 3 THEN 'Brinco' WHEN 4 THEN 'Colar' WHEN 5 THEN 'Conjunto' WHEN 6 THEN 'Pulseira' WHEN 7 THEN 'Tornozeleira' END nome_produto, SUM(lp.quantidade) quantidade, p.tipo_produto", false);
+		$this -> db -> from("produto p");
+		$this -> db -> join("loja_produto lp", "p.id_produto = lp.produto_fk");
+		$this -> db -> where("p.del_produto !=", "1");
+		$this -> db -> group_by("p.tipo_produto");
+		
+		$query = $this -> db -> get();
+		
+		if ($query -> num_rows() > 0) {
+			return $query -> result_array();
+		} else {
+			return false;
+		}
+	}
+	
+	function getQuantidade2($id_loja) {
+		$this -> db -> select("p.tipo_produto, COUNT(p.modelo_produto) modelo_produto", false);
+		$this -> db -> from("produto p");
+		$this -> db -> join("loja_produto lp", "p.id_produto = lp.produto_fk");
+		$this -> db -> where("p.del_produto !=", "1");
+		
+		if ($id_loja <> 0)
+			$this -> db -> where("lp.loja_fk", $id_loja);
+		
+		$this -> db -> group_by("lp.loja_fk, p.tipo_produto");
+		$this -> db -> order_by("lp.loja_fk, p.tipo_produto");
+		
+		$query = $this -> db -> get();
+		
+		if ($query -> num_rows() > 0) {
+			return $query -> result_array();
+		} else {
+			return false;
+		}
+	}
+	
+	function getQuantidadeTotal() {
+		$this -> db -> select("p.tipo_produto, COUNT(p.modelo_produto) modelo_produto", false);
+		$this -> db -> from("produto p");
+		$this -> db -> join("loja_produto lp", "p.id_produto = lp.produto_fk");
+		$this -> db -> where("p.del_produto !=", "1");		
+		$this -> db -> group_by("p.tipo_produto");
+		$this -> db -> order_by("p.tipo_produto");
+		
+		$query = $this -> db -> get();
+		
+		if ($query -> num_rows() > 0) {
+			return $query -> result_array();
+		} else {
+			return false;
+		}
+	}
+	
+	function getIdLojas($id_loja) {
+		$this -> db -> distinct();
+		$this -> db -> select("id_loja");
+		$this -> db -> from("loja");
+		
+		if ($id_loja <> 0)
+			$this -> db -> where("id_loja", $id_loja);
+		
+		$this -> db -> order_by("id_loja");
+		
+		$query = $this -> db -> get();
+		
+		if ($query -> num_rows() > 0)
+			return $query -> result_array();
+		else
+			return 0;
 	}
 
 	function deletarProduto($id) {
@@ -151,6 +253,19 @@ Class Usuario_model  extends CI_Model {
 		$this -> db -> update('produto', $data);
 	}
 
+		function getAllProdutos() {
+		$this -> db -> select('*');
+		$this -> db -> from('produto');
+		$this -> db -> where('del_produto !=', '1');
+		$this -> db -> order_by("id_produto", "ASC");
+		$query = $this -> db -> get();
+		if ($query -> num_rows() > 0) {
+			return $query -> result_array();
+		} else {
+			return FALSE;
+		}
+	}
+	
 	function getProdutos($inicio, $tipo,$quali=0,$menor=0,$maior=0) {
 		$this -> db -> select('*');
 		$this -> db -> from('produto');
@@ -257,22 +372,22 @@ Class Usuario_model  extends CI_Model {
 
 	function getProduto($id, $code,$add=0,$idloja=-1) {
 		if($add != 0){
-                    if($idloja!=-1){
-			$this -> db -> select('p.id_produto,p.valor_produto,lp.quantidade as estoque_produto,p.cod_barra_produto,p.modelo_produto,p.del_produto');
-                    }else{
-                        $this -> db -> select('p.id_produto,p.valor_produto,p.cod_barra_produto,p.modelo_produto,p.del_produto');
-                    }
+            if($idloja!=-1){
+				$this -> db -> select('p.id_produto,p.valor_produto,lp.quantidade as estoque_produto,p.cod_barra_produto,p.modelo_produto,p.del_produto');
+            }else{
+                $this -> db -> select('p.id_produto,p.valor_produto,p.cod_barra_produto,p.modelo_produto,p.del_produto');
+            }
 		}else{	
-                      if($idloja!=-1){
-			$this -> db -> select('p.id_produto,p.valor_produto,lp.quantidade as estoque_produto,p.cod_barra_produto,p.modelo_produto');
-                      }else{
-                          $this -> db -> select('p.id_produto,p.valor_produto,p.cod_barra_produto,p.modelo_produto');
-                      }
+          if($idloja!=-1){
+			  $this -> db -> select('p.id_produto,p.valor_produto,lp.quantidade as estoque_produto,p.cod_barra_produto,p.modelo_produto');
+          }else{
+              $this -> db -> select('p.id_produto,p.valor_produto,p.cod_barra_produto,p.modelo_produto');
+          }
 		}
 		$this -> db -> from('produto p');
-                if($idloja!=-1){
-                    $this->db->join('loja_produto lp', 'lp.produto_fk=p.id_produto and lp.loja_fk = '.$idloja);
-                }
+        if($idloja!=-1){
+            $this->db->join('loja_produto lp', 'lp.produto_fk=p.id_produto and lp.loja_fk = '.$idloja);
+        }
 		if (strcmp($code, "0") == 0) {
 			$this -> db -> where('id_produto', $id);
 		} else {
@@ -292,7 +407,8 @@ Class Usuario_model  extends CI_Model {
 		$this -> db -> from('cliente');
 		$this -> db -> join('endereco', 'cliente.endereco_fk = endereco.id_endereco');
 		$this -> db -> where('del_cliente', 0);
-                $this -> db -> where('loja_fk', $idloja);
+		if ($idloja <> 0)
+        	$this -> db -> where('loja_fk', $idloja);
 		$this -> db -> order_by('nome_cliente', 'asc');
 
 		//$this -> db -> limit($inicio, 15);
@@ -318,8 +434,8 @@ Class Usuario_model  extends CI_Model {
 		}
 	}
         
-        function getLoja() {
-		$this -> db -> select('id_loja,nome_loja');
+    function getLoja() {
+		$this -> db -> select('id_loja, nome_loja');
 		$this -> db -> from('loja');
 		$query = $this -> db -> get();
 		if ($query -> num_rows() > 0) {
@@ -363,7 +479,8 @@ Class Usuario_model  extends CI_Model {
 		$this -> db -> from('cliente');
 		$this -> db -> join('endereco', 'cliente.endereco_fk = endereco.id_endereco');
 		$this -> db -> where('del_cliente', 0);
-                $this -> db -> where('loja_fk', $idloja);
+		if ($idloja <> 0)
+        	$this -> db -> where('loja_fk', $idloja);
 		if ($tipo == 1) {
 			$this -> db -> where('cpf_cliente', $dado);
 		} else if ($tipo == 2) {

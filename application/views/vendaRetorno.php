@@ -146,7 +146,7 @@ for($i=0;$i<count($produtos);$i++){
 					<div class="col-md-6 col-md-offset-3" align="center">
 						<ul class="pager">
 							<li>
-								<a type="button" href="<?php echo site_url("venda/sair/1/".$idlista)?>">Sair</a>
+								<a type="button" href="<?php echo site_url("venda/sair/2/".$idlista)?>">Sair</a>
 							</li>
 							<li>
 								<a type="button" href="<?php

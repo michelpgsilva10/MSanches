@@ -17,7 +17,32 @@ class Empresa extends MY_Controller {
         $time = time();
         $load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
         if ($this->session->userdata('load') == $load) {
-            $this->my_load_view('empresa', NULL);
+          if($this->session->userdata('nivel')==0){  	
+            $lojas = $this->usuario_model->getLoja();
+			$data = array('lojas' => $lojas,'tipo'=>1);
+        	$this->my_load_view('selecionaLoja', $data);
+		  }else{
+		  	$this->my_load_view('empresa', NULL);
+		  }
+        } else {
+            redirect('login');
+        }
+    }
+	public function seleloja() {
+        $datestring = "%m%d";
+        $time = time();
+        $load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
+        if ($this->session->userdata('load') == $load) {
+        	$this->load->library('form_validation');
+        	$this -> form_validation -> set_rules('loja', 'Loja', 'required|xss_clean');
+			if ($this -> form_validation -> run() == FALSE) {
+        		$lojas = $this->usuario_model->getLoja();
+				$data = array('lojas' => $lojas,'mensagem' => "Erro ao Selecionar a Loja",'tipo'=>1);
+                $this->my_load_view('selecionaLoja', $data);
+			}else{
+				$this -> session -> set_userdata('nivel', trim($this->input->post('loja', TRUE)));
+            	$this->my_load_view('empresa', NULL);
+			}
         } else {
             redirect('login');
         }
