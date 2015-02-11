@@ -21,10 +21,11 @@ class Login extends MY_Controller {
 			$senha = do_hash($senha, 'md5');
 			$aux = $this -> usuario_model -> login($email, $senha);
 			if ($aux != FALSE) {
+				
 				$datestring = "%m%d";
 				$time = time();
 				$load= mdate($datestring, $time).do_hash("MSanches", 'md5');
-				$result = array('nome' => $aux ->NOME_USER, 'id' => $aux ->ID_USER, 'nivel' => $aux ->NIVEL_USER);
+				$result = array('nome' => $aux->NOME_USER, 'id' => $aux ->ID_USER, 'nivel' => $aux ->NIVEL_USER);
 				$this -> session -> set_userdata('load', $load);
 				$this -> session -> set_userdata($result);
 				$this -> usuario_model -> logs( $aux ->ID_USER,0);
