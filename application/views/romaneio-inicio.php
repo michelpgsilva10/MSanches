@@ -7,7 +7,7 @@ class Pdf extends FPDF {
 		// Logo
 		$this -> Image($cliente -> config -> item('base_url') . 'css/MSanches-logo.png', 2, 2, 6);
 		// Arial bold 15
-		$this -> SetFont('Arial', 'B', 16);
+		$this -> SetFont('Arial', 'B', 14);
 
 		$this -> SetY(2);
 		// Move to the right
@@ -103,9 +103,9 @@ if ($vendas) {
 	$pdf -> Cell(3, 0, '', 0, 0, 'L');
 	$pdf -> Cell(7, 0.8, 'Assinatura do Cliente', 0, 0, 'C');
 	
+	$pdf -> SetMargins(1.1, 0);
+	$pdf -> SetFont('Arial', '', 10);
 	$pdf -> AddPage();
-	$pdf -> SetMargins(2, 2);
-	$pdf -> SetFont('Arial', '', 11);
 	
 	$cliente = new Cliente();
 	
@@ -118,35 +118,79 @@ if ($vendas) {
 		if (file_exists('css/img/img_produto/' . trim($vendas[$i - 1]['foto_produto']))) 
 			$pdf -> Image($cliente -> config -> item('base_url') . 'css/img/img_produto/' . $vendas[$i - 1]['foto_produto'], 2 + ($largura * 5.6), 4.5 + ($altura * 5.4), 5.5, 4.1);
 		else
-			$pdf -> Image($cliente -> config -> item('base_url') . 'css/img/img_sistema/cinza.jpg', 2 + ($largura * 5.6), 4.5 + ($altura * 5.4), 5.5, 4.1);
+			$pdf -> Image($cliente -> config -> item('base_url') . 'css/img/img_sistema/cinza.jpg', 1.15 + ($largura * 3.75), 4.0 + ($altura * 3.9), 3.6, 3.1);
 		
 		$largura++;
 		
-		if ($i % 3 == 0) {
+		if ($i % 5 == 0) {
 			$largura = 0;
 			$altura++;
 			
-			$pdf -> Cell(5.55, 0.5, '', 0, 0, 'L');
-			$pdf -> Cell(5.6, 0.5, '', 0, 0, 'L');
-			$pdf -> Cell(5.55, 0.5, '', 0, 1, 'L');
+			if ($altura - 1 <> 0) {
+				$pdf -> Cell(3.73, 0.2, '', 1, 0, 'L');
+				$pdf -> Cell(3.75, 0.2, '', 1, 0, 'L');
+				$pdf -> Cell(3.75, 0.2, '', 1, 0, 'L');
+				$pdf -> Cell(3.75, 0.2, '', 1, 0, 'L');
+				$pdf -> Cell(3.74, 0.2, '', 1, 1, 'L');
+			}
 			
-			$pdf -> Cell(5.55, 4.1, '', 1, 0, 'L');
-			$pdf -> Cell(5.6, 4.1, '', 1, 0, 'L');
-			$pdf -> Cell(5.55, 4.1, '', 1, 1, 'L');
+			$pdf -> Cell(3.73, 3.1, '', 1, 0, 'L');
+			$pdf -> Cell(3.75, 3.1, '', 1, 0, 'L');
+			$pdf -> Cell(3.75, 3.1, '', 1, 0, 'L');
+			$pdf -> Cell(3.75, 3.1, '', 1, 0, 'L');
+			$pdf -> Cell(3.74, 3.1, '', 1, 1, 'L');
 			
-			$pdf -> Cell(5.55, 0.8, $vendas[$i - 3]['cod_barra_produto'], 1, 0, 'C');
-			$pdf -> Cell(5.6, 0.8, $vendas[$i - 2]['cod_barra_produto'], 1, 0, 'C');
-			$pdf -> Cell(5.55, 0.8, $vendas[$i - 1]['cod_barra_produto'], 1, 1, 'C');
+			$pdf -> Cell(3.73, 0.6, $vendas[$i - 5]['cod_barra_produto'], 1, 0, 'C');
+			$pdf -> Cell(3.75, 0.6, $vendas[$i - 4]['cod_barra_produto'], 1, 0, 'C');
+			$pdf -> Cell(3.75, 0.6, $vendas[$i - 3]['cod_barra_produto'], 1, 0, 'C');
+			$pdf -> Cell(3.75, 0.6, $vendas[$i - 2]['cod_barra_produto'], 1, 0, 'C');
+			$pdf -> Cell(3.74, 0.6, $vendas[$i - 1]['cod_barra_produto'], 1, 1, 'C');
 			
-			$fotos_fim = count($vendas) - $i;
+			$fotos_fim = count($vendas) - $i; 
 		}		
 		
-		if ($i % 12 == 0) {
+		if ($i % 30 == 0) {
 			$pdf -> AddPage();
 			$altura = 0;
 		}	
 	}	
-	
+
+	if ($fotos_fim <> 0) {
+		for ($k = 1; $k <= 5; $k++) {
+			if ($altura <> 0 ) {
+				if($fotos_fim >= $k) {				
+					$pdf -> Cell(3.745, 0.2, '', 1, 0, 'L');
+				} else {
+					if ($k < 5)
+						$pdf -> Cell(3.738, 0.2, '', 0, 0, 'L');
+					else
+						$pdf -> Cell(3.738, 0.2, '', 0, 1, 'L');
+				}
+			}			
+		}
+		
+		for ($k = 1; $k <= 5; $k++) {
+			if($fotos_fim >= $k) 
+				$pdf -> Cell(3.745, 3.1, '', 1, 0, 'L');
+			else {
+				if ($k < 5)
+					$pdf -> Cell(3.745, 3.1, '', 0, 0, 'L');
+				else
+					$pdf -> Cell(3.74, 3.1, '', 0, 1, 'L');
+			}
+		}
+
+		for ($k = 1; $k <= 5; $k++) {
+			if ($fotos_fim >= $k)
+				$pdf -> Cell(3.74, 0.6, $vendas[count($vendas) - ($fotos_fim + 1 - $k)]['cod_barra_produto'], 1, 0, 'C');
+			else {
+				if ($k < 5)
+					$pdf -> Cell(3.74, 0.6, '', 0, 0, 'C');
+			}
+		}
+		
+	}
+	/*
 	if ($fotos_fim == 2) {
 		$pdf -> Cell(5.55, 0.5, '', 0, 0, 'L');
 		$pdf -> Cell(5.6, 0.5, '', 0, 0, 'L');
@@ -172,8 +216,8 @@ if ($vendas) {
 		
 		$pdf -> Cell(5.55, 0.8, $vendas[count($vendas) - 1]['cod_barra_produto'], 1, 0, 'C');
 		$pdf -> Cell(5.6, 0.8, '', 0, 0, 'C');
-		$pdf -> Cell(5.55, 0.8, '', 0, 1, 'C');
-	}
+		$pdf -> Cell(5.55, 0.8, '', 0, 1, 'C'); 
+	}*/
 
 	$pdf -> Output('romaneio.pdf', 'I');
 	$pdf -> Output('romaneio.pdf', 'D');
