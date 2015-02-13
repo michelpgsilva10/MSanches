@@ -318,6 +318,7 @@ Class Usuario_model  extends CI_Model {
 		$this -> db -> from('loja_produto');
 		if ($idloja != 0) {
 			$this -> db -> where('loja_fk', $idloja);
+			$this -> db -> where('produto_fk', $idproduto);
 		} else {
 			$this -> db -> where('produto_fk', $idproduto);
 		}

@@ -104,7 +104,7 @@
                                                                                           <h6><?php echo $lojas[$i]['nome_loja']; ?>:</h6>
                                                                                         </td> 
                                                                                         <td style="width: 20%; padding-right: 10px; padding-top: 5px;">
-                                                                                              <input type="text" class="form-control" id="quant" <?php if($loja == $lojas[$i]['id_loja'] ){  ?>name="quant"  <?php }?>
+                                                                                             <input type="text" class="form-control" id="quant" <?php echo "name=\"quant".$lojas[$i]['id_loja']."\""; ?> 
                                                                                                  value="<?php if($quantidade!=FALSE){
                                                                                                                $verifica=1;
                                                                                                                 for($j=0;$j<count($quantidade);$j++){

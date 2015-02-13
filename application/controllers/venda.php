@@ -546,7 +546,7 @@ class Venda extends MY_Controller {
                         $sProduto = -1;
                         for ($i = 0; $i < count($produtos); $i++) {
                             $produto = $this->usuario_model->getProduto($produtos[$i]['id_produto'], 0, 1, $this->session->userdata('nivel'));
-                            if ($produtos[$i]->estoque_produto > $produto->estoque_produto) {
+                            if ($produtos[$i]['quantidade'] > $produto->estoque_produto) {
                                 $sProduto = $produtos[$i]['codbarras'];
                                 break;
                             }

@@ -205,7 +205,8 @@ class Produtos extends MY_Controller {
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
 			if ($this -> input -> post('valor', TRUE)) {
-				$data = array('mensagem' => " A Foto não Foi Selecionada");
+				$lojas = $this -> usuario_model -> getLoja();
+				$data = array('lojas' => $lojas, 'loja' => $this -> session -> userdata('nivel'),'mensagem' => " A Foto não Foi Selecionada");
 				$this -> my_load_view('novoProduto', $data);
 			} else {
 				$lojas = $this -> usuario_model -> getLoja();
