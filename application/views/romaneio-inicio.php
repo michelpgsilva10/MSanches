@@ -116,7 +116,7 @@ if ($vendas) {
 	for ($i = 1; $i <= count($vendas); $i++) {
 		
 		if (file_exists('css/img/img_produto/' . trim($vendas[$i - 1]['foto_produto']))) 
-			$pdf -> Image($cliente -> config -> item('base_url') . 'css/img/img_produto/' . $vendas[$i - 1]['foto_produto'], 2 + ($largura * 5.6), 4.5 + ($altura * 5.4), 5.5, 4.1);
+			$pdf -> Image($cliente -> config -> item('base_url') . 'css/img/img_produto/' . $vendas[$i - 1]['foto_produto'], 1.15 + ($largura * 3.75), 4.0 + ($altura * 3.9), 3.6, 3.1);
 		else
 			$pdf -> Image($cliente -> config -> item('base_url') . 'css/img/img_sistema/cinza.jpg', 1.15 + ($largura * 3.75), 4.0 + ($altura * 3.9), 3.6, 3.1);
 		
@@ -127,11 +127,11 @@ if ($vendas) {
 			$altura++;
 			
 			if ($altura - 1 <> 0) {
-				$pdf -> Cell(3.73, 0.2, '', 1, 0, 'L');
-				$pdf -> Cell(3.75, 0.2, '', 1, 0, 'L');
-				$pdf -> Cell(3.75, 0.2, '', 1, 0, 'L');
-				$pdf -> Cell(3.75, 0.2, '', 1, 0, 'L');
-				$pdf -> Cell(3.74, 0.2, '', 1, 1, 'L');
+				$pdf -> Cell(3.73, 0.2, '', 0, 0, 'L');
+				$pdf -> Cell(3.75, 0.2, '', 0, 0, 'L');
+				$pdf -> Cell(3.75, 0.2, '', 0, 0, 'L');
+				$pdf -> Cell(3.75, 0.2, '', 0, 0, 'L');
+				$pdf -> Cell(3.74, 0.2, '', 0, 1, 'L');
 			}
 			
 			$pdf -> Cell(3.73, 3.1, '', 1, 0, 'L');
@@ -159,7 +159,7 @@ if ($vendas) {
 		for ($k = 1; $k <= 5; $k++) {
 			if ($altura <> 0 ) {
 				if($fotos_fim >= $k) {				
-					$pdf -> Cell(3.745, 0.2, '', 1, 0, 'L');
+					$pdf -> Cell(3.745, 0.2, '', 0, 0, 'L');
 				} else {
 					if ($k < 5)
 						$pdf -> Cell(3.738, 0.2, '', 0, 0, 'L');
