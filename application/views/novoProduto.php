@@ -26,7 +26,7 @@ function Desabilitar(){
 									<?php	echo $mensagem; ?>
 								</div>
 								<?php } ?>
-						<form class="form-horizontal" role="form"  method="post" <?php if(isset($foto)){ ?> action="<?php echo site_url("produtos/novo2/".$nome)?>" <?php }else{ ?>action="<?php echo site_url("produtos/novo")?>"<?php }?> target="_blank">
+						<form class="form-horizontal" role="form"  method="post" <?php if(isset($foto)){ ?> action="<?php echo site_url("produtos/novo2/".$nome)?>" <?php }else{ ?>action="<?php echo site_url("produtos/novo")?>"<?php }?> >
 							<div class="row" style="margin-top: 40px; margin-left: 3%">
 								<div class="col-xs-6">
 									<br />
