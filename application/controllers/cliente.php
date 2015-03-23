@@ -78,7 +78,7 @@ class Cliente extends MY_Controller {
 					'ref_comercial' => $this -> input -> post('ref_comercial_cliente'),
 					'tel_cliente' => $this -> input -> post('tel_cliente'),
 					'endereco_fk' => $endereco_fk,
-                                        'loja_fk' => $this->session->userdata('nivel')
+                    'loja_fk' => $this->session->userdata('nivel')
 				);
 				
 				$this -> db -> insert('cliente', $cliente_insert);

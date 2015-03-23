@@ -383,7 +383,9 @@ class Produtos extends MY_Controller {
 					$idproduto = $this -> usuario_model -> setProduto($tipo, $valor, $id, $nome, $code, $detalhe);
 					$lojas = $this -> usuario_model -> getLoja();
 					for ($i = 0; $i < count($lojas); $i++) {
-						$data = array('quantidade' => $this -> input -> post('quant' . $lojas[$i]['id_loja'], TRUE), 'loja_fk' => $lojas[$i]['id_loja'], 'produto_fk' => $idproduto);
+						$data = array('quantidade' => $this -> input -> post('quant' . $lojas[$i]['id_loja'], TRUE),
+									  'loja_fk' => $lojas[$i]['id_loja'], 
+									  'produto_fk' => $idproduto);
 						$this -> usuario_model -> setitemnovo($data);
 					}
 					redirect('produtos/perEtiqueta/' . $code);

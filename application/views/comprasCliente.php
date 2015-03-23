@@ -35,11 +35,19 @@
   									<div style="display: table; width: 100%; padding-left: 5px;">
   										<div style="float: left; width: 20%;" align="center">
   											<h5 class="list-group-item-text">
-  												<?php 
-  													if ($compras[$i]["tipo_venda"] == 0)
-  														echo 'Venda Comum';
-													else
-														echo 'Venda Consignada';
+  												<?php
+  												  if ($compras[$i]["tipo_venda"] !=3 && $compras[$i]["tipo_venda"] != 4){ 
+	  													if ($compras[$i]["tipo_venda"] == 0)
+	  														echo 'Venda Comum';
+														else
+															echo 'Venda Consignada';
+												  }else if ($compras[$i]["tipo_venda"] ==3){
+												  	echo 'Transferencia';
+												  }else if ($compras[$i]["tipo_venda"] ==4){
+												  	echo 'Balanço';
+												  }else {
+												  	echo 'Erro :D';
+												  }
   												?>
   											</h5>
   										</div>

@@ -13,6 +13,8 @@ class Home extends MY_Controller {
 		if ($this -> session -> userdata('load')==$load) {
 			$user = $this -> usuario_model -> getLojaUser($this->session->userdata('id'));
 			$this -> session -> set_userdata('nivel', $user->NIVEL_USER);
+			//print_r($user);
+			//echo $this->session->userdata('nivel');
 			$this -> my_load_view('principal', NULL);
 		} else {
 			redirect('login');
