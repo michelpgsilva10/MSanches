@@ -205,8 +205,7 @@ class Produtos extends MY_Controller {
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
 			if ($this -> input -> post('valor', TRUE)) {
-				$lojas = $this -> usuario_model -> getLoja();
-				$data = array('lojas' => $lojas, 'loja' => $this -> session -> userdata('nivel'),'mensagem' => " A Foto não Foi Selecionada");
+				$data = array('mensagem' => " A Foto não Foi Selecionada");
 				$this -> my_load_view('novoProduto', $data);
 			} else {
 				$lojas = $this -> usuario_model -> getLoja();
@@ -234,22 +233,6 @@ class Produtos extends MY_Controller {
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
-			/*$data = array('brinco' => $this->usuario_model->getQantidade(3)->id,
-			 'anel' => $this->usuario_model->getQantidade(1)->id,
-			 'colar' => $this->usuario_model->getQantidade(4)->id,
-			 'pulceira' => $this->usuario_model->getQantidade(6)->id,
-			 'bracelete' => $this->usuario_model->getQantidade(2)->id,
-			 'conjunto' => $this->usuario_model->getQantidade(5)->id,
-			 'tornozeleira' => $this->usuario_model->getQantidade(7)->id,
-			 'brinco2' => $this->usuario_model->getQantidadeItem(3, $this->session->userdata('nivel'))->total,
-			 'anel2' => $this->usuario_model->getQantidadeItem(1, $this->session->userdata('nivel'))->total,
-			 'colar2' => $this->usuario_model->getQantidadeItem(4, $this->session->userdata('nivel'))->total,
-			 'pulceira2' => $this->usuario_model->getQantidadeItem(6, $this->session->userdata('nivel'))->total,
-			 'bracelete2' => $this->usuario_model->getQantidadeItem(2, $this->session->userdata('nivel'))->total,
-			 'conjunto2' => $this->usuario_model->getQantidadeItem(5, $this->session->userdata('nivel'))->total,
-			 'tornozeleira2' => $this->usuario_model->getQantidadeItem(7, $this->session->userdata('nivel'))->total,
-			 'lojas' => $this->usuario_model->getLoja()); */
-
 			$data["quantidade_item"] = $this -> usuario_model -> getQuantidadeItem2($this -> session -> userdata('nivel'));
 			$data["quantidade_modelo"] = $this -> usuario_model -> getQuantidade2($this -> session -> userdata('nivel'));
 			$data["id_lojas"] = $this -> usuario_model -> getIdLojas($this -> session -> userdata('nivel'));
@@ -272,13 +255,13 @@ class Produtos extends MY_Controller {
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
 			$produto = $this -> usuario_model -> getBusca($this -> input -> post('id', TRUE), 0);
-			$config['upload_path'] = "C:/Users/kaue/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto/";
+			$config['upload_path'] = "/home/mmsan532/public_html/sistema/css/img/img_produto";
 			$config['file_name'] = $produto -> foto_produto;
 			$config['allowed_types'] = 'jpg';
 			$config['max_size'] = '2048';
 			$this -> load -> library('upload', $config);
-			if (file_exists("C:/Users/kaue/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto/" . $produto -> foto_produto)) {
-				unlink("C:/Users/kaue/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto/" . $produto -> foto_produto);
+			if (file_exists("/home/mmsan532/public_html/sistema/css/img/img_produto/" . $produto -> foto_produto)) {
+				unlink("/home/mmsan532/public_html/sistema/css/img/img_produto/" . $produto -> foto_produto);
 			}
 			if (!$this -> upload -> do_upload("fileF")) {
 				$data = array('id' => $this -> input -> post('id', TRUE), 'mensagem' => $this -> upload -> display_errors());
@@ -383,9 +366,7 @@ class Produtos extends MY_Controller {
 					$idproduto = $this -> usuario_model -> setProduto($tipo, $valor, $id, $nome, $code, $detalhe);
 					$lojas = $this -> usuario_model -> getLoja();
 					for ($i = 0; $i < count($lojas); $i++) {
-						$data = array('quantidade' => $this -> input -> post('quant' . $lojas[$i]['id_loja'], TRUE),
-									  'loja_fk' => $lojas[$i]['id_loja'], 
-									  'produto_fk' => $idproduto);
+						$data = array('quantidade' => $this -> input -> post('quant' . $lojas[$i]['id_loja'], TRUE), 'loja_fk' => $lojas[$i]['id_loja'], 'produto_fk' => $idproduto);
 						$this -> usuario_model -> setitemnovo($data);
 					}
 					redirect('produtos/perEtiqueta/' . $code);
@@ -419,14 +400,14 @@ class Produtos extends MY_Controller {
 				$id = "0" . $id;
 			}
 			$nome = $id . ".jpg";
-			$config['upload_path'] = "C:/Users/kaue/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto";
+			$config['upload_path'] = "/home/mmsan532/public_html/sistema/css/img/img_produto";
 			$config['file_name'] = $nome;
 			$config['allowed_types'] = 'jpg';
 			$config['max_size'] = '2048';
 
 			$this -> load -> library('upload', $config);
-			if (file_exists("C:/Users/kaue/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto/" . $nome)) {
-				unlink("C:/Users/kaue/Dropbox/Projetos Trabalho/MSanches/css/img/img_produto/" . $nome);
+			if (file_exists("/home/mmsan532/public_html/sistema/css/img/img_produto/" . $nome)) {
+				unlink("/home/mmsan532/public_html/sistema/css/img/img_produto/" . $nome);
 			}
 			if (!$this -> upload -> do_upload("fileF")) {
 				$data = array('mensagem' => $this -> upload -> display_errors());

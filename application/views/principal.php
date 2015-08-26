@@ -56,7 +56,6 @@
             <?php echo $mensagemC; ?>
         </div>
     <?php }
-	//echo $this->session->userdata('nivel');
     ?> 
     <br />
     <a href="<?php echo site_url("produtos") ?>" class="button blue">Produtos</a><br/>

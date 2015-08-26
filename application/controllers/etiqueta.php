@@ -56,14 +56,14 @@ class Etiqueta extends MY_Controller {
 			"A745,86,2,3,1,1,N,\"".$code."\"".PHP_EOL.
 			"P".$quantidade.PHP_EOL; 
 			}
-			if (file_exists("C:/Users/kaue/Dropbox/Projetos Trabalho/MSanches/css/arquivo/etiquetas.prn")) {
-				unlink("C:/Users/kaue/Dropbox/Projetos Trabalho/MSanches/css/arquivo/etiquetas.prn");
+			if (file_exists("/home/mmsan532/public_html/sistema/css/arquivo/etiquetas.prn")) {
+				unlink("/home/mmsan532/public_html/sistema/css/arquivo/etiquetas.prn");
 			}
-			$arquivo = fopen("C:/Users/kaue/Dropbox/Projetos Trabalho/MSanches/css/arquivo/etiquetas.prn", 'w');
+			$arquivo = fopen("/home/mmsan532/public_html/sistema/css/arquivo/etiquetas.prn", 'w');
 			fwrite($arquivo,$data1);
 			fclose($arquivo);
 			
-			$filename = "C:/Users/kaue/Dropbox/Projetos Trabalho/MSanches/css/arquivo/etiquetas.prn";
+			$filename = "/home/mmsan532/public_html/sistema/css/arquivo/etiquetas.prn";
 			header("Pragma: public");
 			header("Expires: 0");
 			header("Cache-Control: must-revalidate, post-check=0, pre-check=0");

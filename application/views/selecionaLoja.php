@@ -69,7 +69,7 @@ if (isset($mensagem)) {
 			<button type="submit" id="confirma" class="btn btn-success"  >
 				Confirmar
 			</button>
-			<a type="button" id="confirma" class="btn btn-success" href=" <?php echo site_url("Validador"); ?> " > Voltar </a>
+			<a type="button" id="confirma" class="btn btn-success" href=" <?php echo site_url("validador"); ?> " > Voltar </a>
 		</form>
 	</div>
 </div>

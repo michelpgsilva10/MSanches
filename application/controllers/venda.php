@@ -911,7 +911,7 @@ class Venda extends MY_Controller {
                 $cliente = $this->usuario_model->getCliente($venda->cliente_fk, 0,$this->session->userdata('nivel'));
                 $verifica=-1;
                 for ($i = 0; $i < count($compras); $i++) {
-                    $produto = $this->usuario_model->getProduto($compras[$i]['produto_fk'], 0,1, $this->session->userdata('nivel'));
+                    $produto = $this->usuario_model->getProduto($compras[$i]['produto_fk'],0,1,$this->session->userdata('nivel'));
                     $desconto = $produto->valor_produto * ($compras[$i]['desconto_compra'] / 100); //->Calcula o desconto	
                     $nproduto = array(
                         'id_lista' => 1,

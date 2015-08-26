@@ -238,7 +238,6 @@ Class Usuario_model  extends CI_Model {
 					  'foto_produto' => $nome,
 					  'cod_barra_produto' => $codel,
 					  'quali_produto' => $detalhe);
-					  
 		$this -> db -> insert('produto', $data);
                 return $this -> db -> insert_id();
 	}
@@ -319,7 +318,6 @@ Class Usuario_model  extends CI_Model {
 		$this -> db -> from('loja_produto');
 		if ($idloja != 0) {
 			$this -> db -> where('loja_fk', $idloja);
-			$this -> db -> where('produto_fk', $idproduto);
 		} else {
 			$this -> db -> where('produto_fk', $idproduto);
 		}
@@ -638,14 +636,15 @@ Class Usuario_model  extends CI_Model {
 	}
 
 	function getComprasCliente($id_cliente) {
-		$this -> db -> select("CASE WHEN vc.id_venda_consignado IS NULL THEN 0 ELSE 1 END AS tipo_venda, v1.id_venda, v1.data_venda, v1.data_retorno_venda, v1.valor_venda,v1.tipo_venda as tipo_venda0, c.nome_cliente, v2.data_venda AS data_venda2, v2.valor_venda AS valor_venda2", FALSE);
+		$this -> db -> select("CASE WHEN vc.id_venda_consignado IS NULL THEN 0 ELSE 1 END AS tipo_venda, v1.id_venda, v1.data_venda, v1.data_retorno_venda, v1.valor_venda, c.nome_cliente,v1.tipo_venda as tipo_venda0, v2.data_venda AS data_venda2, v2.valor_venda AS valor_venda2", FALSE);
 		$this -> db -> from("venda v1");
 		$this -> db -> join("venda_consignado vc", "v1.id_venda = vc.id_venda_inicio", "left");
 		$this -> db -> join("venda v2", "vc.id_venda_retorno = v2.id_venda", "left");
 		$this -> db -> join("cliente c", "c.id_cliente = v1.cliente_fk");
 		$this -> db -> where("v1.cliente_fk", $id_cliente);	
-		$this -> db -> where("v1.id_venda NOT IN (SELECT id_venda_retorno FROM venda_consignado WHERE id_venda_retorno IS NOT NULL)");	
+		$this -> db -> where("v1.id_venda NOT IN (SELECT id_venda_retorno FROM venda_consignado WHERE id_venda_retorno IS NOT NULL)");
 		$this -> db -> order_by("v1.data_venda", "desc");
+		
 
 		$query = $this -> db -> get();
 

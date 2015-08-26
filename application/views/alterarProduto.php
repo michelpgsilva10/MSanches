@@ -36,13 +36,13 @@ function Finalizar(){
 									<br />
 									<div class="form-group">
 										<label for="inputEmail3" class="col-sm-3 control-label">Valor</label>
-										<div class="col-sm-7">
+										<div class="col-sm-8">
 											<input type="text" class="form-control" id="valor" name="valor" value="<?php echo $produto->valor_produto; ?>" style="text-align: center" required maxlength="4" onkeypress="return SomenteNumero(event);">
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="inputEmail3" class="col-sm-3 control-label">Tipo </label>
-										<div class="col-sm-7">
+										<div class="col-sm-8">
 											<select class="form-control" name="tipo" id="tipo" style="text-align: center;" required >
 												<option value=""></option>
 												<option value="3" <?php if($produto->tipo_produto==3){echo "selected"; } ?>>Brinco</option>
@@ -57,7 +57,7 @@ function Finalizar(){
 									</div>
 									<div class="form-group">
 										<label for="inputEmail3" class="col-sm-3 control-label">Qualidade:</label>
-										<div class="col-sm-7">
+										<div class="col-sm-8">
 											<select class="form-control" name="detalhe" id="detalhe" style="text-align: center;" required>
 		  										<option value="0" <?php if($produto->quali_produto==0){echo "selected"; } ?>></option>
 												<option value="1" <?php if($produto->quali_produto==1){echo "selected"; } ?>>Só Dourado</option>
@@ -72,7 +72,7 @@ function Finalizar(){
 									</div>
 									<div class="form-group">
 	                                    <label for="inputEmail3" class="col-sm-3 control-label">Quantidade:</label>
-	                                    <div class="col-sm-7">
+	                                    <div class="col-sm-8">
 	                                        <div class=" scroll-tabela" style=" height: 100px;">
 	                                            <table style="width: 100%;">
 	                                                <?php for($i=0;$i<count($lojas);$i++){ ?>

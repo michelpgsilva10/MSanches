@@ -16,7 +16,7 @@
 		<title>MSanches</title>
 
 	</head>
-	<body onload="hideAlertSuccess()">
+	<body >
 		<div class="container">
 			<div>
 				<img  src="<?php echo $this->config->item('base_url') ?>css/img/img_sistema/MSanches-logo.png" class="img-responsive" alt="Responsive image">

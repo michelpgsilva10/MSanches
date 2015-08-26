@@ -79,12 +79,9 @@ function Desabilitar(){
 	                                                    </td> 
 	                                                    <td style="width: 20%; padding-right: 10px; padding-top: 5px;">
 	                                                          <input type="text" class="form-control" id="quant" <?php echo "name=\"quant".$lojas[$i]['id_loja']."\""; ?>
-	                                                             value="<?php echo '0'; ?>" style="text-align: center" onkeypress="return SomenteNumero(event);" 
-                                                                		<?php if($loja!=0){
-                                                                			if($loja != $lojas[$i]['id_loja'] ){   
-                                                                				echo "required disabled"; }}?>
-                                                                	 
-                                                                		>
+	                                                             value="<?php echo '0'; ?>" style="text-align: center" onkeypress="return SomenteNumero(event);" <?php 
+                                                                		if($loja!=0){
+                                                                			if($loja != $lojas[$i]['id_loja'] ){  ?> required disabled <?php }}?>>
 	                                                            </td>
 	                                                    </tr>
 	                                                <?php } ?>

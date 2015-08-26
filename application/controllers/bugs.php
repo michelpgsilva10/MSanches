@@ -21,6 +21,7 @@ class Bugs extends MY_Controller {
 		echo "Numero de Produtos Criados ".$j."</br>";
 	}
 
+
 	function fotoErro($proxima = 0) {
 		$maxId = $this -> usuario_model -> getID();
 		$aux = $this -> usuario_model -> getFoto(1);
