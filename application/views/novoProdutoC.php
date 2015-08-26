@@ -32,6 +32,12 @@ function Desabilitar(){
 									<br />
 									<br />
 									<div class="form-group">
+										<label for="inputEmail3" class="col-sm-3 control-label">Codigo de Barras:</label>
+										<div class="col-sm-8">
+											<input type="text" class="form-control" id="cbarras" name="cbarras" style="text-align: center" required onkeypress="return SomenteNumero(event);">
+										</div>
+									</div>
+									<div class="form-group">
 										<label for="inputEmail3" class="col-sm-3 control-label">Valor:</label>
 										<div class="col-sm-8">
 											<input type="text" class="form-control" id="valor" name="valor" style="text-align: center" required maxlength="4" onkeypress="return SomenteNumero(event);">

@@ -27,6 +27,30 @@ class Produtos extends MY_Controller {
 			redirect('login');
 		}
 	}
+	public function tipoNovo($tipo = 99){
+		$this -> load -> library('pagination');
+		$datestring = "%m%d";
+		$time = time();
+		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
+		if ($this -> session -> userdata('load') == $load) {
+			if ($tipo==99) {
+				$this -> my_load_view('tipoNovoProduto', null);
+			} else if($tipo == 0) {
+				$lojas = $this -> usuario_model -> getLoja();
+				$data = array('lojas' => $lojas, 'loja' => $this -> session -> userdata('nivel'));
+				$this -> my_load_view('novoProduto', $data);
+			}else if($tipo==1){
+				$lojas = $this -> usuario_model -> getLoja();
+				$data = array('lojas' => $lojas, 'loja' => $this -> session -> userdata('nivel'));
+				$this -> my_load_view('novoProdutoC', $data);
+			}else{
+				$data = array('mensagem' => "Tipo Desconhecido!!");
+				$this -> my_load_view('tipoNovoProduto', $data);
+			}
+		} else {
+			redirect('login');
+		}
+	}
 
 	public function pagina($inicio = 0, $tipo = 0, $maior = 0, $menor = 0, $quali = 0) {//------------------------Ok
 		$datestring = "%m%d";
@@ -205,7 +229,8 @@ class Produtos extends MY_Controller {
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
 			if ($this -> input -> post('valor', TRUE)) {
-				$data = array('mensagem' => " A Foto não Foi Selecionada");
+				$lojas = $this -> usuario_model -> getLoja();
+				$data = array('lojas' => $lojas, 'loja' => $this -> session -> userdata('nivel'),'mensagem' => " A Foto não Foi Selecionada");
 				$this -> my_load_view('novoProduto', $data);
 			} else {
 				$lojas = $this -> usuario_model -> getLoja();
