@@ -43,6 +43,10 @@ class Produtos extends MY_Controller {
 				$lojas = $this -> usuario_model -> getLoja();
 				$data = array('lojas' => $lojas, 'loja' => $this -> session -> userdata('nivel'));
 				$this -> my_load_view('novoProdutoC', $data);
+			}else if($tipo==2){
+				$lojas = $this -> usuario_model -> getLoja();
+				$data = array('lojas' => $lojas, 'loja' => $this -> session -> userdata('nivel'),'mensagem' => "Foto não selecionada");
+				$this -> my_load_view('novoProdutoC', $data);
 			}else{
 				$data = array('mensagem' => "Tipo Desconhecido!!");
 				$this -> my_load_view('tipoNovoProduto', $data);
@@ -394,6 +398,85 @@ class Produtos extends MY_Controller {
 						$data = array('quantidade' => $this -> input -> post('quant' . $lojas[$i]['id_loja'], TRUE), 'loja_fk' => $lojas[$i]['id_loja'], 'produto_fk' => $idproduto);
 						$this -> usuario_model -> setitemnovo($data);
 					}
+					redirect('produtos/perEtiqueta/' . $code);
+				}
+			} else {
+				$lojas = $this -> usuario_model -> getLoja();
+				$data = array('foto' => TRUE, 'lojas' => $lojas, 'loja' => $this -> session -> userdata('nivel'), 'nome' => $nome);
+				$this -> my_load_view('novoProduto', $data);
+			}
+		} else {
+			redirect('login');
+		}
+	}
+
+	public function novo3($nome) {//-------------------OK
+		$datestring = "%m%d";
+		$time = time();
+		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
+		if ($this -> session -> userdata('load') == $load) {
+			if ($this -> input -> post('valor', TRUE)) {
+				$tipo = $this -> input -> post('tipo', TRUE);
+				if ($tipo == "") {
+					$data = array('foto' => TRUE, '$mensagem' => "Tipo não Selecionado");
+					$this -> my_load_view('novoProduto', $data);
+				} else {
+					$modelos = $this -> usuario_model -> getQProduto($tipo);
+					$aux = 0;
+					$verifica = -1;
+					for ($i = 0; $i < count($modelos); $i++) {
+						$aux++;
+						if ($modelos[$i]['modelo_produto'] != $aux) {
+							$id = $aux;
+							$verifica = 0;
+							break;
+						}
+					}
+					if ($verifica == -1) {
+						$id = $aux + 1;
+					}
+					$valor = $this -> input -> post('valor', TRUE);
+					$quantidade = $this -> input -> post('quant', TRUE);
+					if ($id < 10) {
+						$id = "000" . $id;
+					} else if ($id < 100) {
+						$id = "00" . $id;
+					} else if ($id < 1000) {
+						$id = "0" . $id;
+					} else if ($id > 10000) {
+						$lojas = $this -> usuario_model -> getLoja();
+						$data = array('foto' => TRUE, 'lojas' => $lojas, '$mensagem' => "Estouro de Tipo - Fale com o Tecnico");
+						$this -> my_load_view('novoProduto', $data);
+					}
+					if ($valor < 10) {
+						$valor = "000" . $valor;
+					} else if ($valor < 100) {
+						$valor = "00" . $valor;
+					} else if ($valor < 1000) {
+						$valor = "0" . $valor;
+					} else if ($valor > 10000) {
+						$lojas = $this -> usuario_model -> getLoja();
+						$data = array('foto' => TRUE, 'lojas' => $lojas, '$mensagem' => "Valor Superior que 10.000");
+						$this -> my_load_view('novoProduto', $data);
+					}
+					$code = $this -> input -> post('cbarras', TRUE);
+					$idproduto = $this -> usuario_model -> verificaItem($code);
+					$detalhe = $this -> input -> post('detalhe', TRUE);
+					$lojas = $this -> usuario_model -> getLoja();
+					if($idproduto==FALSE){
+						$idproduto = $this -> usuario_model -> setProduto($tipo, $valor, $id, $nome, $code, $detalhe);	
+						for ($i = 0; $i < count($lojas); $i++) {
+							$data = array('quantidade' => $this -> input -> post('quant' . $lojas[$i]['id_loja'], TRUE), 'loja_fk' => $lojas[$i]['id_loja'], 'produto_fk' => $idproduto);
+							$this -> usuario_model -> setitemnovo($data);
+						}
+					}else{
+					    $this -> usuario_model -> updateProduto($idproduto, $tipo, $valor, $id, $nome, $code, $detalhe);
+						for ($i = 0; $i < count($lojas); $i++) {
+							$data = array('quantidade' => $this -> input -> post('quant' . $lojas[$i]['id_loja'], TRUE));
+							$this -> usuario_model -> updateItemnovo($idproduto, $lojas[$i]['id_loja'], $data);
+						}
+					}
+					$this -> usuario_model -> logs($this -> session -> userdata('id'), 1, $code);
 					redirect('produtos/perEtiqueta/' . $code);
 				}
 			} else {

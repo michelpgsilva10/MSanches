@@ -253,7 +253,7 @@ Class Usuario_model  extends CI_Model {
 		$this -> db -> update('produto', $data);
 	}
 
-		function getAllProdutos() {
+	function getAllProdutos() {
 		$this -> db -> select('*');
 		$this -> db -> from('produto');
 		$this -> db -> where('del_produto !=', '1');
@@ -358,17 +358,29 @@ Class Usuario_model  extends CI_Model {
 		}
 	}
         
-        public function updateItemnovo($idProduto,$idloja,$data) {
+    public function updateItemnovo($idProduto,$idloja,$data) {
 		$this -> db -> where('loja_fk', $idloja);
 		$this -> db -> where('produto_fk', $idProduto);
 		$this -> db -> update('loja_produto', $data);
 		return $this -> db -> affected_rows();
 	}
-        public function setitemnovo($data) {
+    public function setitemnovo($data) {
 
 		$str = $this -> db -> insert_string('loja_produto', $data);
 		$this -> db -> query($str);
 		return $this -> db -> affected_rows();
+	}
+	function verificaItem($code) {
+		$this -> db -> select('id_produto');
+		$this -> db -> from('produto');
+		$this -> db -> where('del_produto !=', '1');
+		$this -> db -> where('cod_barra_produto',$code);
+		$query = $this -> db -> get();
+		if ($query -> num_rows() > 0) {
+			return $query -> result_array();
+		} else {
+			return FALSE;
+		}
 	}
 
 	function getProduto($id, $code,$add=0,$idloja=-1) {
