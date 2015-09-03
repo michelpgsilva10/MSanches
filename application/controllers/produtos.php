@@ -328,12 +328,19 @@ class Produtos extends MY_Controller {
 		}
 	}
 
-	public function novaFoto() {//-----------------Ok
+	public function novaFoto($tipo=99) {//-----------------Ok
 		$datestring = "%m%d";
 		$time = time();
 		$load = mdate($datestring, $time) . do_hash("MSanches", 'md5');
 		if ($this -> session -> userdata('load') == $load) {
-			$this -> my_load_view('selFoto', NULL);
+			if($tipo==1){
+				$data = array('tipo'=>1);	
+				$this -> my_load_view('selFoto', $data);
+			}else if($tipo==99){
+				$this -> my_load_view('selFoto', NULL);
+			}else {
+				redirect('tipoNovo');
+			}
 		} else {
 			redirect('login');
 		}
@@ -347,7 +354,8 @@ class Produtos extends MY_Controller {
 			if ($this -> input -> post('valor', TRUE)) {
 				$tipo = $this -> input -> post('tipo', TRUE);
 				if ($tipo == "") {
-					$data = array('foto' => TRUE, '$mensagem' => "Tipo não Selecionado");
+					$lojas = $this -> usuario_model -> getLoja();
+					$data = array('foto' => TRUE, 'lojas' => $lojas,'$mensagem' => "Tipo não Selecionado");
 					$this -> my_load_view('novoProduto', $data);
 				} else {
 					$modelos = $this -> usuario_model -> getQProduto($tipo);
@@ -418,8 +426,9 @@ class Produtos extends MY_Controller {
 			if ($this -> input -> post('valor', TRUE)) {
 				$tipo = $this -> input -> post('tipo', TRUE);
 				if ($tipo == "") {
-					$data = array('foto' => TRUE, '$mensagem' => "Tipo não Selecionado");
-					$this -> my_load_view('novoProduto', $data);
+					$lojas = $this -> usuario_model -> getLoja();
+					$data = array('foto' => TRUE, 'lojas' => $lojas,'$mensagem' => "Tipo não Selecionado");
+					$this -> my_load_view('novoProdutoC', $data);
 				} else {
 					$modelos = $this -> usuario_model -> getQProduto($tipo);
 					$aux = 0;
@@ -446,7 +455,7 @@ class Produtos extends MY_Controller {
 					} else if ($id > 10000) {
 						$lojas = $this -> usuario_model -> getLoja();
 						$data = array('foto' => TRUE, 'lojas' => $lojas, '$mensagem' => "Estouro de Tipo - Fale com o Tecnico");
-						$this -> my_load_view('novoProduto', $data);
+						$this -> my_load_view('novoProdutoC', $data);
 					}
 					if ($valor < 10) {
 						$valor = "000" . $valor;
@@ -457,7 +466,7 @@ class Produtos extends MY_Controller {
 					} else if ($valor > 10000) {
 						$lojas = $this -> usuario_model -> getLoja();
 						$data = array('foto' => TRUE, 'lojas' => $lojas, '$mensagem' => "Valor Superior que 10.000");
-						$this -> my_load_view('novoProduto', $data);
+						$this -> my_load_view('novoProdutoC', $data);
 					}
 					$code = $this -> input -> post('cbarras', TRUE);
 					$idproduto = $this -> usuario_model -> verificaItem($code);
@@ -470,10 +479,10 @@ class Produtos extends MY_Controller {
 							$this -> usuario_model -> setitemnovo($data);
 						}
 					}else{
-					    $this -> usuario_model -> updateProduto($idproduto, $tipo, $valor, $id, $nome, $code, $detalhe);
+					    $this -> usuario_model -> updateProduto($idproduto[0]['id_produto'], $tipo, $valor, $id, $nome, $code, $detalhe);
 						for ($i = 0; $i < count($lojas); $i++) {
 							$data = array('quantidade' => $this -> input -> post('quant' . $lojas[$i]['id_loja'], TRUE));
-							$this -> usuario_model -> updateItemnovo($idproduto, $lojas[$i]['id_loja'], $data);
+							$this -> usuario_model -> updateItemnovo($idproduto[0]['id_produto'], $lojas[$i]['id_loja'], $data);
 						}
 					}
 					$this -> usuario_model -> logs($this -> session -> userdata('id'), 1, $code);
@@ -482,7 +491,7 @@ class Produtos extends MY_Controller {
 			} else {
 				$lojas = $this -> usuario_model -> getLoja();
 				$data = array('foto' => TRUE, 'lojas' => $lojas, 'loja' => $this -> session -> userdata('nivel'), 'nome' => $nome);
-				$this -> my_load_view('novoProduto', $data);
+				$this -> my_load_view('novoProdutoC', $data);
 			}
 		} else {
 			redirect('login');
@@ -508,21 +517,25 @@ class Produtos extends MY_Controller {
 				$id = "0" . $id;
 			}
 			$nome = $id . ".jpg";
-			$config['upload_path'] = "/home/mmsan532/public_html/sistema/css/img/img_produto";
+			$config['upload_path'] = "G:\Dropbox\Projetos Trabalho\MSanches Programa\MSanches\css\img\img_produto";  //"/home/mmsan532/public_html/sistema/css/img/img_produto";
 			$config['file_name'] = $nome;
 			$config['allowed_types'] = 'jpg';
 			$config['max_size'] = '2048';
 
 			$this -> load -> library('upload', $config);
-			if (file_exists("/home/mmsan532/public_html/sistema/css/img/img_produto/" . $nome)) {
-				unlink("/home/mmsan532/public_html/sistema/css/img/img_produto/" . $nome);
+			if (file_exists("G:\Dropbox\Projetos Trabalho\MSanches Programa\MSanches\css\img\img_produto/" . $nome)) { //"/home/mmsan532/public_html/sistema/css/img/img_produto/"
+				unlink("G:\Dropbox\Projetos Trabalho\MSanches Programa\MSanches\css\img\img_produto/" . $nome);
 			}
 			if (!$this -> upload -> do_upload("fileF")) {
 				$data = array('mensagem' => $this -> upload -> display_errors());
 				$this -> my_load_view('selFoto', $data);
 			} else {
 				$this -> usuario_model -> logs($this -> session -> userdata('id'), 2);
-				redirect('produtos/novo2/' . $nome);
+				if($this -> input -> post('tipo', TRUE)){
+					redirect('produtos/novo3/' . $nome);
+				}else{
+					redirect('produtos/novo2/' . $nome);
+				}
 			}
 		} else {
 			redirect('login');

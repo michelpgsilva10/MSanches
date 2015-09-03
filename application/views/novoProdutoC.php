@@ -106,7 +106,7 @@ function Desabilitar(){
 										<div class="caption" align="center">
 											<ul class="pager">
 												<li>
-													<a href="<?php echo site_url("produtos/novaFoto")?>">Selecionar</a>
+													<a href="<?php echo site_url("produtos/novaFoto/1")?>">Selecionar</a>
 												</li>
 											</ul>
 

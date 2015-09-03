@@ -18,6 +18,9 @@
 								<form method="post"  role="form"  enctype="multipart/form-data"  action="<?php echo site_url("produtos/uloadF")?>" >
 									<br />
 									<input type="file"  name="fileF" id="FileF">
+									<?php if(isset($tipo)){ ?>
+										<input type="text" class="form-control" id="tipo" name="tipo" value="1" style="display: none;">
+									<?php } ?>
 									<br />
 									
 									<button type="submit" class="btn btn-primary">
@@ -41,7 +44,7 @@
 
 					</li>
 					<li class="active">
-						<a href="<?php echo site_url("produtos/novo")?>">Novo Produto</a>
+						<a href="<?php echo site_url("produtos/tipoNovo")?>">Novo Produto</a>
 					</li>
 					<li>
 						<a href="<?php echo site_url("produtos/etiquetas")?>">Etiquetas</a>

@@ -168,7 +168,7 @@
 
                                     </li>
                                     <li>
-                                            <a href="<?php echo site_url("produtos/novo")?>">Novo Produto</a>
+                                            <a href="<?php echo site_url("produtos/tipoNovo")?>">Novo Produto</a>
                                     </li>
                                     <li>
                                             <a href="<?php echo site_url("produtos/etiquetas")?>">Etiquetas</a>
